@@ -10,12 +10,12 @@ export default function NavBar() {
         <div className="flex items-center justify-between py-6">
           <span className="flex-1 text-xl font-black">ROKTO</span>
           <div className="inline-flex items-center justify-between gap-4 lg:hidden">
-            <Button variant={"ghost"} className="p-2">
+            <Button variant={"ghost"}>
               <Search size={25} />
             </Button>
             <Sheet>
               <SheetTrigger asChild>
-                <Button variant={"ghost"} className="p-2">
+                <Button variant={"ghost"}>
                   <Menu size={30} />
                 </Button>
               </SheetTrigger>
@@ -42,22 +42,27 @@ export default function NavBar() {
             </Sheet>
           </div>
           <div className="hidden items-center justify-end gap-10 lg:flex">
-            <Button variant={"ghost"} className="p-2">
+            <Button variant={"ghost"}>
               <Search size={25} />
             </Button>
             <Link href={"/"} className="transition-all hover:scale-105">
-              Home
+              <Button variant={"ghost"}>Home</Button>
             </Link>
             <Link href={"/about"} className="transition-all hover:scale-105">
-              About
+              <Button variant={"ghost"}>About</Button>
             </Link>
             <Link
               href={"/search-donors"}
               className="transition-all hover:scale-105"
             >
-              Search Donors
+              <Button variant={"ghost"}>Search Donors</Button>
             </Link>
-            <p className="transition-all hover:scale-105">Log In</p>
+            <Button
+              className="transition-all hover:scale-105"
+              variant={"ghost"}
+            >
+              Log In
+            </Button>
           </div>
         </div>
       </div>

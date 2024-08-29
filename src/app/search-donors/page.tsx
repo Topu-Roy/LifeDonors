@@ -6,7 +6,7 @@ export default function SearchDonorsPage() {
   return (
     <main>
       <div className="w-full bg-rose-50">
-        <div className="mx-auto flex w-full max-w-7xl items-center justify-center gap-4 py-8">
+        <div className="mx-auto flex w-full max-w-7xl items-center justify-center gap-4 px-2 py-8 xl:px-0">
           <input
             type="text"
             placeholder="jhon doe"
@@ -17,11 +17,11 @@ export default function SearchDonorsPage() {
       </div>
 
       <div className="w-full py-4">
-        <div className="mx-auto w-full max-w-7xl space-y-4">
+        <div className="mx-auto w-full max-w-7xl space-y-4 px-2 xl:px-0">
           <p className="bg-destructive px-8 py-4 font-semibold text-white">
             69 donors found
           </p>
-          <div className="grid grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {Array.from({ length: 20 }, (_, index) => (
               <Card
                 key={index}
