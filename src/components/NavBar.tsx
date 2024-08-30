@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Menu, Search } from "lucide-react";
+import { Menu } from "lucide-react";
 import { Button } from "./ui/button";
+import SearchDialog from "./SearchDialog";
 
 export default function NavBar() {
   return (
@@ -10,9 +11,7 @@ export default function NavBar() {
         <div className="flex items-center justify-between py-6">
           <span className="flex-1 text-xl font-black">ROKTO</span>
           <div className="inline-flex items-center justify-between gap-4 lg:hidden">
-            <Button variant={"ghost"}>
-              <Search size={25} />
-            </Button>
+            <SearchDialog />
             <Sheet>
               <SheetTrigger asChild>
                 <Button variant={"ghost"}>
@@ -42,9 +41,7 @@ export default function NavBar() {
             </Sheet>
           </div>
           <div className="hidden items-center justify-end gap-10 lg:flex">
-            <Button variant={"ghost"}>
-              <Search size={25} />
-            </Button>
+            <SearchDialog />
             <Link href={"/"} className="transition-all hover:scale-105">
               <Button variant={"ghost"}>Home</Button>
             </Link>

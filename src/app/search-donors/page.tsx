@@ -1,19 +1,12 @@
-import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { UserRound } from "lucide-react";
+import Search from "./Search";
 
 export default function SearchDonorsPage() {
   return (
     <main>
       <div className="w-full bg-rose-50">
-        <div className="mx-auto flex w-full max-w-7xl items-center justify-center gap-4 px-2 py-8 xl:px-0">
-          <input
-            type="text"
-            placeholder="jhon doe"
-            className="flex-1 rounded-md border border-black/20 bg-slate-100 px-4 py-3"
-          />
-          <Button className="px-8 py-6">Search</Button>
-        </div>
+        <Search />
       </div>
 
       <div className="w-full py-4">
