@@ -8,12 +8,14 @@ export default function AboutPage() {
         <div className="grid grid-cols-1 gap-4 leading-7 lg:grid-cols-2">
           <div className="lg:pb-32">
             <p>
-              Rokto is an automated blood service that connect blood searchers
-              with voluntary blood donors in a moment through SMS and website.
-              Rokto is a free service for all. Rokto started its journey in
-              2018.
+              LifeDonors is an automated blood service that connect blood
+              searchers with voluntary blood donors in a moment through SMS and
+              website. LifeDonors is a free service for all. LifeDonors started
+              its journey in 2018.
             </p>
-            <h2 className="py-4 text-2xl font-semibold lg:py-8">Why Rokto?</h2>
+            <h2 className="py-4 text-2xl font-semibold lg:py-8">
+              Why LifeDonors?
+            </h2>
             <p>
               Though Bangladesh has more than 160 million people, the number of
               safe blood bank is very few. Without divisional towns, there is
@@ -23,11 +25,11 @@ export default function AboutPage() {
               real trouble to manage blood. But there are many blood donors who
               are interested in donating blood but don’t know who needs blood.
               The communication gap is resulting in the loss of many lives.
-              Rokto comes into the scenario to reduce or minimize the
+              LifeDonors comes into the scenario to reduce or minimize the
               communication gap and connects people in a moment using the
-              amazing power of SMS and email. As Rokto services can also be
+              amazing power of SMS and email. As LifeDonors services can also be
               availed by SMS, people from any class of the society can easily
-              avail of Rokto services.
+              avail of LifeDonors services.
             </p>
           </div>
           <div className="pb-8 lg:pb-0">

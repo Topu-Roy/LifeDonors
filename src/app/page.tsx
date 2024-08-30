@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { HeartPulse, MapPin, UsersRound } from "lucide-react";
+import Link from "next/link";
 
 export default function HomePage() {
   return (
@@ -12,7 +13,7 @@ export default function HomePage() {
               Lives
             </h1>
             <p className="text-balance">
-              Rokto is a free platform to help blood searchers or patients
+              LifeDonors is a free platform to help blood searchers or patients
               connect voluntary blood donors around Bangladesh. Your Donation is
               a Ray of Hope for Someone in Need.
             </p>
@@ -30,16 +31,18 @@ export default function HomePage() {
           <div className="grid grid-cols-1 gap-8 md:grid-cols-2 md:gap-4">
             <div className="w-full">
               <h1 className="text-balance text-4xl font-bold">
-                What is Rokto?
+                What is LifeDonors?
               </h1>
               <p className="text-balance pt-4">
-                Rokto is an automated blood service that connects blood
-                searchers with voluntary donors in a moment through SMS. Rokto
-                is always a free service for all.
+                LifeDonors is an automated blood service that connects blood
+                searchers with voluntary donors in a moment through SMS.
+                LifeDonors is always a free service for all.
               </p>
             </div>
             <div className="flex w-full flex-col items-center justify-center gap-4 md:items-end md:justify-end">
-              <h1 className="text-balance text-4xl font-bold">Why Rokto?</h1>
+              <h1 className="text-balance text-4xl font-bold">
+                Why LifeDonors?
+              </h1>
               <ul className="md:list-disc md:pr-12">
                 <li>100% Automated</li>
                 <li>Always free</li>
@@ -49,9 +52,11 @@ export default function HomePage() {
             </div>
           </div>
           <div className="flex w-full items-center justify-center">
-            <Button variant={"destructive"} className="mx-auto px-4">
-              Learn More
-            </Button>
+            <Link href={"/about"}>
+              <Button variant={"destructive"} className="mx-auto px-4">
+                Learn More
+              </Button>
+            </Link>
           </div>
         </div>
       </section>
@@ -82,14 +87,16 @@ export default function HomePage() {
         <div className="flex h-full w-full flex-col items-center justify-center gap-4">
           <h1 className="text-balance text-4xl font-bold">About Us</h1>
           <p className="mx-auto w-[90%] text-balance text-center md:w-[50%]">
-            Rokto is an automated blood service that connects blood searchers
-            with voluntary blood donors in a moment through SMS. Rokto is a
-            not-for-profit initiative to aware people of voluntary blood
-            donation in Bangladesh.
+            LifeDonors is an automated blood service that connects blood
+            searchers with voluntary blood donors in a moment through SMS.
+            LifeDonors is a not-for-profit initiative to aware people of
+            voluntary blood donation in Bangladesh.
           </p>
-          <Button variant={"destructive"} className="mx-auto px-4">
-            Learn More
-          </Button>
+          <Link href={"/about"}>
+            <Button variant={"destructive"} className="mx-auto px-4">
+              Learn More
+            </Button>
+          </Link>
         </div>
       </section>
     </main>
