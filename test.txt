@@ -1,0 +1,17 @@
+https://roktodan2.onrender.com/users/profile/1/
+{
+  "username": "topu20",
+  "first_name": "Topu",
+  "last_name": "Roy",
+  "email": "topuroy.dev@gmail.com",
+  "mobile_number": "01712345678",
+  "blood_group": "A+",
+  "password": "topuroy.dev@gmail.com",
+  "confirm_password": "topuroy.dev@gmail.com"
+}
+
+{
+  "username": "topu20",
+  "email": "topuroy.dev@gmail.com",
+  "password": "topuroy.dev@gmail.com"
+}

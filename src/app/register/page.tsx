@@ -24,6 +24,9 @@ import {
 } from "@/components/ui/select";
 import { MyFormField } from "@/components/MyFormField";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useLocalStorage } from "@/hooks/useLocalStorage";
+import { useEffect } from "react";
 
 const FormSchema = z
   .object({
@@ -73,18 +76,9 @@ const FormSchema = z
     path: ["confirmPassword"],
   });
 
-// type FormSchemaType = z.infer<typeof FormSchema>;
-
-// type FieldType<T> = {
-//   [K in keyof T]: {
-//     name: K;
-//     label: string;
-//     placeholder: string;
-//     type: string;
-//   };
-// }[keyof T];
-
 export default function RegisterPage() {
+  const { getItem: getAuthToken } = useLocalStorage("token");
+  const router = useRouter();
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -98,8 +92,33 @@ export default function RegisterPage() {
     },
   });
 
-  function onSubmit(data: z.infer<typeof FormSchema>) {
-    console.log(data);
+  useEffect(() => {
+    const token = getAuthToken();
+
+    if (token) router.replace("/dashboard");
+  }, []);
+
+  async function onSubmit(data: z.infer<typeof FormSchema>) {
+    try {
+      const response = await fetch(
+        "https://roktodan2.onrender.com/users/register/",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ ...data }),
+        },
+      );
+
+      if (!response.ok) {
+        console.error("something went wrong");
+      }
+
+      router.push("/verify");
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   return (

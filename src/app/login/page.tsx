@@ -8,14 +8,19 @@ import { Form } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { MyFormField } from "@/components/MyFormField";
 import Link from "next/link";
+import { useLocalStorage } from "@/hooks/useLocalStorage";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
+
+type LoginResponse = {
+  token: string;
+  user_id: number;
+};
 
 const FormSchema = z.object({
-  email: z
-    .string({
-      required_error: "Please give an email",
-    })
-    .email(),
-
+  userName: z.string({
+    required_error: "Please give an username",
+  }),
   password: z
     .string({
       required_error: "Please give a password.",
@@ -24,16 +29,46 @@ const FormSchema = z.object({
 });
 
 export default function LoginPage() {
+  const { getItem: getAuthToken, setItem: setAuthToken } =
+    useLocalStorage("token");
+
+  const { setItem: setUserId } = useLocalStorage("userId");
+  const router = useRouter();
+
+  useEffect(() => {
+    const token = getAuthToken();
+
+    if (token) router.replace("/dashboard");
+  }, []);
+
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
-      email: "",
+      userName: "",
       password: "",
     },
   });
 
-  function onSubmit(data: z.infer<typeof FormSchema>) {
-    console.log(data);
+  async function onSubmit(data: z.infer<typeof FormSchema>) {
+    const response = await fetch(
+      "https://roktodan2.onrender.com/users/users/login/",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username: data.userName,
+          password: data.password,
+        }),
+      },
+    );
+
+    const resData = (await response.json()) as LoginResponse;
+    setAuthToken(resData.token);
+    setUserId(resData.user_id);
+
+    router.push("/dashboard");
   }
 
   return (
@@ -47,12 +82,12 @@ export default function LoginPage() {
               <MyFormField
                 inputClassName="w-full"
                 className="w-full"
-                key="email"
+                key="userName"
                 control={form.control}
-                label="Email"
-                name="email"
+                label="Username"
+                name="userName"
                 placeholder="example@example.com"
-                type="email"
+                type="userName"
               />
 
               <MyFormField
