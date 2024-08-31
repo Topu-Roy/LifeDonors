@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { MyFormField } from "@/components/MyFormField";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { Suspense, useEffect } from "react";
 import { useUserStore } from "@/store/userData";
 import { useToast } from "@/hooks/use-toast";
 
@@ -29,7 +29,7 @@ const FormSchema = z.object({
     .min(1, { message: "Please give a password." }),
 });
 
-export default function LoginPage() {
+function LoginPage() {
   const { toast } = useToast();
   const userData = useUserStore((store) => store.userData);
   const setUserData = useUserStore((store) => store.setUser);
@@ -137,5 +137,13 @@ export default function LoginPage() {
         </Card>
       </div>
     </main>
+  );
+}
+
+export default function Page() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <LoginPage />
+    </Suspense>
   );
 }

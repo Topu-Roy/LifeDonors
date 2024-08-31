@@ -25,7 +25,7 @@ import {
 import { MyFormField } from "@/components/MyFormField";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { Suspense, useEffect } from "react";
 import { useUserStore } from "@/store/userData";
 import { useToast } from "@/hooks/use-toast";
 
@@ -77,7 +77,7 @@ const FormSchema = z
     path: ["confirmPassword"],
   });
 
-export default function RegisterPage() {
+function RegisterPage() {
   const { toast } = useToast();
   const userData = useUserStore((state) => state.userData);
   const router = useRouter();
@@ -282,5 +282,13 @@ export default function RegisterPage() {
         </Card>
       </div>
     </main>
+  );
+}
+
+export default function Page() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <RegisterPage />
+    </Suspense>
   );
 }

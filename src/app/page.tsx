@@ -1,8 +1,9 @@
 import { Button } from "@/components/ui/button";
 import { HeartPulse, MapPin, UsersRound } from "lucide-react";
 import Link from "next/link";
+import { Suspense } from "react";
 
-export default function HomePage() {
+function HomePage() {
   return (
     <main>
       <section className="h-[35rem] w-full bg-rose-50">
@@ -105,5 +106,13 @@ export default function HomePage() {
         </div>
       </section>
     </main>
+  );
+}
+
+export default function Page() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <HomePage />
+    </Suspense>
   );
 }

@@ -42,6 +42,7 @@ import { Card } from "@/components/ui/card";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/hooks/use-toast";
 import { useUserStore } from "@/store/userData";
+import { Suspense } from "react";
 
 const formSchema = z.object({
   blood_group: z
@@ -66,7 +67,7 @@ function getCurrentDateFormatted() {
   return `${year}-${month}-${day}`;
 }
 
-export default function RequestDonor() {
+function RequestDonor() {
   const { userData } = useUserStore();
   const { toast } = useToast();
   const router = useRouter();
@@ -300,6 +301,14 @@ export default function RequestDonor() {
         </Card>
       </div>
     </main>
+  );
+}
+
+export default function Page() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <RequestDonor />
+    </Suspense>
   );
 }
 

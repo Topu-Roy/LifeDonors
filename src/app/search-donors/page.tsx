@@ -4,7 +4,7 @@ import { Card } from "@/components/ui/card";
 import { UserRound } from "lucide-react";
 import Search from "./Search";
 import { z } from "zod";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 
 const BloodDonorSchema = z.object({
@@ -20,7 +20,7 @@ const BloodDonorArraySchema = z.array(BloodDonorSchema);
 
 type BloodDonor = z.infer<typeof BloodDonorSchema>;
 
-export default function SearchDonorsPage() {
+function SearchDonorsPage() {
   const [donors, setDonors] = useState<BloodDonor[]>();
   const [searchDonors, setSearchDonors] = useState<BloodDonor[] | null>(null);
 
@@ -122,5 +122,13 @@ export default function SearchDonorsPage() {
         </div>
       </div>
     </main>
+  );
+}
+
+export default function Page() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <SearchDonorsPage />
+    </Suspense>
   );
 }

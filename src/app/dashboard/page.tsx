@@ -4,7 +4,7 @@ import { Calendar } from "@/components/ui/calendar";
 import { Card } from "@/components/ui/card";
 import { useUserStore } from "@/store/userData";
 import { Loader2 } from "lucide-react";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { z } from "zod";
 
 const RequestSchema = z.object({
@@ -39,7 +39,7 @@ const ApiResponseSchema = z.object({
   my_requests: z.array(RequestSchema),
 });
 
-export default function DashboardPage() {
+function DashboardPage() {
   const [date, setDate] = useState<Date | undefined>(new Date());
   const [profile, setProfile] = useState<UserProfile[] | null>(null);
   const authData = useUserStore((store) => store.userData);
@@ -140,5 +140,13 @@ export default function DashboardPage() {
         </div>
       </div>
     </main>
+  );
+}
+
+export default function Page() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <DashboardPage />
+    </Suspense>
   );
 }

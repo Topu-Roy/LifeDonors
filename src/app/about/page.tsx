@@ -1,4 +1,6 @@
-export default function AboutPage() {
+import { Suspense } from "react";
+
+function AboutPage() {
   return (
     <main className="w-full">
       <div className="mx-auto w-full max-w-7xl px-2 xl:px-0">
@@ -54,5 +56,13 @@ export default function AboutPage() {
         </div>
       </div>
     </main>
+  );
+}
+
+export default function Page() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <AboutPage />
+    </Suspense>
   );
 }

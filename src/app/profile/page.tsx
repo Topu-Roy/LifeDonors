@@ -4,7 +4,7 @@ import { Card } from "@/components/ui/card";
 import { useUserStore } from "@/store/userData";
 import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { z } from "zod";
 
 const userProfileSchema = z.object({
@@ -20,7 +20,7 @@ const apiResponseSchema = z.array(userProfileSchema);
 
 type UserProfile = z.infer<typeof userProfileSchema>;
 
-export default function ProfilePage() {
+function ProfilePage() {
   const router = useRouter();
   const userData = useUserStore((state) => state.userData);
   const [profile, setProfile] = useState<UserProfile[]>([]);
@@ -112,5 +112,13 @@ export default function ProfilePage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function Page() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <ProfilePage />
+    </Suspense>
   );
 }

@@ -1,7 +1,8 @@
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { Suspense } from "react";
 
-export default function VerifyPage() {
+function VerifyPage() {
   return (
     <div className="space-y-6 py-20 text-center">
       <h2>
@@ -13,5 +14,13 @@ export default function VerifyPage() {
         <Button variant={"destructive"}>Log in</Button>
       </Link>
     </div>
+  );
+}
+
+export default function Page() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <VerifyPage />
+    </Suspense>
   );
 }
