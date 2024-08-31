@@ -2,10 +2,11 @@
 
 import { Card } from "@/components/ui/card";
 import { UserRound } from "lucide-react";
-import Search from "./Search";
 import { z } from "zod";
 import { Suspense, useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
+import dynamic from "next/dynamic";
+const Search = dynamic(() => import("./Search"), { ssr: false });
 
 const BloodDonorSchema = z.object({
   user: z.string(),
