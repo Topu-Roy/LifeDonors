@@ -27,6 +27,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { useUserStore } from "@/store/userData";
+import { useToast } from "@/hooks/use-toast";
 
 const FormSchema = z
   .object({
@@ -77,6 +78,7 @@ const FormSchema = z
   });
 
 export default function RegisterPage() {
+  const { toast } = useToast();
   const userData = useUserStore((state) => state.userData);
   const router = useRouter();
   const form = useForm<z.infer<typeof FormSchema>>({
@@ -121,12 +123,29 @@ export default function RegisterPage() {
       );
 
       if (!response.ok) {
-        console.error("something went wrong");
+        toast({
+          variant: "destructive",
+          title: "something went wrong",
+          description: "Error connecting with the server.",
+        });
       }
 
-      router.push("/verify");
+      if (response.ok) {
+        toast({
+          title: "Congrats 🎉🎉",
+          description: "Please check your email for verification link.",
+        });
+
+        router.push("/verify");
+      }
     } catch (error) {
-      console.error(error);
+      if (error instanceof Error) {
+        toast({
+          variant: "destructive",
+          title: "something went wrong",
+          description: `${error.message}`,
+        });
+      }
     }
   }
 

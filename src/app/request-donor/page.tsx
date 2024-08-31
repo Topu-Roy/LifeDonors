@@ -39,6 +39,9 @@ import { Check, ChevronsUpDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { districts } from "@/assets/constants";
 import { Card } from "@/components/ui/card";
+import { useRouter } from "next/navigation";
+import { useToast } from "@/hooks/use-toast";
+import { useUserStore } from "@/store/userData";
 
 const formSchema = z.object({
   blood_group: z
@@ -54,7 +57,19 @@ const formSchema = z.object({
   details: z.string().min(1, { message: "Details cannot be empty." }),
 });
 
+function getCurrentDateFormatted() {
+  const date = new Date();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  const year = date.getFullYear();
+
+  return `${year}-${month}-${day}`;
+}
+
 export default function RequestDonor() {
+  const { userData } = useUserStore();
+  const { toast } = useToast();
+  const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -66,11 +81,43 @@ export default function RequestDonor() {
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
+  async function onSubmit(data: z.infer<typeof formSchema>) {
+    if (!userData) {
+      toast({
+        title: "User is not authenticated",
+        description: `Please log in to do this operation`,
+      });
+      return router.push("/login");
+    }
+
+    const res = await fetch(
+      `https://life-donors.onrender.com/users/requests/?donor_id=${userData.userId}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          blood_group: data.blood_group,
+          blood_request_type: data.blood_request_type,
+          district: data.district,
+          date_of_donation: getCurrentDateFormatted(),
+          gender: data.gender,
+          details: data.details,
+          cancel: false,
+        }),
+      },
+    );
+
+    if (res.ok) {
+      toast({
+        title: "Request is created",
+        description: `Requested for a donor on ${getCurrentDateFormatted()}`,
+      });
+      router.push("/dashboard");
+    }
   }
+
   return (
     <main className="min-h-[85dvh]">
       <div className="mx-auto max-w-7xl py-4">
@@ -234,7 +281,7 @@ export default function RequestDonor() {
                 name="details"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Username</FormLabel>
+                    <FormLabel>Note</FormLabel>
                     <FormControl>
                       <Input placeholder="Note" {...field} />
                     </FormControl>

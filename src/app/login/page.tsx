@@ -11,6 +11,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { useUserStore } from "@/store/userData";
+import { useToast } from "@/hooks/use-toast";
 
 type LoginResponse = {
   token: string;
@@ -29,6 +30,7 @@ const FormSchema = z.object({
 });
 
 export default function LoginPage() {
+  const { toast } = useToast();
   const userData = useUserStore((store) => store.userData);
   const setUserData = useUserStore((store) => store.setUser);
   const router = useRouter();
@@ -64,6 +66,12 @@ export default function LoginPage() {
       );
 
       if (response.ok) {
+        toast({
+          title: "Login successful",
+          description: "You are now logged in...!",
+        });
+
+        router.push("/verify");
         const resData = (await response.json()) as LoginResponse;
         setUserData({
           token: resData.token,
@@ -72,6 +80,13 @@ export default function LoginPage() {
       }
     } catch (error) {
       console.error(error);
+      if (error instanceof Error) {
+        toast({
+          variant: "destructive",
+          title: "Login successful",
+          description: "You are now logged in...! ${error.message}",
+        });
+      }
     }
   }
 
