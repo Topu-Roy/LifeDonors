@@ -76,7 +76,7 @@ function DashboardPage() {
   return (
     <main className="min-h-[85dvh] w-full">
       <h2 className="mx-auto max-w-7xl py-8 text-3xl font-bold">Dashboard</h2>
-      <div className="mx-auto grid max-w-7xl grid-cols-3 gap-8 pb-8">
+      <div className="mx-auto grid max-w-7xl grid-cols-1 gap-8 pb-8 md:grid-cols-2 lg:grid-cols-3">
         <Card className="max-w-lg p-4">
           <h2 className="py-2 text-lg font-semibold">My Requests</h2>
           {userRequests ? (
