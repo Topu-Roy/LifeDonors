@@ -16,10 +16,9 @@ const BloodDonorSchema = z.object({
   is_available: z.boolean(),
 });
 
-export const BloodDonorArraySchema = z.array(BloodDonorSchema);
+const BloodDonorArraySchema = z.array(BloodDonorSchema);
 
-export type BloodDonor = z.infer<typeof BloodDonorSchema>;
-export type BloodDonorArray = z.infer<typeof BloodDonorArraySchema>;
+type BloodDonor = z.infer<typeof BloodDonorSchema>;
 
 export default function SearchDonorsPage() {
   const [donors, setDonors] = useState<BloodDonor[]>();
