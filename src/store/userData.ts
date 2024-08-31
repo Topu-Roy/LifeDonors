@@ -12,23 +12,35 @@ interface UserState {
 }
 
 const getInitialUserData = (): UserData | null => {
-  const token = sessionStorage.getItem("userToken");
-  const userId = sessionStorage.getItem("userId");
-  return token && userId ? { token, userId } : null;
+  if (typeof window !== "undefined") {
+    const token = sessionStorage.getItem("userToken");
+    const userId = sessionStorage.getItem("userId");
+    return token && userId ? { token, userId } : null;
+  }
+  return null;
 };
 
 export const useUserStore = create<UserState>((set) => ({
-  userData: getInitialUserData(),
+  userData: null,
 
   setUser: (userData: UserData) => {
-    sessionStorage.setItem("userToken", userData.token ?? "");
-    sessionStorage.setItem("userId", userData.userId ?? "");
+    if (typeof window !== "undefined") {
+      sessionStorage.setItem("userToken", userData.token ?? "");
+      sessionStorage.setItem("userId", userData.userId ?? "");
+    }
     set({ userData });
   },
 
   clearUser: () => {
-    sessionStorage.removeItem("userToken");
-    sessionStorage.removeItem("userId");
+    if (typeof window !== "undefined") {
+      sessionStorage.removeItem("userToken");
+      sessionStorage.removeItem("userId");
+    }
     set({ userData: null });
   },
 }));
+
+// Client-side initialization
+if (typeof window !== "undefined") {
+  useUserStore.setState({ userData: getInitialUserData() });
+}

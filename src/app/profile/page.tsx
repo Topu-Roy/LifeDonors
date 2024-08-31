@@ -77,7 +77,7 @@ export default function ProfilePage() {
         <div className="flex items-center justify-center">
           {profile ? (
             profile.map((profile, index) => (
-              <Card key={index} className="w-lg">
+              <Card key={index} className="w-full max-w-xl p-4">
                 <div className="flex items-center justify-between py-3">
                   <p>Username</p>
                   <p>{profile.user}</p>
@@ -92,7 +92,7 @@ export default function ProfilePage() {
                 </div>
                 <div className="flex items-center justify-between py-3">
                   <p>Last Donation</p>
-                  <p>Last Donation: {profile.date_of_donation ?? "N/A"}</p>
+                  <p>{profile.date_of_donation ?? "N/A"}</p>
                 </div>
                 <div className="flex items-center justify-between py-3">
                   <p>Gender</p>

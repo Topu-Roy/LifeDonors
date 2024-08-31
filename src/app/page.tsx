@@ -20,9 +20,12 @@ export default function HomePage() {
           </div>
 
           <div className="space-x-4">
-            <Button variant={"outline"}>Join as Donor</Button>
-            <Link href={"/search-donors"}>
-              <Button variant={"destructive"}>Search Donors</Button>
+            <Link href={"/login"}>
+              <Button variant={"outline"}>Join as Donor</Button>
+            </Link>
+
+            <Link href={"/request-donor"}>
+              <Button variant={"destructive"}>Request Donor</Button>
             </Link>
           </div>
         </div>
