@@ -27,7 +27,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { districts } from "@/assets/constants";
 import { Button } from "@/components/ui/button";
 import { z } from "zod";
@@ -40,6 +40,8 @@ import {
   FormItem,
   FormMessage,
 } from "@/components/ui/form";
+import { useSearchParams } from "next/navigation";
+import { type BloodDonor, BloodDonorArraySchema } from "./page";
 
 const FormSchema = z.object({
   district: z
@@ -54,8 +56,23 @@ const FormSchema = z.object({
     .min(1, { message: "Please select a blood group." }),
 });
 
-export default function Search() {
+type Props = {
+  updateSearchDonors: (donors: BloodDonor[]) => void;
+};
+
+export default function Search({ updateSearchDonors }: Props) {
   const [date, setDate] = useState<Date | undefined>(new Date());
+  const searchParams = useSearchParams();
+
+  const createQueryString = useCallback(
+    (name: string, value: string) => {
+      const params = new URLSearchParams(searchParams.toString());
+      params.set(name, value);
+
+      return params.toString();
+    },
+    [searchParams],
+  );
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -65,8 +82,19 @@ export default function Search() {
     },
   });
 
+  async function getData(url: string) {
+    const res = await fetch(url);
+
+    if (res.ok) {
+      const data: unknown = await res.json();
+      const parsedData = BloodDonorArraySchema.parse(data);
+      updateSearchDonors(parsedData);
+    }
+  }
+
   function onSubmit(values: z.infer<typeof FormSchema>) {
-    console.log(values);
+    const url = `https://life-donors.onrender.com/users/donors/?${createQueryString("blood_group", values.group)}&${createQueryString("district", values.district)}`;
+    void getData(url);
   }
 
   return (

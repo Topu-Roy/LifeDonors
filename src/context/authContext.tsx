@@ -10,7 +10,7 @@ type AuthContextType = {
   userId: string | null;
   token: string | null;
   logout: () => void;
-  login: (data: LoginProps) => void;
+  handleAuthenticate: () => void;
 };
 
 export const AuthContext = createContext<AuthContextType | undefined>(

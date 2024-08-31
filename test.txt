@@ -1,17 +1,28 @@
-https://roktodan2.onrender.com/users/profile/1/
+https://life-donors.onrender.com/users/register/
 {
-  "username": "topu20",
+  "username": "Topu",
   "first_name": "Topu",
   "last_name": "Roy",
-  "email": "topuroy.dev@gmail.com",
+  "email": "topuroy143333@gmail.com",
   "mobile_number": "01712345678",
   "blood_group": "A+",
-  "password": "topuroy.dev@gmail.com",
-  "confirm_password": "topuroy.dev@gmail.com"
+  "password": "topuroy143333@gmail.com",
+  "confirm_password": "topuroy143333@gmail.com"
+}
+
+https://life-donors.onrender.com/users/login/
+{
+  "username": "Topu",
+  "password": "topuroy143333@gmail.com"
 }
 
 {
-  "username": "topu20",
-  "email": "topuroy.dev@gmail.com",
-  "password": "topuroy.dev@gmail.com"
+"donor":"4",
+"blood_group":"A+",
+"blood_request_type":"null",
+"district":"null",
+"date_of_donation":"null",
+"gender":"Male",
+"details":"asdf",
+"cancel":"false"
 }

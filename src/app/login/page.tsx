@@ -8,13 +8,13 @@ import { Form } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { MyFormField } from "@/components/MyFormField";
 import Link from "next/link";
-import { useLocalStorage } from "@/hooks/useLocalStorage";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
+import { useUserStore } from "@/store/userData";
 
 type LoginResponse = {
   token: string;
-  user_id: number;
+  user_id: string;
 };
 
 const FormSchema = z.object({
@@ -29,17 +29,15 @@ const FormSchema = z.object({
 });
 
 export default function LoginPage() {
-  const { getItem: getAuthToken, setItem: setAuthToken } =
-    useLocalStorage("token");
-
-  const { setItem: setUserId } = useLocalStorage("userId");
+  const userData = useUserStore((store) => store.userData);
+  const setUserData = useUserStore((store) => store.setUser);
   const router = useRouter();
 
   useEffect(() => {
-    const token = getAuthToken();
-
-    if (token) router.replace("/dashboard");
-  }, []);
+    if (userData) {
+      router.replace("/profile");
+    }
+  }, [userData]);
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -50,25 +48,31 @@ export default function LoginPage() {
   });
 
   async function onSubmit(data: z.infer<typeof FormSchema>) {
-    const response = await fetch(
-      "https://roktodan2.onrender.com/users/users/login/",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
+    try {
+      const response = await fetch(
+        "https://life-donors.onrender.com/users/login/",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            username: data.userName,
+            password: data.password,
+          }),
         },
-        body: JSON.stringify({
-          username: data.userName,
-          password: data.password,
-        }),
-      },
-    );
+      );
 
-    const resData = (await response.json()) as LoginResponse;
-    setAuthToken(resData.token);
-    setUserId(resData.user_id);
-
-    router.push("/dashboard");
+      if (response.ok) {
+        const resData = (await response.json()) as LoginResponse;
+        setUserData({
+          token: resData.token,
+          userId: resData.user_id,
+        });
+      }
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   return (

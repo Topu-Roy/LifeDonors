@@ -3,6 +3,7 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Menu } from "lucide-react";
 import { Button } from "./ui/button";
 import SearchDialog from "./SearchDialog";
+import LoginBtn from "./Login-btn";
 
 export default function NavBar() {
   return (
@@ -61,9 +62,7 @@ export default function NavBar() {
             >
               <Button variant={"ghost"}>Search Donors</Button>
             </Link>
-            <Link href={"/register"} className="transition-all hover:scale-105">
-              <Button variant={"ghost"}>Log In</Button>
-            </Link>
+            <LoginBtn />
           </div>
         </div>
       </div>

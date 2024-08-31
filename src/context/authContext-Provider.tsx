@@ -1,94 +1,51 @@
-import { useEffect, useState, type ReactElement } from "react";
+"use client";
+
+import { useCallback, useState, type ReactNode } from "react";
 import { useRouter } from "next/navigation";
-import { AuthContext, type LoginProps } from "./authContext";
-import { useLocalStorage } from "@/hooks/useLocalStorage";
+import { AuthContext } from "./authContext";
+import { useNewLocalStorage } from "@/hooks/useLocalStorage";
 
-type LoginResponse = {
-  token: string;
-  user_id: number;
-};
+function AuthContextProvider({ children }: { children: ReactNode }) {
+  const [userId_localStore] = useNewLocalStorage<string | null>("userId", null);
+  const [token_localStore] = useNewLocalStorage<string | null>("token", null);
 
-function AuthContextProvider({ children }: { children: ReactElement }) {
+  const [token, setToken] = useState<string | null>(token_localStore);
+  const [userId, setUserId] = useState<string | null>(userId_localStore);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [token, setToken] = useState<string | null>(null);
-  const [userId, setUserId] = useState<string | null>(null);
   const router = useRouter();
-  const { setItem: setToken_LocalStore } = useLocalStorage("token");
-  const { setItem: setUserId_LocalStore } = useLocalStorage("userId");
 
-  const login = (data: LoginProps) => {
+  const handleAuthenticate = useCallback(() => {
+    if (token_localStore) {
+      setIsAuthenticated(true);
+      setToken(token_localStore);
+      setUserId(userId_localStore);
+    }
+  }, [token_localStore, userId_localStore]);
+
+  const logout = useCallback(() => {
     async function makeRequest() {
       try {
         const response = await fetch(
-          "https://roktodan2.onrender.com/users/users/login/",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              username: data.username,
-              password: data.password,
-            }),
-          },
+          `https://roktodan2.onrender.com/users/users/logout?auth_token=${token}`,
         );
 
-        const resData = (await response.json()) as LoginResponse;
-        setToken(resData.token);
-        setUserId(JSON.stringify(resData.user_id));
-        setIsAuthenticated(true);
-        router.push("/dashboard");
+        if (response.ok) {
+          setToken(null);
+          setUserId(null);
+          setIsAuthenticated(false);
+          router.push("/login");
+        }
       } catch (error) {
         console.error(error);
       }
     }
 
     void makeRequest();
-  };
-
-  const logout = () => {
-    async function makeRequest() {
-      try {
-        const response = await fetch(
-          "https://roktodan2.onrender.com/users/users/logout/",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Token ${token}`,
-            },
-            //   body: JSON.stringify({
-            // username: data.username,
-            // password: data.password,
-            //   }),
-          },
-        );
-
-        const resData = (await response.json()) as LoginResponse;
-        setToken(resData.token);
-        setUserId(JSON.stringify(resData.user_id));
-        setIsAuthenticated(true);
-
-        router.push("/dashboard");
-      } catch (error) {
-        console.error(error);
-      }
-    }
-
-    void makeRequest();
-    setIsAuthenticated(false);
-    setToken(null);
-    setUserId(null);
-  };
-
-  useEffect(() => {
-    setToken_LocalStore(token);
-    setUserId_LocalStore(userId);
-  }, [isAuthenticated, token, userId]);
+  }, []);
 
   return (
     <AuthContext.Provider
-      value={{ isAuthenticated, token, userId, login, logout }}
+      value={{ isAuthenticated, token, userId, logout, handleAuthenticate }}
     >
       {children}
     </AuthContext.Provider>

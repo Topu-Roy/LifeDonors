@@ -25,8 +25,8 @@ import {
 import { MyFormField } from "@/components/MyFormField";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useLocalStorage } from "@/hooks/useLocalStorage";
 import { useEffect } from "react";
+import { useUserStore } from "@/store/userData";
 
 const FormSchema = z
   .object({
@@ -77,7 +77,7 @@ const FormSchema = z
   });
 
 export default function RegisterPage() {
-  const { getItem: getAuthToken } = useLocalStorage("token");
+  const userData = useUserStore((state) => state.userData);
   const router = useRouter();
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -93,21 +93,30 @@ export default function RegisterPage() {
   });
 
   useEffect(() => {
-    const token = getAuthToken();
-
-    if (token) router.replace("/dashboard");
-  }, []);
+    if (userData) {
+      router.replace("/dashboard");
+    }
+  }, [userData]);
 
   async function onSubmit(data: z.infer<typeof FormSchema>) {
     try {
       const response = await fetch(
-        "https://roktodan2.onrender.com/users/register/",
+        "https://life-donors.onrender.com/users/register/",
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ ...data }),
+          body: JSON.stringify({
+            username: data.userName,
+            first_name: data.firstName,
+            last_name: data.lastName,
+            email: data.email,
+            mobile_number: data.phone,
+            blood_group: data.group,
+            password: data.password,
+            confirm_password: data.confirmPassword,
+          }),
         },
       );
 

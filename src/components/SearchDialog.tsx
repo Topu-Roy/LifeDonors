@@ -3,7 +3,7 @@
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Calendar } from "@/components/ui/calendar";
 import { Button } from "./ui/button";
-import { Search } from "lucide-react";
+import { Search, UserRound } from "lucide-react";
 import {
   Select,
   SelectContent,
@@ -30,7 +30,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { districts } from "@/assets/constants";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -42,6 +42,12 @@ import {
   FormItem,
   FormMessage,
 } from "@/components/ui/form";
+import { useSearchParams } from "next/navigation";
+import {
+  type BloodDonor,
+  BloodDonorArraySchema,
+} from "@/app/search-donors/page";
+import { Card } from "./ui/card";
 
 const FormSchema = z.object({
   district: z
@@ -57,7 +63,10 @@ const FormSchema = z.object({
 });
 
 export default function SearchDialog() {
+  const searchParams = useSearchParams();
   const [date, setDate] = useState<Date | undefined>(new Date());
+  const [isError, setIsError] = useState(false);
+  const [searchData, setSearchData] = useState<BloodDonor[] | null>(null);
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -67,8 +76,32 @@ export default function SearchDialog() {
     },
   });
 
+  const createQueryString = useCallback(
+    (name: string, value: string) => {
+      const params = new URLSearchParams(searchParams.toString());
+      params.set(name, value);
+
+      return params.toString();
+    },
+    [searchParams],
+  );
+
+  async function getData(url: string) {
+    const res = await fetch(url);
+
+    if (res.ok) {
+      const data: unknown = await res.json();
+      const parsedData = BloodDonorArraySchema.parse(data);
+      setSearchData(parsedData);
+    } else {
+      setIsError(true);
+    }
+  }
+
   function onSubmit(values: z.infer<typeof FormSchema>) {
-    console.log(values);
+    setIsError(false);
+    const url = `https://life-donors.onrender.com/users/donors/?${createQueryString("blood_group", values.group)}&${createQueryString("district", values.district)}`;
+    void getData(url);
   }
 
   return (
@@ -85,7 +118,7 @@ export default function SearchDialog() {
               onSubmit={form.handleSubmit(onSubmit)}
               className="mx-auto flex w-full flex-col items-start justify-center gap-4 px-2 py-4 xl:px-0"
             >
-              <div className="flex w-full items-center justify-between gap-4">
+              <div className="flex w-full items-start justify-between gap-4">
                 <FormField
                   control={form.control}
                   name="group"
@@ -212,6 +245,42 @@ export default function SearchDialog() {
               </Button>
             </form>
           </Form>
+
+          {searchData ? (
+            <div className="grid grid-cols-1 py-4">
+              {searchData.length > 0 ? (
+                searchData.map((item, index) => (
+                  <Card
+                    key={index}
+                    className="flex items-center justify-center p-4"
+                  >
+                    <UserRound size={50} className="w-[20%] text-destructive" />
+                    <div className="w-full flex-1">
+                      <div className="flex w-full items-start justify-start">
+                        <p className="w-[25%]">Name</p>
+                        <p className="flex-1 pl-2">{item.user}</p>
+                      </div>
+                      <div className="flex items-start justify-start">
+                        <p className="w-[25%]">Group</p>
+                        <p className="flex-1 pl-2">{item.blood_group}</p>
+                      </div>
+                      <div className="flex items-start justify-start">
+                        <p className="w-[25%]">District</p>
+                        <p className="flex-1 pl-2">
+                          {item.district === "" ? "N/A" : item.district}
+                        </p>
+                      </div>
+                    </div>
+                  </Card>
+                ))
+              ) : (
+                <p>No results found.</p>
+              )}
+            </div>
+          ) : null}
+          {isError ? (
+            <p className="py-4 text-destructive">Something bad happened.</p>
+          ) : null}
         </div>
       </DialogContent>
     </Dialog>
