@@ -128,11 +128,11 @@ function DashboardPage() {
     setIsRequestsLoading(true);
     setIsProfileLoading(true);
     const response_Dashboard = await fetch(
-      `https://life-donors.onrender.com/users/dashboard/${authData?.userId}/`,
+      `https://life-donors.onrender.com/users/dashboard/${parseInt(authData.userId!) - 1}/`,
     );
 
     const response_Profile = await fetch(
-      `https://life-donors.onrender.com/users/profile/${authData?.userId}/`,
+      `https://life-donors.onrender.com/users/profile/${authData.userId}/`,
     );
 
     if (response_Dashboard.ok) {
@@ -198,10 +198,6 @@ function DashboardPage() {
     if (res.ok) {
       void getData();
       setOpen(false);
-      // const jsonData: unknown = await res.json()
-
-      // if(jsonData.user === )
-
       toast({
         title: "Request is created",
         description: `Requested for a donor on ${getCurrentDateFormatted(requestDate)}`,
@@ -218,13 +214,18 @@ function DashboardPage() {
   }
 
   useEffect(() => {
+    if (!authData) {
+      router.replace("/login");
+    }
     void getData();
   }, [authData]);
 
   return (
     <main className="min-h-[85dvh] w-full">
-      <h2 className="mx-auto max-w-7xl py-8 text-3xl font-bold">Dashboard</h2>
-      <div className="mx-auto max-w-7xl pb-8">
+      <h2 className="mx-auto max-w-7xl px-2 py-8 text-3xl font-bold xl:px-0">
+        Dashboard
+      </h2>
+      <div className="mx-auto max-w-7xl px-2 pb-8 xl:px-0">
         <Dialog open={open} onOpenChange={setOpen}>
           <DialogTrigger asChild>
             <Button>Make a request</Button>
@@ -439,7 +440,7 @@ function DashboardPage() {
           </DialogContent>
         </Dialog>
       </div>
-      <div className="mx-auto grid max-w-7xl grid-cols-1 gap-8 pb-8 md:grid-cols-2 lg:grid-cols-3">
+      <div className="mx-auto grid max-w-7xl grid-cols-1 gap-8 px-2 pb-8 md:grid-cols-2 lg:grid-cols-3 xl:px-0">
         <Card className="max-w-lg p-4">
           <h2 className="py-2 text-lg font-semibold">My Requests</h2>
           {isRequestsLoading ? (
@@ -448,21 +449,28 @@ function DashboardPage() {
             </div>
           ) : userRequests && userRequests?.length > 0 ? (
             <div className="divide space-y-3 divide-y divide-black/15">
-              {userRequests?.map((item, index) => (
-                <div key={`${item.donor}-${index}`} className="py-2">
-                  <div className="flex items-center justify-between">
-                    <p>{item.date_of_donation}</p>
-                    <p>{item.blood_request_type}</p>
-                    <p>{item.blood_group}</p>
+              <div className="flex items-start justify-between py-2">
+                <p className="font-medium">Date</p>
+                <p className="font-medium">Group</p>
+                <p className="font-medium">Status</p>
+              </div>
+              <div className="divide flex flex-col-reverse gap-2 divide-y divide-black/15">
+                {userRequests?.map((item, index) => (
+                  <div key={`${item.donor}-${index}`} className="py-2">
+                    <div className="flex items-center justify-between">
+                      <p>{item.date_of_donation}</p>
+                      <p>{item.blood_group}</p>
+                      <p>{item.blood_request_type}</p>
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
           ) : (
             <p>No requests are made yet.</p>
           )}
         </Card>
-        <Card className="max-w-lg p-4">
+        <Card className="h-[19.2rem] max-w-lg p-4">
           <h2 className="py-2 text-lg font-semibold">My Details</h2>
           {isProfileLoading ? (
             <div className="flex w-full items-center justify-center py-8">
