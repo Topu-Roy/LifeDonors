@@ -1,4 +1,4 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 type Props = {
   data: {
@@ -13,6 +13,7 @@ type Props = {
 };
 
 export function useRequestDonorMutation() {
+  const queryClient = useQueryClient();
   const mutation = useMutation({
     mutationKey: ["request-donor"],
     mutationFn: async ({ data }: Props) => {
@@ -23,6 +24,9 @@ export function useRequestDonorMutation() {
         },
         body: JSON.stringify(data),
       });
+    },
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ["dashboard"] });
     },
   });
 

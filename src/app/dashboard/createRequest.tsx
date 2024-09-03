@@ -45,7 +45,7 @@ import { districts } from "@/assets/constants";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/hooks/use-toast";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
-import { useCreateRequestMutation } from "@/query/createRequest";
+import { useRequestDonorMutation } from "@/query/requestDonor";
 
 const formSchema = z.object({
   blood_group: z
@@ -75,7 +75,7 @@ export default function CreateRequest() {
   const { toast } = useToast();
   const authData = useUserStore((store) => store.userData);
   const router = useRouter();
-  const { mutate, isPending, isError, isSuccess } = useCreateRequestMutation();
+  const { mutate, isPending, isError, isSuccess } = useRequestDonorMutation();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -134,7 +134,7 @@ export default function CreateRequest() {
       details: data.details,
     };
 
-    mutate({ formValues });
+    mutate({ data: formValues });
   }
 
   return (

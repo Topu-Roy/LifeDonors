@@ -224,8 +224,12 @@ function RequestDonor() {
                         <SelectGroup>
                           <SelectLabel>Select</SelectLabel>
                           <SelectItem value="Pending">Pending</SelectItem>
-                          <SelectItem value="Running">Running</SelectItem>
-                          <SelectItem value="Completed">Completed</SelectItem>
+                          <SelectItem disabled={true} value="Running">
+                            Running
+                          </SelectItem>
+                          <SelectItem disabled={true} value="Completed">
+                            Completed
+                          </SelectItem>
                         </SelectGroup>
                       </SelectContent>
                     </Select>
