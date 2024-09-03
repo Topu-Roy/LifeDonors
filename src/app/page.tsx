@@ -1,3 +1,4 @@
+import CTA from "@/components/home/CTA";
 import Stats from "@/components/home/stats";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
@@ -22,9 +23,7 @@ function HomePage() {
             </div>
 
             <div className="space-x-4">
-              <Link href={"/login"}>
-                <Button variant={"outline"}>Join as Donor</Button>
-              </Link>
+              <CTA />
 
               <Link href={"/request-donor"}>
                 <Button variant={"destructive"}>Request Donor</Button>

@@ -1,43 +1,40 @@
 "use client";
 
 import { Card } from "@/components/ui/card";
-import { UserRound } from "lucide-react";
-import { z } from "zod";
+import { Loader2, UserRound } from "lucide-react";
 import { Suspense, useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import dynamic from "next/dynamic";
+import { type BloodDonor, useSearchDonorQuery } from "@/query/searchDonor";
+import { useToast } from "@/hooks/use-toast";
 const Search = dynamic(() => import("./Search"), { ssr: false });
 
-const BloodDonorSchema = z.object({
-  user: z.string(),
-  blood_group: z.string(),
-  district: z.string(),
-  date_of_donation: z.string().nullable(),
-  gender: z.string(),
-  is_available: z.boolean(),
-});
-
-const BloodDonorArraySchema = z.array(BloodDonorSchema);
-
-type BloodDonor = z.infer<typeof BloodDonorSchema>;
-
 function SearchDonorsPage() {
+  const { data, isLoading, isError } = useSearchDonorQuery();
   const [donors, setDonors] = useState<BloodDonor[]>();
   const [searchDonors, setSearchDonors] = useState<BloodDonor[] | null>(null);
+  const { toast } = useToast();
 
   function updateSearchDonors(donors: BloodDonor[]) {
     setSearchDonors(donors);
   }
 
-  async function getData() {
-    const res = await fetch("https://life-donors.onrender.com/users/donors/");
-
-    if (res.ok) {
-      const data: unknown = await res.json();
-      const parsedData = BloodDonorArraySchema.parse(data);
-      setDonors(parsedData);
+  useEffect(() => {
+    if (data) {
+      setDonors(data);
     }
-  }
+  }, [data]);
+
+  // useEffect(() => {},[])
+
+  useEffect(() => {
+    if (isError) {
+      toast({
+        title: "Some error happened",
+        description: "Something went wrong, Please try again.",
+      });
+    }
+  }, [isError]);
 
   function showDonorList() {
     if (searchDonors) {
@@ -95,10 +92,6 @@ function SearchDonorsPage() {
     );
   }
 
-  useEffect(() => {
-    void getData();
-  }, []);
-
   return (
     <main className="min-h-[85dvh]">
       <div className="w-full bg-rose-50">
@@ -118,7 +111,7 @@ function SearchDonorsPage() {
                 : "0 donors found"}
           </p>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {showDonorList()}
+            {isLoading ? <Loader2 className="animate-spin" /> : showDonorList()}
           </div>
         </div>
       </div>

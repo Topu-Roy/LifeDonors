@@ -9,7 +9,7 @@ import MobileNavButtons from "./mobileNavButtons";
 
 export default function NavBar() {
   return (
-    <header className="sticky left-0 top-0 w-full bg-destructive text-white">
+    <header className="sticky left-0 top-0 z-50 w-full bg-destructive text-white">
       <div className="mx-auto w-full max-w-[80rem] px-2 xl:px-0">
         <div className="flex items-center justify-between py-6">
           <Link href={"/"} className="flex-1 text-xl font-black">

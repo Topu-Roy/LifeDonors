@@ -9,17 +9,13 @@ import { Button } from "@/components/ui/button";
 import { MyFormField } from "@/components/MyFormField";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Suspense, useEffect, useState } from "react";
+import { Suspense, useEffect } from "react";
 import { useUserStore } from "@/store/userData";
 import { useToast } from "@/hooks/use-toast";
 import { Loader2 } from "lucide-react";
 import Image from "next/image";
 import LoginImg from "@/assets/images/login.png";
-
-type LoginResponse = {
-  token: string;
-  user_id: string;
-};
+import { useLoginMutation } from "@/query/login";
 
 const FormSchema = z.object({
   userName: z.string().min(1, { message: "Please give an username" }),
@@ -27,10 +23,9 @@ const FormSchema = z.object({
 });
 
 function LoginPage() {
+  const { mutate, isPending, isSuccess, isError } = useLoginMutation();
   const { toast } = useToast();
   const userData = useUserStore((store) => store.userData);
-  const setUserData = useUserStore((store) => store.setUser);
-  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -47,55 +42,25 @@ function LoginPage() {
     },
   });
 
-  async function onSubmit(data: z.infer<typeof FormSchema>) {
-    try {
-      setIsLoading(true);
-      const response = await fetch(
-        "https://life-donors.onrender.com/users/login/",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            username: data.userName,
-            password: data.password,
-          }),
-        },
-      );
-
-      if (response.ok) {
-        setIsLoading(false);
-        toast({
-          title: "Login successful",
-          description: "You are now logged in...!",
-        });
-
-        const resData = (await response.json()) as LoginResponse;
-        setUserData({
-          token: resData.token,
-          userId: resData.user_id,
-        });
-      }
-
-      if (!response.ok) {
-        setIsLoading(false);
-        toast({
-          variant: "destructive",
-          title: "Invalid credentials",
-          description: "Please make sure credentials are correct.",
-        });
-      }
-    } catch (error) {
-      setIsLoading(false);
-      if (error instanceof Error) {
-        toast({
-          variant: "destructive",
-          title: "Error happened",
-          description: `Error ${error.message}`,
-        });
-      }
+  useEffect(() => {
+    if (isError) {
+      toast({
+        variant: "destructive",
+        title: "Invalid credentials",
+        description: "Please make sure credentials are correct.",
+      });
     }
+
+    if (isSuccess) {
+      toast({
+        title: "Login successful",
+        description: "You are now logged in...!",
+      });
+    }
+  }, [isError, isSuccess]);
+
+  async function onSubmit(data: z.infer<typeof FormSchema>) {
+    mutate({ password: data.password, username: data.userName });
   }
 
   return (
@@ -105,7 +70,7 @@ function LoginPage() {
           <h2 className="py-8 text-center text-2xl font-semibold">
             Welcome back 👋
           </h2>
-          <Card className="mx-auto grid w-full max-w-3xl grid-cols-1 gap-6 divide-x divide-black/20 px-6 py-12 sm:grid-cols-2">
+          <Card className="mx-auto grid w-full max-w-3xl grid-cols-1 gap-8 px-8 py-12 sm:grid-cols-2">
             <Form {...form}>
               <form
                 onSubmit={form.handleSubmit(onSubmit)}
@@ -143,7 +108,7 @@ function LoginPage() {
 
                 <div className="flex w-full items-center justify-end">
                   <Button className="bg-destructive" type="submit">
-                    {isLoading ? (
+                    {isPending ? (
                       <Loader2 className="animate-spin" />
                     ) : (
                       "Submit"
@@ -152,7 +117,7 @@ function LoginPage() {
                 </div>
               </form>
             </Form>
-            <div className="pointer-events-none hidden sm:block">
+            <div className="pointer-events-none hidden rounded-md bg-gray-950/5 sm:block">
               <Image
                 alt=""
                 src={LoginImg}

@@ -30,6 +30,8 @@ import { useUserStore } from "@/store/userData";
 import { useToast } from "@/hooks/use-toast";
 import Image from "next/image";
 import RegisterImage from "@/assets/images/register.png";
+import { useRegisterMutation } from "@/query/register";
+import { Loader2 } from "lucide-react";
 
 const FormSchema = z
   .object({
@@ -83,6 +85,7 @@ function RegisterPage() {
   const { toast } = useToast();
   const userData = useUserStore((state) => state.userData);
   const router = useRouter();
+  const { mutate, isError, isPending, isSuccess } = useRegisterMutation();
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -102,53 +105,27 @@ function RegisterPage() {
     }
   }, [userData]);
 
-  async function onSubmit(data: z.infer<typeof FormSchema>) {
-    try {
-      const response = await fetch(
-        "https://life-donors.onrender.com/users/register/",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            username: data.userName,
-            first_name: data.firstName,
-            last_name: data.lastName,
-            email: data.email,
-            mobile_number: data.phone,
-            blood_group: data.group,
-            password: data.password,
-            confirm_password: data.confirmPassword,
-          }),
-        },
-      );
-
-      if (!response.ok) {
-        toast({
-          variant: "destructive",
-          title: "something went wrong",
-          description: "Username or Email is already taken.",
-        });
-      }
-
-      if (response.ok) {
-        toast({
-          title: "Congrats 🎉🎉",
-          description: "Please check your email for verification link.",
-        });
-
-        router.push("/verify");
-      }
-    } catch (error) {
-      if (error instanceof Error) {
-        toast({
-          variant: "destructive",
-          title: "something went wrong",
-          description: `${error.message}`,
-        });
-      }
+  useEffect(() => {
+    if (isError) {
+      toast({
+        variant: "destructive",
+        title: "something went wrong",
+        description: "Username or Email is already taken.",
+      });
     }
+
+    if (isSuccess) {
+      toast({
+        title: "Congrats 🎉🎉",
+        description: "Please check your email for verification link.",
+      });
+
+      router.push("/verify");
+    }
+  }, [isError, isSuccess]);
+
+  async function onSubmit(data: z.infer<typeof FormSchema>) {
+    mutate({ data });
   }
 
   return (
@@ -157,8 +134,8 @@ function RegisterPage() {
         <h2 className="py-8 text-center text-2xl font-semibold">
           Let&apos;s Save A Life today
         </h2>
-        <Card className="grid grid-cols-5 gap-8 divide-x divide-black/20 px-4 py-6">
-          <div className="pointer-events-none col-span-2 flex items-center justify-center">
+        <Card className="grid grid-cols-5 gap-6 px-4 py-6">
+          <div className="pointer-events-none col-span-2 flex items-center justify-center rounded-md bg-gray-950/5">
             <Image
               alt=""
               src={RegisterImage}
@@ -290,7 +267,11 @@ function RegisterPage() {
 
                 <div className="flex w-full items-center justify-end">
                   <Button className="bg-destructive" type="submit">
-                    Submit
+                    {isPending ? (
+                      <Loader2 className="animate-spin" />
+                    ) : (
+                      "Submit"
+                    )}
                   </Button>
                 </div>
               </form>
