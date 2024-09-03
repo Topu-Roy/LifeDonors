@@ -28,6 +28,8 @@ import { useRouter } from "next/navigation";
 import { Suspense, useEffect } from "react";
 import { useUserStore } from "@/store/userData";
 import { useToast } from "@/hooks/use-toast";
+import Image from "next/image";
+import RegisterImage from "@/assets/images/register.png";
 
 const FormSchema = z
   .object({
@@ -151,134 +153,149 @@ function RegisterPage() {
 
   return (
     <main className="min-h-[90dvh] w-full">
-      <div className="mx-auto max-w-7xl py-4">
-        <Card className="mx-auto max-w-xl px-4 py-4">
-          <h2 className="py-4 text-center text-2xl font-semibold">Register</h2>
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-              <div className="flex items-start justify-between gap-4">
+      <div className="mx-auto flex min-h-[90dvh] max-w-7xl flex-col items-center justify-center py-4">
+        <h2 className="py-8 text-center text-2xl font-semibold">
+          Let&apos;s Save A Life today
+        </h2>
+        <Card className="grid grid-cols-5 gap-8 divide-x divide-black/20 px-4 py-6">
+          <div className="pointer-events-none col-span-2 flex items-center justify-center">
+            <Image
+              alt=""
+              src={RegisterImage}
+              placeholder="blur"
+              className="pointer-events-none"
+            />
+          </div>
+          <div className="col-span-3 px-4">
+            <Form {...form}>
+              <form
+                onSubmit={form.handleSubmit(onSubmit)}
+                className="space-y-6"
+              >
+                <div className="flex items-start justify-between gap-4">
+                  <MyFormField
+                    inputClassName="w-full"
+                    className="w-full"
+                    key="firstName"
+                    control={form.control}
+                    label="First Name"
+                    name="firstName"
+                    placeholder="John"
+                    type="text"
+                  />
+                  <MyFormField
+                    inputClassName="w-full"
+                    className="w-full"
+                    key="lastName"
+                    control={form.control}
+                    label="Last Name"
+                    name="lastName"
+                    placeholder="Doe"
+                    type="text"
+                  />
+                </div>
+                <div className="flex items-start justify-between gap-4">
+                  <MyFormField
+                    inputClassName="w-full flex-1"
+                    className="flex-1"
+                    key="userName"
+                    control={form.control}
+                    label="Username"
+                    name="userName"
+                    placeholder="johndoe"
+                    type="text"
+                  />
+                  <FormField
+                    control={form.control}
+                    name="group"
+                    render={({ field }) => (
+                      <FormItem className="w-full flex-1">
+                        <FormLabel>Blood group</FormLabel>
+                        <Select
+                          onValueChange={field.onChange}
+                          defaultValue={field.value}
+                        >
+                          <FormControl>
+                            <SelectTrigger className="w-full">
+                              <SelectValue placeholder="Select a Blood Group" />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            <SelectGroup>
+                              <SelectLabel>Select</SelectLabel>
+                              <SelectItem value="A+">A+</SelectItem>
+                              <SelectItem value="A-">A-</SelectItem>
+                              <SelectItem value="B+">B+</SelectItem>
+                              <SelectItem value="B-">B-</SelectItem>
+                              <SelectItem value="AB+">AB+</SelectItem>
+                              <SelectItem value="AB-">AB-</SelectItem>
+                              <SelectItem value="O+">O+</SelectItem>
+                              <SelectItem value="O-">O-</SelectItem>
+                            </SelectGroup>
+                          </SelectContent>
+                        </Select>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
                 <MyFormField
                   inputClassName="w-full"
                   className="w-full"
-                  key="firstName"
+                  key="email"
                   control={form.control}
-                  label="First Name"
-                  name="firstName"
-                  placeholder="John"
-                  type="text"
+                  label="Email"
+                  name="email"
+                  placeholder="example@example.com"
+                  type="email"
                 />
                 <MyFormField
                   inputClassName="w-full"
                   className="w-full"
-                  key="lastName"
+                  key="phone"
                   control={form.control}
-                  label="Last Name"
-                  name="lastName"
-                  placeholder="Doe"
-                  type="text"
+                  label="Phone"
+                  name="phone"
+                  placeholder="123-456-7890"
+                  type="tel"
                 />
-              </div>
-              <div className="flex items-start justify-between gap-4">
+
                 <MyFormField
-                  inputClassName="w-full flex-1"
-                  className="flex-1"
-                  key="userName"
+                  inputClassName="w-full"
+                  className="w-full"
+                  key="password"
                   control={form.control}
-                  label="Username"
-                  name="userName"
-                  placeholder="johndoe"
-                  type="text"
+                  label="Password"
+                  name="password"
+                  placeholder="••••••••"
+                  type="password"
                 />
-                <FormField
+                <MyFormField
+                  inputClassName="w-full"
+                  className="w-full"
+                  key="confirmPassword"
                   control={form.control}
-                  name="group"
-                  render={({ field }) => (
-                    <FormItem className="w-full flex-1">
-                      <FormLabel>Blood group</FormLabel>
-                      <Select
-                        onValueChange={field.onChange}
-                        defaultValue={field.value}
-                      >
-                        <FormControl>
-                          <SelectTrigger className="w-full">
-                            <SelectValue placeholder="Select a Blood Group" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          <SelectGroup>
-                            <SelectLabel>Select</SelectLabel>
-                            <SelectItem value="A+">A+</SelectItem>
-                            <SelectItem value="A-">A-</SelectItem>
-                            <SelectItem value="B+">B+</SelectItem>
-                            <SelectItem value="B-">B-</SelectItem>
-                            <SelectItem value="AB+">AB+</SelectItem>
-                            <SelectItem value="AB-">AB-</SelectItem>
-                            <SelectItem value="O+">O+</SelectItem>
-                            <SelectItem value="O-">O-</SelectItem>
-                          </SelectGroup>
-                        </SelectContent>
-                      </Select>
-                      <FormMessage />
-                    </FormItem>
-                  )}
+                  label="Confirm Password"
+                  name="confirmPassword"
+                  placeholder="••••••••"
+                  type="password"
                 />
-              </div>
-              <MyFormField
-                inputClassName="w-full"
-                className="w-full"
-                key="email"
-                control={form.control}
-                label="Email"
-                name="email"
-                placeholder="example@example.com"
-                type="email"
-              />
-              <MyFormField
-                inputClassName="w-full"
-                className="w-full"
-                key="phone"
-                control={form.control}
-                label="Phone"
-                name="phone"
-                placeholder="123-456-7890"
-                type="tel"
-              />
 
-              <MyFormField
-                inputClassName="w-full"
-                className="w-full"
-                key="password"
-                control={form.control}
-                label="Password"
-                name="password"
-                placeholder="••••••••"
-                type="password"
-              />
-              <MyFormField
-                inputClassName="w-full"
-                className="w-full"
-                key="confirmPassword"
-                control={form.control}
-                label="Confirm Password"
-                name="confirmPassword"
-                placeholder="••••••••"
-                type="password"
-              />
+                <p className="text-muted-foreground">
+                  Already have an account?{" "}
+                  <Link href={"/login"} className="font-semibold underline">
+                    log in here.
+                  </Link>
+                </p>
 
-              <p className="text-muted-foreground">
-                Already have an account?{" "}
-                <Link href={"/login"} className="font-semibold underline">
-                  log in here.
-                </Link>
-              </p>
-
-              <div className="flex w-full items-center justify-end">
-                <Button className="bg-destructive" type="submit">
-                  Submit
-                </Button>
-              </div>
-            </form>
-          </Form>
+                <div className="flex w-full items-center justify-end">
+                  <Button className="bg-destructive" type="submit">
+                    Submit
+                  </Button>
+                </div>
+              </form>
+            </Form>
+          </div>
         </Card>
       </div>
     </main>
