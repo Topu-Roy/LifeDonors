@@ -77,29 +77,27 @@ function SearchDonorsPage() {
       donors.map((item, index) => (
         <Card
           key={index}
-          className="flex items-center space-x-4 rounded-lg border border-gray-200 bg-white p-6 shadow-md"
+          className="flex items-center space-x-6 rounded-xl border border-gray-300 bg-white p-5 shadow-lg transition-shadow duration-300 hover:shadow-xl"
         >
-          <UserRound
-            size={50}
-            className="w-[20%] min-w-[50px] text-destructive"
-          />
-          <div className="w-full flex-1 space-y-2">
-            <div className="flex items-start justify-start">
-              <p className="w-[30%] font-medium text-gray-700">Name</p>
-              <p className="flex-1 pl-2 font-semibold text-gray-800">
+          <UserRound size={60} className="w-[15%] min-w-[60px] text-red-500" />
+          <div className="flex-1 space-y-3">
+            <div className="flex items-center justify-between">
+              <p className="text-sm font-medium text-gray-600">Name:</p>
+              <p className="text-base font-semibold text-gray-900">
                 {item.user}
               </p>
             </div>
-            <div className="flex items-start justify-start">
-              <p className="w-[30%] font-medium text-gray-700">Group</p>
-              <p className="flex-1 pl-2 font-semibold text-gray-800">
+            <div className="flex items-center justify-between">
+              <p className="text-sm font-medium text-gray-600">Blood Group:</p>
+              <p className="text-base font-semibold text-gray-900">
                 {item.blood_group}
               </p>
             </div>
-            <div className="flex items-start justify-start">
-              <p className="w-[30%] font-medium text-gray-700">District</p>
-              <p className="flex-1 pl-2 font-semibold text-gray-800">
-                {item.district || "N/A"}
+            <div className="flex items-center justify-between">
+              <p className="text-sm font-medium text-gray-600">District:</p>
+              <p className="text-base font-semibold text-gray-900">
+                {item.district.charAt(0).toUpperCase() +
+                  item.district.slice(1) || "N/A"}
               </p>
             </div>
           </div>

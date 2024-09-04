@@ -24,27 +24,41 @@ export default function MyDonations({ authData }: Props) {
             <Loader2 className="animate-spin" size={20} />
           </div>
         ) : data && data.my_donate?.length > 0 ? (
-          <div className="divide w-full space-y-3 divide-y divide-black/15">
+          <div className="divide w-full space-y-3 divide-y divide-black/15 overflow-x-auto lg:w-auto lg:overflow-x-visible">
             <div className="flex items-start justify-between py-2">
-              <p className="w-full flex-1 font-medium">Date</p>
-              <p className="w-full flex-1 text-center font-medium">Group</p>
-              <p className="w-full flex-1 text-center font-medium">Gender</p>
-              <p className="w-full flex-1 text-center font-medium">District</p>
-              <p className="w-full flex-1 text-center font-medium">Status</p>
+              <p className="w-full min-w-32 flex-1 font-medium">Date</p>
+              <p className="w-full min-w-32 flex-1 text-center font-medium">
+                Group
+              </p>
+              <p className="w-full min-w-32 flex-1 text-center font-medium">
+                Gender
+              </p>
+              <p className="w-full min-w-32 flex-1 text-center font-medium">
+                District
+              </p>
+              <p className="w-full min-w-32 flex-1 text-center font-medium">
+                Status
+              </p>
             </div>
             <div className="divide flex w-full flex-col-reverse gap-2 divide-y divide-black/15">
               {data.my_donate?.map((item, index) => (
                 <div key={`${item.donor}-${index}`} className="py-2">
                   <div className="flex items-center justify-between">
-                    <p className="w-full flex-1">{item.date_of_donation}</p>
-                    <p className="w-full flex-1 text-center">
+                    <p className="w-full min-w-32 flex-1">
+                      {item.date_of_donation}
+                    </p>
+                    <p className="w-full min-w-32 flex-1 text-center">
                       {item.blood_group}
                     </p>
-                    <p className="w-full flex-1 text-center">{item.gender}</p>
-                    <p className="w-full flex-1 text-center">{item.district}</p>
+                    <p className="w-full min-w-32 flex-1 text-center">
+                      {item.gender}
+                    </p>
+                    <p className="w-full min-w-32 flex-1 text-center">
+                      {item.district}
+                    </p>
                     <div
                       className={cn(
-                        "flex w-full flex-1 items-center justify-center gap-2",
+                        "flex w-full min-w-32 flex-1 items-center justify-center gap-2",
                         item.blood_request_type === "Completed"
                           ? "text-green-500"
                           : "",

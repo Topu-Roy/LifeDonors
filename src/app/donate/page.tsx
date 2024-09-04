@@ -27,14 +27,17 @@ export default function Donate() {
   }
 
   return (
-    <main className="flex min-h-[85dvh] items-center justify-center bg-gray-100">
-      <div className="mx-auto max-w-7xl space-y-4 p-4">
+    <main className="min-h-[85dvh] bg-gray-100">
+      <div className="mx-auto h-full w-full max-w-7xl space-y-4 p-4">
+        <h2 className="py-8 text-4xl font-bold text-gray-900">
+          Available Donation Requests
+        </h2>
         {isLoading ? (
           <div className="flex h-full items-center justify-center">
             <Loader2 className="h-8 w-8 animate-spin text-primary" />
           </div>
         ) : data && data.length > 0 ? (
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+          <div className="grid h-full w-full grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
             {data.map((item) => (
               <RequestCard item={item} key={item.id} />
             ))}

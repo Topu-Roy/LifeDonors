@@ -73,7 +73,7 @@ export default function MyRequests({ authData }: Props) {
   return (
     <div className="mx-auto grid w-full max-w-7xl grid-cols-1 gap-8 px-2 pb-8 md:grid-cols-2 lg:grid-cols-3 xl:px-0">
       <h2 className="pt-2 text-xl font-semibold">My Requests</h2>
-      <Card className="col-span-3 p-4">
+      <Card className="col-span-3 overflow-x-auto p-4 lg:w-auto lg:overflow-x-visible">
         {isLoading ? (
           <div className="flex w-full items-center justify-center py-8">
             <Loader2 className="animate-spin" size={20} />
@@ -81,36 +81,52 @@ export default function MyRequests({ authData }: Props) {
         ) : userRequests && userRequests?.length > 0 ? (
           <div className="divide w-full space-y-3 divide-y divide-black/15">
             <div className="flex items-start justify-between py-2">
-              <p className="w-full flex-1 font-medium">Date</p>
-              <p className="w-full flex-1 text-center font-medium">Group</p>
-              <p className="w-full flex-1 text-center font-medium">Gender</p>
-              <p className="w-full flex-1 text-center font-medium">District</p>
-              <p className="w-full flex-1 text-center font-medium">
+              <p className="w-full min-w-32 flex-1 font-medium">Date</p>
+              <p className="w-full min-w-32 flex-1 text-center font-medium">
+                Group
+              </p>
+              <p className="w-full min-w-32 flex-1 text-center font-medium">
+                Gender
+              </p>
+              <p className="w-full min-w-32 flex-1 text-center font-medium">
+                District
+              </p>
+              <p className="w-full min-w-32 flex-1 text-center font-medium">
                 Donor Details
               </p>
-              <p className="w-full flex-1 text-center font-medium">Status</p>
-              <p className="w-full flex-1 text-center font-medium">Actions</p>
+              <p className="w-full min-w-32 flex-1 text-center font-medium">
+                Status
+              </p>
+              <p className="w-full min-w-32 flex-1 text-center font-medium">
+                Actions
+              </p>
             </div>
             <div className="divide flex w-full flex-col-reverse gap-2 divide-y divide-black/15">
               {userRequests?.map((item, index) => (
                 <div key={`${item.donor}-${index}`} className="py-2">
                   <div className="flex items-center justify-between">
-                    <p className="w-full flex-1">{item.date_of_donation}</p>
-                    <p className="w-full flex-1 text-center">
+                    <p className="w-full min-w-32 flex-1">
+                      {item.date_of_donation}
+                    </p>
+                    <p className="w-full min-w-32 flex-1 text-center">
                       {item.blood_group}
                     </p>
-                    <p className="w-full flex-1 text-center">{item.gender}</p>
-                    <p className="w-full flex-1 text-center">{item.district}</p>
-                    <p className="w-full flex-1 text-center">
+                    <p className="w-full min-w-32 flex-1 text-center">
+                      {item.gender}
+                    </p>
+                    <p className="w-full min-w-32 flex-1 text-center">
+                      {item.district}
+                    </p>
+                    <p className="w-full min-w-32 flex-1 text-center">
                       <DonorDetailsPopup
                         donor_id={parseInt(item.accepted_donor_id)}
                         status={item.blood_request_type}
                       />
                     </p>
-                    <p className="w-full flex-1 text-center">
+                    <p className="w-full min-w-32 flex-1 text-center">
                       {item.blood_request_type}
                     </p>
-                    <div className="flex w-full flex-1 items-center justify-center">
+                    <div className="flex w-full min-w-32 flex-1 items-center justify-center">
                       <Button
                         onClick={() => handleClick(item.id)}
                         disabled={

@@ -63,7 +63,10 @@ export default function RequestCard({ item }: Props) {
       <Button
         onClick={handleClick}
         disabled={isPending || item.blood_request_type !== "Pending"}
-        className="hover:bg-primary-dark mt-4 w-full bg-primary text-white disabled:cursor-not-allowed disabled:bg-gray-400"
+        variant={
+          item.blood_request_type === "Pending" ? "destructive" : "default"
+        }
+        className="mt-4 w-full disabled:cursor-not-allowed"
       >
         {isPending ? (
           <Loader2 className="h-4 w-4 animate-spin" />

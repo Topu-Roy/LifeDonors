@@ -11,6 +11,7 @@ import {
   Check,
   ChevronsUpDown,
   Loader2,
+  User,
   UserCog,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -61,6 +62,8 @@ import { districts } from "@/assets/constants";
 import { format } from "date-fns";
 import { Calendar } from "@/components/ui/calendar";
 import { useToast } from "@/hooks/use-toast";
+import { useDashboardQuery } from "@/query/dashboard";
+import Ripple from "@/components/ui/ripple";
 
 const formSchema = z.object({
   district: z.string().min(2, {
@@ -88,11 +91,10 @@ function ProfilePage() {
   const { data, isLoading, isError, error } = useProfileDetailsQuery(
     userData ? parseInt(userData.userId!) : undefined,
   );
-  const {
-    mutate: updateProfile,
-    isPending,
-    isError: isError_update,
-  } = useUpdateProfileMutation();
+  const { data: dashboardData } = useDashboardQuery({
+    authData: userData ? userData : undefined,
+  });
+  const { mutate: updateProfile, isPending } = useUpdateProfileMutation();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -139,198 +141,242 @@ function ProfilePage() {
 
   return (
     <div className="min-h-[85dvh]">
-      <div className="mx-auto max-w-7xl">
+      <div className="mx-auto max-w-7xl px-2 xl:px-0">
         <h2 className="mx-auto max-w-7xl py-8 text-center text-3xl font-bold">
           My Profile
         </h2>
-        <div className="flex flex-col items-center justify-center">
-          <Dialog open={open} onOpenChange={setOpen}>
-            <DialogTrigger asChild>
-              <Button className="flex items-center justify-center gap-3 py-6">
-                {isPending ? (
-                  <>
-                    Updating
-                    <Loader2 className="animate-spin" />
-                  </>
-                ) : (
-                  <>
-                    Update
-                    <UserCog />
-                  </>
-                )}
-              </Button>
-            </DialogTrigger>
-            <DialogContent>
-              <DialogHeader>
-                <DialogTitle>Update your profile to make donations</DialogTitle>
-                <DialogContent>
-                  <Form {...form}>
-                    <form
-                      onSubmit={form.handleSubmit(onSubmit)}
-                      className="w-full space-y-8"
-                    >
-                      <FormField
-                        control={form.control}
-                        name="gender"
-                        render={({ field }) => (
-                          <FormItem className="flex-1">
-                            <Select
-                              onValueChange={field.onChange}
-                              defaultValue={field.value}
-                            >
-                              <FormLabel>Gender</FormLabel>
-                              <FormControl>
-                                <SelectTrigger className="w-full">
-                                  <SelectValue placeholder="Select Gender" />
-                                </SelectTrigger>
-                              </FormControl>
-                              <SelectContent>
-                                <SelectGroup>
-                                  <SelectLabel>Select</SelectLabel>
-                                  <SelectItem value="Male">Male</SelectItem>
-                                  <SelectItem value="Female">Female</SelectItem>
-                                </SelectGroup>
-                              </SelectContent>
-                            </Select>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                      <div className="flex flex-col gap-3">
-                        <FormLabel>Select a date</FormLabel>
-                        <Popover>
-                          <PopoverTrigger asChild>
-                            <Button
-                              variant={"outline"}
-                              className={cn(
-                                "flex-1 justify-start text-left font-normal",
-                                !requestDate && "text-muted-foreground",
-                              )}
-                            >
-                              <CalendarIcon className="mr-2 h-4 w-4" />
-                              {requestDate ? (
-                                format(requestDate, "PPP")
-                              ) : (
-                                <span>Pick a date</span>
-                              )}
-                            </Button>
-                          </PopoverTrigger>
-                          <PopoverContent className="w-auto p-0">
-                            <Calendar
-                              mode="single"
-                              selected={requestDate}
-                              onSelect={setRequestDate}
-                              initialFocus
-                            />
-                          </PopoverContent>
-                        </Popover>
-                      </div>
-                      <FormField
-                        control={form.control}
-                        name="district"
-                        render={({ field }) => (
-                          <FormItem className="flex flex-1 flex-col">
-                            <Popover>
-                              <FormLabel>District</FormLabel>
-                              <PopoverTrigger asChild>
-                                <FormControl>
-                                  <Button
-                                    variant="outline"
-                                    role="combobox"
-                                    className={cn(
-                                      "justify-between",
-                                      !field.value && "text-muted-foreground",
-                                    )}
-                                  >
-                                    {field.value !== ""
-                                      ? districts.find(
-                                          (district) =>
-                                            district.value === field.value,
-                                        )?.label
-                                      : "Select district"}
-                                    <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                                  </Button>
-                                </FormControl>
-                              </PopoverTrigger>
-                              <PopoverContent className="w-[200px] p-0">
-                                <Command>
-                                  <CommandInput placeholder="Search district..." />
-                                  <CommandList>
-                                    <CommandEmpty>
-                                      No district found.
-                                    </CommandEmpty>
-                                    <CommandGroup>
-                                      {districts.map((district) => (
-                                        <CommandItem
-                                          value={district.label}
-                                          key={district.value}
-                                          onSelect={() => {
-                                            form.setValue(
-                                              "district",
-                                              district.value,
-                                            );
-                                          }}
-                                        >
-                                          <Check
-                                            className={cn(
-                                              "mr-2 h-4 w-4",
-                                              district.value === field.value
-                                                ? "opacity-100"
-                                                : "opacity-0",
-                                            )}
-                                          />
-                                          {district.label}
-                                        </CommandItem>
-                                      ))}
-                                    </CommandGroup>
-                                  </CommandList>
-                                </Command>
-                              </PopoverContent>
-                            </Popover>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                      <Button type="submit">Submit</Button>
-                    </form>
-                  </Form>
-                </DialogContent>
-              </DialogHeader>
-            </DialogContent>
-          </Dialog>
+        <div className="grid grid-cols-1 flex-col items-center justify-center gap-8 md:grid-cols-2">
+          <Card className="flex h-full flex-col gap-4 p-4">
+            <div className="flex items-center justify-between gap-4">
+              <Card className="flex w-full flex-col items-center justify-center py-4 text-center">
+                <p className="text-lg font-bold text-rose-800">
+                  {isLoading
+                    ? "00"
+                    : dashboardData
+                      ? dashboardData.my_donate.length
+                      : "00"}
+                </p>
+                <p className="text-sm text-gray-900">Donations</p>
+              </Card>
+              <Card className="flex w-full flex-col items-center justify-center py-4 text-center">
+                <p className="text-lg font-bold text-rose-800">
+                  {isLoading
+                    ? "00"
+                    : dashboardData?.my_requests
+                      ? dashboardData.my_requests.length
+                      : "00"}
+                </p>
+                <p className="text-sm text-gray-900">Requests</p>
+              </Card>
+            </div>
+            <Card className="relative flex flex-1 items-center justify-center">
+              <div className="flex size-20 items-center justify-center rounded-full bg-gradient-to-r from-red-300 to-rose-600 text-white shadow-md ring-1 ring-white">
+                <User size={40} />
+              </div>
+              <Ripple />
+            </Card>
+          </Card>
           {data
             ? data.map((profile, index) => (
-                <Card key={index} className="w-full max-w-xl p-4">
-                  <div className="flex items-center justify-between py-3">
-                    <p>Username</p>
-                    <p>{profile.user}</p>
+                <Card
+                  key={index}
+                  className="w-full rounded-lg bg-white p-6 shadow-lg"
+                >
+                  <h3 className="pb-4 text-xl font-bold">Basic information</h3>
+                  <div className="space-y-4">
+                    {[
+                      { label: "Username", value: profile.user },
+                      { label: "Blood Group", value: profile.blood_group },
+                      { label: "District", value: profile.district || "N/A" },
+                      {
+                        label: "Last Donation",
+                        value: profile.date_of_donation ?? "N/A",
+                      },
+                      { label: "Gender", value: profile.gender || "N/A" },
+                      {
+                        label: "Available",
+                        value: profile.is_available ? "Yes" : "No",
+                      },
+                    ].map((item, idx) => (
+                      <div
+                        key={idx}
+                        className="flex items-center justify-between border-b py-2 last:border-none"
+                      >
+                        <p className="font-medium text-gray-600">
+                          {item.label}
+                        </p>
+                        <p className="font-semibold text-gray-800">
+                          {item.value}
+                        </p>
+                      </div>
+                    ))}
                   </div>
-                  <div className="flex items-center justify-between py-3">
-                    <p>Blood Group</p>
-                    <p>{profile.blood_group}</p>
-                  </div>
-                  <div className="flex items-center justify-between py-3">
-                    <p>District</p>
-                    <p>{profile.district || "N/A"}</p>
-                  </div>
-                  <div className="flex items-center justify-between py-3">
-                    <p>Last Donation</p>
-                    <p>{profile.date_of_donation ?? "N/A"}</p>
-                  </div>
-                  <div className="flex items-center justify-between py-3">
-                    <p>Gender</p>
-                    <p>{profile.gender || "N/A"}</p>
-                  </div>
-                  <div className="flex items-center justify-between py-3">
-                    <p>Available</p>
-                    <p>{profile.is_available ? "Yes" : "No"}</p>
+                  <div className="flex justify-end pt-6">
+                    <Dialog open={open} onOpenChange={setOpen}>
+                      <DialogTrigger asChild>
+                        <Button
+                          variant="destructive"
+                          className="flex items-center gap-2 rounded-lg px-4 py-2 transition"
+                        >
+                          {isPending ? (
+                            <>
+                              Updating
+                              <Loader2 className="h-4 w-4 animate-spin" />
+                            </>
+                          ) : (
+                            <>
+                              Update
+                              <UserCog className="h-4 w-4" />
+                            </>
+                          )}
+                        </Button>
+                      </DialogTrigger>
+                      <DialogContent className="max-w-lg p-6">
+                        <DialogHeader>
+                          <DialogTitle className="text-xl font-bold">
+                            Update your profile to make donations
+                          </DialogTitle>
+                        </DialogHeader>
+                        <Form {...form}>
+                          <form
+                            onSubmit={form.handleSubmit(onSubmit)}
+                            className="space-y-6"
+                          >
+                            <FormField
+                              control={form.control}
+                              name="gender"
+                              render={({ field }) => (
+                                <FormItem>
+                                  <FormLabel>Gender</FormLabel>
+                                  <Select
+                                    onValueChange={field.onChange}
+                                    defaultValue={field.value}
+                                  >
+                                    <FormControl>
+                                      <SelectTrigger className="mt-1 w-full">
+                                        <SelectValue placeholder="Select Gender" />
+                                      </SelectTrigger>
+                                    </FormControl>
+                                    <SelectContent>
+                                      <SelectGroup>
+                                        <SelectLabel>Select</SelectLabel>
+                                        <SelectItem value="Male">
+                                          Male
+                                        </SelectItem>
+                                        <SelectItem value="Female">
+                                          Female
+                                        </SelectItem>
+                                      </SelectGroup>
+                                    </SelectContent>
+                                  </Select>
+                                  <FormMessage />
+                                </FormItem>
+                              )}
+                            />
+                            <div>
+                              <FormLabel>Select a date</FormLabel>
+                              <Popover>
+                                <PopoverTrigger asChild>
+                                  <Button
+                                    variant="outline"
+                                    className="mt-1 w-full justify-start text-left"
+                                  >
+                                    <CalendarIcon className="mr-2 h-4 w-4" />
+                                    {requestDate
+                                      ? format(requestDate, "PPP")
+                                      : "Pick a date"}
+                                  </Button>
+                                </PopoverTrigger>
+                                <PopoverContent className="w-auto p-0">
+                                  <Calendar
+                                    mode="single"
+                                    selected={requestDate}
+                                    onSelect={setRequestDate}
+                                    initialFocus
+                                  />
+                                </PopoverContent>
+                              </Popover>
+                            </div>
+                            <FormField
+                              control={form.control}
+                              name="district"
+                              render={({ field }) => (
+                                <FormItem>
+                                  <FormLabel>District</FormLabel>
+                                  <Popover>
+                                    <PopoverTrigger asChild>
+                                      <FormControl>
+                                        <Button
+                                          variant="outline"
+                                          className="mt-1 w-full justify-between"
+                                        >
+                                          {field.value
+                                            ? districts.find(
+                                                (d) => d.value === field.value,
+                                              )?.label
+                                            : "Select district"}
+                                          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                                        </Button>
+                                      </FormControl>
+                                    </PopoverTrigger>
+                                    <PopoverContent className="w-[200px] p-0">
+                                      <Command>
+                                        <CommandInput placeholder="Search district..." />
+                                        <CommandList>
+                                          <CommandEmpty>
+                                            No district found.
+                                          </CommandEmpty>
+                                          <CommandGroup>
+                                            {districts.map((district) => (
+                                              <CommandItem
+                                                key={district.value}
+                                                value={district.label}
+                                                onSelect={() =>
+                                                  form.setValue(
+                                                    "district",
+                                                    district.value,
+                                                  )
+                                                }
+                                              >
+                                                <Check
+                                                  className={cn(
+                                                    "mr-2 h-4 w-4",
+                                                    district.value ===
+                                                      field.value
+                                                      ? "opacity-100"
+                                                      : "opacity-0",
+                                                  )}
+                                                />
+                                                {district.label}
+                                              </CommandItem>
+                                            ))}
+                                          </CommandGroup>
+                                        </CommandList>
+                                      </Command>
+                                    </PopoverContent>
+                                  </Popover>
+                                  <FormMessage />
+                                </FormItem>
+                              )}
+                            />
+                            <Button
+                              type="submit"
+                              variant={"destructive"}
+                              className="w-full rounded-lg py-2 text-white transition duration-300"
+                            >
+                              Submit
+                            </Button>
+                          </form>
+                        </Form>
+                      </DialogContent>
+                    </Dialog>
                   </div>
                 </Card>
               ))
             : null}
 
           {isLoading ? (
-            <div className="p-8">
+            <div className="col-span-2 p-8">
               <Loader2 className="animate-spin" />
             </div>
           ) : null}
