@@ -29,7 +29,7 @@ function HomePage() {
             <div className="flex flex-wrap gap-4">
               <CTA />
               <Link href="/request-donor">
-                <Button variant="destructive" className="px-6 py-8">
+                <Button variant="destructive" className="px-6 py-6">
                   Request Donor
                 </Button>
               </Link>
@@ -101,20 +101,25 @@ function HomePage() {
 
       <Stats />
 
-      <section className="mx-auto flex min-h-[80dvh] w-full max-w-7xl items-center justify-center space-y-8">
-        <div className="flex h-full w-full flex-col items-center justify-center gap-4">
-          <h1 className="text-balance text-4xl font-bold">About Us</h1>
-          <p className="mx-auto w-[90%] text-balance text-center md:w-[50%]">
-            LifeDonors is an automated blood service that connects blood
-            searchers with voluntary blood donors in a moment through SMS.
-            LifeDonors is a not-for-profit initiative to aware people of
-            voluntary blood donation in Bangladesh.
-          </p>
-          <Link href={"/about"}>
-            <Button variant={"destructive"} className="mx-auto px-4">
-              Learn More
-            </Button>
-          </Link>
+      <section className="w-full bg-cover bg-center py-16 md:py-24 lg:py-32">
+        <div className="container mx-auto max-w-3xl px-4 text-center">
+          <div className="space-y-6">
+            <h2 className="text-3xl font-bold tracking-tight text-primary-foreground md:text-4xl lg:text-5xl">
+              Our Mission: Saving Lives Through Blood Donation
+            </h2>
+            <p className="text-muted-foreground md:text-xl lg:text-lg">
+              LifeDonors is a non-profit organization dedicated to connecting
+              blood donors with those in need. Our mission is to build a
+              community of compassionate individuals who understand the
+              life-saving power of blood donation and are committed to making a
+              difference in the lives of others.
+            </p>
+            <Link href="/about">
+              <Button variant={"destructive"} className="mt-4 px-6">
+                Learn More
+              </Button>
+            </Link>
+          </div>
         </div>
       </section>
     </>
