@@ -6,6 +6,7 @@ import { Suspense } from "react";
 import SparklesText from "@/components/ui/sparkleText";
 import Image from "next/image";
 import LoginImage from "@/assets/images/login.png";
+import RegisterImage from "@/assets/images/register.png";
 
 function HomePage() {
   return (
@@ -37,7 +38,7 @@ function HomePage() {
         </div>
       </section>
 
-      <section className="flex min-h-[80dvh] w-full items-center justify-center space-y-8 py-8">
+      <section className="flex min-h-[80dvh] w-full items-center justify-center space-y-8 py-20">
         <div className="mx-auto flex h-full w-full max-w-7xl flex-col items-center justify-center gap-8 px-2 text-center md:text-left xl:px-0">
           {/* First Row: Content Left, Image Right */}
           <div className="grid grid-cols-1 items-center gap-8 md:grid-cols-2 md:gap-4">
@@ -62,7 +63,7 @@ function HomePage() {
               <Image
                 src={LoginImage}
                 alt="LifeDonors"
-                className="w-full rounded-lg shadow-lg md:max-w-md"
+                className="w-full rounded-lg md:max-w-md"
               />
             </div>
           </div>
@@ -72,9 +73,9 @@ function HomePage() {
             {/* Image */}
             <div className="order-2 flex w-full justify-start md:order-1">
               <Image
-                src={LoginImage}
+                src={RegisterImage}
                 alt="Why LifeDonors?"
-                className="w-full rounded-lg shadow-lg md:max-w-md"
+                className="w-full rounded-lg md:max-w-md"
               />
             </div>
             {/* Content */}
