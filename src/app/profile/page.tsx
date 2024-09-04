@@ -169,7 +169,7 @@ function ProfilePage() {
                 <p className="text-sm text-gray-900">Requests</p>
               </Card>
             </div>
-            <Card className="relative flex flex-1 items-center justify-center">
+            <Card className="relative flex min-h-[30dvh] flex-1 items-center justify-center">
               <div className="flex size-20 items-center justify-center rounded-full bg-gradient-to-r from-red-300 to-rose-600 text-white shadow-md ring-1 ring-white">
                 <User size={40} />
               </div>
@@ -376,7 +376,7 @@ function ProfilePage() {
             : null}
 
           {isLoading ? (
-            <div className="col-span-2 p-8">
+            <div className="flex items-center justify-center p-8">
               <Loader2 className="animate-spin" />
             </div>
           ) : null}

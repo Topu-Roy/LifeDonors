@@ -26,7 +26,7 @@ export function useProfileDetailsQuery(id: number | undefined) {
       return validatedData;
     },
     enabled: !!id,
-    refetchInterval: 2000,
+    refetchInterval: 3500,
   });
 
   return { ...query };

@@ -30,7 +30,7 @@ export default function RequestCard({ item }: Props) {
   }, [isError]);
 
   return (
-    <Card className="space-y-2 rounded-lg border border-gray-200 bg-white p-6 shadow-md">
+    <Card className="space-y-2 rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
       <div className="flex items-center justify-between">
         <h3 className="text-lg font-semibold text-gray-700">
           {item.blood_group}

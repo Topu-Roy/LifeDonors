@@ -14,7 +14,7 @@ const DonationRequestSchema = z.object({
 });
 
 export type RequestType = z.infer<typeof DonationRequestSchema>;
-const DonationRequestsSchema = z.array(DonationRequestSchema);
+export const DonationRequestsSchema = z.array(DonationRequestSchema);
 
 export function useAvailableRequestsQuery(userId: string | undefined) {
   return useQuery({
@@ -34,7 +34,7 @@ export function useAvailableRequestsQuery(userId: string | undefined) {
       const data: unknown = await response.json();
       return DonationRequestsSchema.parse(data);
     },
-    refetchInterval: 2000,
+    refetchInterval: 3500,
     enabled: !!userId,
   });
 }
