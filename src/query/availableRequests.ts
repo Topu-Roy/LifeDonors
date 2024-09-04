@@ -1,4 +1,4 @@
-import { useMutation } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { z } from "zod";
 
 const DonationRequestSchema = z.object({
@@ -16,22 +16,25 @@ const DonationRequestSchema = z.object({
 export type RequestType = z.infer<typeof DonationRequestSchema>;
 const DonationRequestsSchema = z.array(DonationRequestSchema);
 
-export function useAvailableRequestsMutation() {
-  const query = useMutation({
-    mutationKey: ["available-requests"],
-    mutationFn: async ({ userId }: { userId: string }) => {
+export function useAvailableRequestsQuery(userId: string | undefined) {
+  return useQuery({
+    queryKey: ["available-requests", userId],
+    queryFn: async () => {
+      if (!userId) {
+        throw new Error("User ID is required");
+      }
       const response = await fetch(
         `https://life-donors.onrender.com/users/available_request/?donor_id=${userId}`,
       );
 
-      if (response.ok) {
-        const data: unknown = await response.json();
-        const parsedData = DonationRequestsSchema.parse(data);
-
-        return parsedData;
+      if (!response.ok) {
+        throw new Error("Failed to fetch available requests");
       }
-    },
-  });
 
-  return { ...query };
+      const data: unknown = await response.json();
+      return DonationRequestsSchema.parse(data);
+    },
+    refetchInterval: 2000,
+    enabled: !!userId,
+  });
 }

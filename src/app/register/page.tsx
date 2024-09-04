@@ -130,7 +130,7 @@ function RegisterPage() {
 
   return (
     <main className="min-h-[90dvh] w-full">
-      <div className="mx-auto flex min-h-[90dvh] max-w-7xl flex-col items-center justify-center py-4">
+      <div className="mx-auto flex min-h-[90dvh] max-w-7xl flex-col items-center justify-center px-2 py-4 xl:px-0">
         <h2 className="py-8 text-center text-2xl font-semibold">
           Let&apos;s Save A Life today
         </h2>

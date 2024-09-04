@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
-import { useUserStore } from "@/store/userData";
+import { type UserData } from "@/store/userData";
 import { useEffect, useState } from "react";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -42,7 +42,6 @@ import { format } from "date-fns";
 import { CalendarIcon, Check, ChevronsUpDown, Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { districts } from "@/assets/constants";
-import { useRouter } from "next/navigation";
 import { useToast } from "@/hooks/use-toast";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { useRequestDonorMutation } from "@/query/requestDonor";
@@ -69,12 +68,14 @@ function getCurrentDateFormatted(date: Date) {
   return `${year}-${month}-${day}`;
 }
 
-export default function CreateRequest() {
+type Props = {
+  authData: UserData | null;
+};
+
+export default function CreateRequest({ authData }: Props) {
   const [open, setOpen] = useState(false);
   const [requestDate, setRequestDate] = useState<Date | undefined>(new Date());
   const { toast } = useToast();
-  const authData = useUserStore((store) => store.userData);
-  const router = useRouter();
   const { mutate, isPending, isError, isSuccess } = useRequestDonorMutation();
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -117,11 +118,11 @@ export default function CreateRequest() {
     }
 
     if (!authData) {
-      toast({
+      return toast({
+        variant: "destructive",
         title: "User is not authenticated",
         description: `Please log in to do this operation`,
       });
-      return router.push("/login");
     }
 
     const formValues = {
@@ -140,8 +141,17 @@ export default function CreateRequest() {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant={"destructive"}>
-          {isPending ? <Loader2 className="animate-spin" /> : "Make a request"}
+        <Button
+          variant={"destructive"}
+          className="flex items-center justify-center gap-2"
+        >
+          {isPending ? (
+            <>
+              <span>Requesting</span> <Loader2 className="animate-spin" />
+            </>
+          ) : (
+            "Make a request"
+          )}
         </Button>
       </DialogTrigger>
       <DialogContent>

@@ -25,8 +25,6 @@ function SearchDonorsPage() {
     }
   }, [data]);
 
-  // useEffect(() => {},[])
-
   useEffect(() => {
     if (isError) {
       toast({
@@ -40,21 +38,31 @@ function SearchDonorsPage() {
     if (searchDonors) {
       return searchDonors.length > 0 ? (
         searchDonors.map((item, index) => (
-          <Card key={index} className="flex items-center justify-center p-4">
-            <UserRound size={50} className="w-[20%] text-destructive" />
-            <div className="w-full flex-1">
-              <div className="flex w-full items-start justify-start">
-                <p className="w-[25%]">Name</p>
-                <p className="flex-1 pl-2">{item.user}</p>
+          <Card
+            key={index}
+            className="flex items-center space-x-4 rounded-lg border border-gray-200 bg-white p-6 shadow-md"
+          >
+            <UserRound
+              size={50}
+              className="w-[20%] min-w-[50px] text-destructive"
+            />
+            <div className="w-full flex-1 space-y-2">
+              <div className="flex items-start justify-start">
+                <p className="w-[30%] font-medium text-gray-700">Name</p>
+                <p className="flex-1 pl-2 font-semibold text-gray-800">
+                  {item.user}
+                </p>
               </div>
               <div className="flex items-start justify-start">
-                <p className="w-[25%]">Group</p>
-                <p className="flex-1 pl-2">{item.blood_group}</p>
+                <p className="w-[30%] font-medium text-gray-700">Group</p>
+                <p className="flex-1 pl-2 font-semibold text-gray-800">
+                  {item.blood_group}
+                </p>
               </div>
               <div className="flex items-start justify-start">
-                <p className="w-[25%]">District</p>
-                <p className="flex-1 pl-2">
-                  {item.district === "" ? "N/A" : item.district}
+                <p className="w-[30%] font-medium text-gray-700">District</p>
+                <p className="flex-1 pl-2 font-semibold text-gray-800">
+                  {item.district || "N/A"}
                 </p>
               </div>
             </div>
@@ -67,21 +75,31 @@ function SearchDonorsPage() {
 
     return donors ? (
       donors.map((item, index) => (
-        <Card key={index} className="flex items-center justify-center p-4">
-          <UserRound size={50} className="w-[20%] text-destructive" />
-          <div className="w-full flex-1">
-            <div className="flex w-full items-start justify-start">
-              <p className="w-[25%]">Name</p>
-              <p className="flex-1 pl-2">{item.user}</p>
+        <Card
+          key={index}
+          className="flex items-center space-x-4 rounded-lg border border-gray-200 bg-white p-6 shadow-md"
+        >
+          <UserRound
+            size={50}
+            className="w-[20%] min-w-[50px] text-destructive"
+          />
+          <div className="w-full flex-1 space-y-2">
+            <div className="flex items-start justify-start">
+              <p className="w-[30%] font-medium text-gray-700">Name</p>
+              <p className="flex-1 pl-2 font-semibold text-gray-800">
+                {item.user}
+              </p>
             </div>
             <div className="flex items-start justify-start">
-              <p className="w-[25%]">Group</p>
-              <p className="flex-1 pl-2">{item.blood_group}</p>
+              <p className="w-[30%] font-medium text-gray-700">Group</p>
+              <p className="flex-1 pl-2 font-semibold text-gray-800">
+                {item.blood_group}
+              </p>
             </div>
             <div className="flex items-start justify-start">
-              <p className="w-[25%]">District</p>
-              <p className="flex-1 pl-2">
-                {item.district === "" ? "N/A" : item.district}
+              <p className="w-[30%] font-medium text-gray-700">District</p>
+              <p className="flex-1 pl-2 font-semibold text-gray-800">
+                {item.district || "N/A"}
               </p>
             </div>
           </div>

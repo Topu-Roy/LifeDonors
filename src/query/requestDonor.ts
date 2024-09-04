@@ -15,14 +15,16 @@ type Props = {
 export function useRequestDonorMutation() {
   const queryClient = useQueryClient();
   const mutation = useMutation({
-    mutationKey: ["request-donor"],
     mutationFn: async ({ data }: Props) => {
       await fetch(`https://life-donors.onrender.com/users/create/request/`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(data),
+        body: JSON.stringify({
+          ...data,
+          user_id: data.user_id,
+        }),
       });
     },
     onSuccess: async () => {

@@ -30,19 +30,43 @@ export default function RequestCard({ item }: Props) {
   }, [isError]);
 
   return (
-    <Card className="p-4" key={item.id}>
-      <p>{item.blood_group}</p>
-      <p>{item.details}</p>
-      <p>{item.district}</p>
-      <p>{item.donor}</p>
-      <p>{item.gender}</p>
-      <p>{item.accepted_donor_id}</p>
+    <Card className="space-y-2 rounded-lg border border-gray-200 bg-white p-6 shadow-md">
+      <div className="flex items-center justify-between">
+        <h3 className="text-lg font-semibold text-gray-700">
+          {item.blood_group}
+        </h3>
+        <span
+          className={`rounded px-2 py-1 text-sm ${
+            item.blood_request_type === "Pending"
+              ? "bg-yellow-100 text-yellow-800"
+              : item.blood_request_type === "Running"
+                ? "bg-blue-100 text-blue-800"
+                : "bg-green-100 text-green-800"
+          }`}
+        >
+          {item.blood_request_type}
+        </span>
+      </div>
+      <p className="text-gray-600">{item.details}</p>
+      <p className="text-gray-500">
+        <strong>District:</strong> {item.district}
+      </p>
+      <p className="text-gray-500">
+        <strong>Request by:</strong> {item.donor.split(" ")[0]}
+      </p>
+      <p className="text-gray-500">
+        <strong>Gender:</strong> {item.gender}
+      </p>
+      <p className="text-gray-500">
+        <strong>Accepted Donor ID:</strong> {item.accepted_donor_id ?? "N/A"}
+      </p>
       <Button
-        onClick={() => handleClick()}
+        onClick={handleClick}
         disabled={isPending || item.blood_request_type !== "Pending"}
+        className="hover:bg-primary-dark mt-4 w-full bg-primary text-white disabled:cursor-not-allowed disabled:bg-gray-400"
       >
         {isPending ? (
-          <Loader2 className="animate-spin" />
+          <Loader2 className="h-4 w-4 animate-spin" />
         ) : item.blood_request_type === "Running" ? (
           "Running"
         ) : item.blood_request_type === "Completed" ? (

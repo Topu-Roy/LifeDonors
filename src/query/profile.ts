@@ -1,4 +1,4 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { z } from "zod";
 
 const userProfileSchema = z.object({
@@ -12,10 +12,10 @@ const userProfileSchema = z.object({
 
 const apiResponseSchema = z.array(userProfileSchema);
 
-export function useProfileMutation() {
-  const mutation = useMutation({
-    mutationKey: ["profile"],
-    mutationFn: async ({ id }: { id: number }) => {
+export function useProfileDetailsQuery(id: number | undefined) {
+  const query = useQuery({
+    queryKey: ["profile", id],
+    queryFn: async () => {
       const response = await fetch(
         `https://life-donors.onrender.com/users/profile/${id}/`,
       );
@@ -24,6 +24,42 @@ export function useProfileMutation() {
       const validatedData = apiResponseSchema.parse(data);
 
       return validatedData;
+    },
+    enabled: !!id,
+    refetchInterval: 2000,
+  });
+
+  return { ...query };
+}
+
+type Props = {
+  district: string;
+  gender: string;
+  lastDonation: string;
+  id: string;
+};
+
+export function useUpdateProfileMutation() {
+  const queryClient = useQueryClient();
+  const mutation = useMutation({
+    mutationFn: async (values: Props) => {
+      await fetch(
+        `https://life-donors.onrender.com/users/update/profile/${values.id}/`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            district: values.district,
+            date_of_donation: values.lastDonation,
+            gender: values.gender,
+          }),
+        },
+      );
+    },
+    onSuccess: async () => {
+      await queryClient.refetchQueries({ queryKey: ["profile"] });
     },
   });
 

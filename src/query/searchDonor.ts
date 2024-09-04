@@ -26,6 +26,7 @@ export function useSearchDonorQuery() {
         return parsedData;
       }
     },
+    refetchInterval: 2000,
   });
 
   return { ...query };

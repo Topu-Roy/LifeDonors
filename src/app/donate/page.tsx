@@ -1,36 +1,47 @@
 "use client";
 
-import { useAvailableRequestsMutation } from "@/query/availableRequests";
+import { useAvailableRequestsQuery } from "@/query/availableRequests";
 import { Loader2 } from "lucide-react";
-import { useEffect } from "react";
 import RequestCard from "./requestCard";
 import { useUserStore } from "@/store/userData";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
 export default function Donate() {
   const userData = useUserStore((state) => state.userData);
-  const { mutate, data, isPending, isError, error } =
-    useAvailableRequestsMutation();
+  const router = useRouter();
+  const [isMounted, setIsMounted] = useState(false);
+  const { data, isLoading, isError, error } = useAvailableRequestsQuery(
+    userData?.userId ?? undefined,
+  );
 
   useEffect(() => {
-    if (userData) {
-      mutate({ userId: userData.userId! });
+    setIsMounted(true);
+    if (!userData && isMounted) {
+      router.push("login");
     }
-  }, [userData]);
+  }, [isMounted, userData]);
 
-  useEffect(() => {
-    if (isError) {
-      console.error(isError, error.message);
-    }
-  }, [isError, error]);
+  if (isError) {
+    console.error("Error fetching available requests:", error);
+  }
 
   return (
-    <main className="min-h-[85dvh]">
-      <div className="mx-auto max-w-7xl space-y-4">
-        {data
-          ? data.map((item) => <RequestCard item={item} key={item.id} />)
-          : null}
-
-        {isPending ? <Loader2 className="animate-spin" /> : null}
+    <main className="flex min-h-[85dvh] items-center justify-center bg-gray-100">
+      <div className="mx-auto max-w-7xl space-y-4 p-4">
+        {isLoading ? (
+          <div className="flex h-full items-center justify-center">
+            <Loader2 className="h-8 w-8 animate-spin text-primary" />
+          </div>
+        ) : data && data.length > 0 ? (
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {data.map((item) => (
+              <RequestCard item={item} key={item.id} />
+            ))}
+          </div>
+        ) : (
+          <p className="text-center text-gray-500">No requests available.</p>
+        )}
       </div>
     </main>
   );
