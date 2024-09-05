@@ -41,18 +41,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { useSearchParams } from "next/navigation";
-
-const BloodDonorSchema = z.object({
-  user: z.string(),
-  blood_group: z.string(),
-  district: z.string(),
-  date_of_donation: z.string().nullable(),
-  gender: z.string(),
-  is_available: z.boolean(),
-});
-
-const BloodDonorArraySchema = z.array(BloodDonorSchema);
-type BloodDonor = z.infer<typeof BloodDonorSchema>;
+import { type BloodDonor, BloodDonorArraySchema } from "@/query/searchDonor";
 
 const FormSchema = z.object({
   district: z

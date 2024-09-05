@@ -57,9 +57,6 @@ export default function RequestCard({ item }: Props) {
       <p className="text-gray-500">
         <strong>Gender:</strong> {item.gender}
       </p>
-      <p className="text-gray-500">
-        <strong>Accepted Donor ID:</strong> {item.accepted_donor_id ?? "N/A"}
-      </p>
       <Button
         onClick={handleClick}
         disabled={isPending || item.blood_request_type !== "Pending"}

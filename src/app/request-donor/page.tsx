@@ -156,8 +156,8 @@ function RequestDonor() {
 
   return (
     <main className="min-h-[85dvh]">
-      <div className="mx-auto max-w-7xl py-8">
-        <h2 className="py-8 text-center text-3xl font-bold">
+      <div className="mx-auto max-w-7xl px-2 py-8 xl:px-0">
+        <h2 className="py-8 text-center text-3xl font-bold text-rose-500">
           Request for Donation
         </h2>
         <Card className="mx-auto max-w-md p-4">

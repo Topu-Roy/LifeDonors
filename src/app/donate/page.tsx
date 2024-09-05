@@ -100,11 +100,11 @@ export default function Donate() {
           />
         </div>
       </div>
-      <div className="mx-auto h-full w-full max-w-7xl space-y-4 px-2 xl:px-0">
+      <div className="mx-auto h-full w-full max-w-7xl space-y-4 px-2 pt-4 xl:px-0">
         <Button variant={"outline"} onClick={() => setSearchRequestArray(null)}>
           Reset
         </Button>
-        <p className="bg-destructive px-8 py-4 font-semibold text-white">
+        <p className="bg-destructive px-8 py-3 font-semibold text-white lg:py-4">
           {searchRequestArray
             ? `${searchRequestArray.length} requests found`
             : data

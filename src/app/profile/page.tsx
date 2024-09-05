@@ -391,15 +391,20 @@ function ProfilePage() {
                     {[
                       { label: "Username", value: profile.user },
                       { label: "Blood Group", value: profile.blood_group },
-                      { label: "District", value: profile.district || "N/A" },
+                      { label: "District", value: profile.district ?? "N/A" },
                       {
                         label: "Last Donation",
                         value: profile.date_of_donation ?? "N/A",
                       },
-                      { label: "Gender", value: profile.gender || "N/A" },
+                      { label: "Gender", value: profile.gender ?? "N/A" },
                       {
                         label: "Available",
                         value: profile.is_available ? "Yes" : "No",
+                      },
+                      { label: "Email", value: profile.email ?? "N/A" },
+                      {
+                        label: "Mobile",
+                        value: profile.mobile_number ?? "N/A",
                       },
                     ].map((item, idx) => (
                       <div

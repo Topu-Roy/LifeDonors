@@ -1,7 +1,5 @@
 import Link from "next/link";
 import dynamic from "next/dynamic";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Menu } from "lucide-react";
 import { Button } from "./ui/button";
 const SearchDialog = dynamic(() => import("./SearchDialog"), { ssr: false });
 import Avatar from "./Avatar";
@@ -17,50 +15,7 @@ export default function NavBar() {
           </Link>
           <div className="inline-flex items-center justify-between gap-4 lg:hidden">
             <SearchDialog />
-            <Sheet>
-              <SheetTrigger asChild>
-                <Button variant={"ghost"}>
-                  <Menu size={30} />
-                </Button>
-              </SheetTrigger>
-              <SheetContent className="w-[60%]">
-                <div className="flex flex-col items-end justify-center gap-8 pt-8">
-                  <Link
-                    href={"/"}
-                    className="w-full transition-all hover:scale-105"
-                  >
-                    <Button variant={"ghost"} className="w-full">
-                      Home
-                    </Button>
-                  </Link>
-                  <Link
-                    href={"/about"}
-                    className="w-full transition-all hover:scale-105"
-                  >
-                    <Button variant={"ghost"} className="w-full">
-                      About
-                    </Button>
-                  </Link>
-                  <Link
-                    href={"/contact"}
-                    className="w-full transition-all hover:scale-105"
-                  >
-                    <Button variant={"ghost"} className="w-full">
-                      Contact
-                    </Button>
-                  </Link>
-                  <Link
-                    href={"/search-donors"}
-                    className="w-full transition-all hover:scale-105"
-                  >
-                    <Button variant={"ghost"} className="w-full">
-                      Search Donors
-                    </Button>
-                  </Link>
-                  <MobileNavButtons />
-                </div>
-              </SheetContent>
-            </Sheet>
+            <MobileNavButtons />
           </div>
           <div className="hidden items-center justify-end gap-4 lg:flex">
             <SearchDialog />
