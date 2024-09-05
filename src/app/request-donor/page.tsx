@@ -62,6 +62,12 @@ const formSchema = z.object({
   details: z.string().min(1, { message: "Details cannot be empty." }),
 });
 
+function getRandomNote(note: string) {
+  const randomId = crypto.randomUUID();
+
+  return `${randomId} ${note}`;
+}
+
 function getCurrentDateFormatted(date: Date) {
   const month = String(date.getMonth() + 1).padStart(2, "0");
   const day = String(date.getDate()).padStart(2, "0");
@@ -123,7 +129,7 @@ function RequestDonor() {
       district: data.district,
       date_of_donation: getCurrentDateFormatted(date),
       gender: data.gender,
-      details: data.details,
+      details: getRandomNote(data.details),
     };
 
     mutate({ data: formValues });
@@ -331,7 +337,7 @@ function RequestDonor() {
               />
 
               <div className="flex flex-col gap-3">
-                <FormLabel>Select a date</FormLabel>
+                <FormLabel>Select donation date</FormLabel>
                 <Popover>
                   <PopoverTrigger asChild>
                     <Button

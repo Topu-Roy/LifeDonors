@@ -114,7 +114,7 @@ function RegisterPage() {
       });
     }
 
-    if (isSuccess) {
+    if (isSuccess && !isError) {
       toast({
         title: "Congrats 🎉🎉",
         description: "Please check your email for verification link.",

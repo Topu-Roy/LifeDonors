@@ -343,7 +343,7 @@ function ProfilePage() {
                             />
 
                             <div>
-                              <FormLabel>Select a date</FormLabel>
+                              <FormLabel>Last donation</FormLabel>
                               <Popover>
                                 <PopoverTrigger asChild>
                                   <Button

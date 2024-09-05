@@ -68,6 +68,12 @@ function getCurrentDateFormatted(date: Date) {
   return `${year}-${month}-${day}`;
 }
 
+function getRandomNote(note: string) {
+  const randomId = crypto.randomUUID();
+
+  return `${randomId} ${note}`;
+}
+
 type Props = {
   authData: UserData | null;
 };
@@ -132,7 +138,7 @@ export default function CreateRequest({ authData }: Props) {
       district: data.district,
       date_of_donation: getCurrentDateFormatted(requestDate),
       gender: data.gender,
-      details: data.details,
+      details: getRandomNote(data.details),
     };
 
     mutate({ data: formValues });
@@ -328,7 +334,7 @@ export default function CreateRequest({ authData }: Props) {
             />
 
             <div className="flex flex-col gap-3">
-              <FormLabel>Select a date</FormLabel>
+              <FormLabel>Select donation date</FormLabel>
               <Popover>
                 <PopoverTrigger asChild>
                   <Button
