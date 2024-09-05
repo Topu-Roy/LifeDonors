@@ -12,6 +12,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 const Search = dynamic(() => import("./search"), { ssr: false });
 import { Button } from "@/components/ui/button";
+import { useProfileDetailsQuery } from "@/query/profile";
 
 export default function Donate() {
   const userData = useUserStore((state) => state.userData);
@@ -24,10 +25,28 @@ export default function Donate() {
   const [searchRequestArray, setSearchRequestArray] = useState<
     RequestType[] | null
   >(null);
+  const { data: profileData } = useProfileDetailsQuery(
+    userData ? parseInt(userData.userId!) : undefined,
+  );
 
   function updateSearchRequests({ data }: { data: RequestType[] }) {
     setSearchRequestArray(data);
   }
+
+  useEffect(() => {
+    if (!isMounted) return;
+    if (!profileData) return;
+
+    const info = profileData[0]!;
+
+    if (
+      info.date_of_donation === null ||
+      info.gender === "" ||
+      info.district === ""
+    ) {
+      router.push("/profile");
+    }
+  }, [profileData, isMounted]);
 
   useEffect(() => {
     setIsMounted(true);

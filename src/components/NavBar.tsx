@@ -12,7 +12,7 @@ export default function NavBar() {
     <header className="sticky left-0 top-0 z-50 w-full bg-destructive text-white">
       <div className="mx-auto w-full max-w-[80rem] px-2 xl:px-0">
         <div className="flex items-center justify-between py-6">
-          <Link href={"/"} className="flex-1 text-xl font-black">
+          <Link href={"/"} className="flex-1 text-2xl font-black">
             LifeDonors
           </Link>
           <div className="inline-flex items-center justify-between gap-4 lg:hidden">
@@ -57,14 +57,6 @@ export default function NavBar() {
                       Search Donors
                     </Button>
                   </Link>
-                  <Link
-                    href={"/donate"}
-                    className="w-full transition-all hover:scale-105"
-                  >
-                    <Button variant={"ghost"} className="w-full">
-                      Donate
-                    </Button>
-                  </Link>
                   <MobileNavButtons />
                 </div>
               </SheetContent>
@@ -89,6 +81,12 @@ export default function NavBar() {
             </Link>
             <Link href={"/donate"} className="transition-all hover:scale-105">
               <Button variant={"ghost"}>Donate</Button>
+            </Link>
+            <Link
+              href={"/request-donor"}
+              className="transition-all hover:scale-105"
+            >
+              <Button variant={"ghost"}>Request</Button>
             </Link>
             <Avatar />
           </div>

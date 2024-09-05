@@ -127,7 +127,11 @@ function SearchDonorsPage() {
                 : "0 donors found"}
           </p>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {isLoading ? <Loader2 className="animate-spin" /> : showDonorList()}
+            {isLoading ? (
+              <Loader2 className="ml-8 mt-8 animate-spin" />
+            ) : (
+              showDonorList()
+            )}
           </div>
         </div>
       </div>

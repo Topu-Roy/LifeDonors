@@ -46,6 +46,7 @@ import { useUserStore } from "@/store/userData";
 import { Suspense, useEffect, useState } from "react";
 import { Calendar } from "@/components/ui/calendar";
 import { useRequestDonorMutation } from "@/query/requestDonor";
+import { useProfileDetailsQuery } from "@/query/profile";
 
 const formSchema = z.object({
   blood_group: z
@@ -75,6 +76,9 @@ function RequestDonor() {
   const { toast } = useToast();
   const router = useRouter();
   const { mutate, isSuccess, isPending, isError } = useRequestDonorMutation();
+  const { data: profileData } = useProfileDetailsQuery(
+    userData ? parseInt(userData.userId!) : undefined,
+  );
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -86,6 +90,20 @@ function RequestDonor() {
       gender: "",
     },
   });
+
+  useEffect(() => {
+    if (!profileData) return;
+
+    const info = profileData[0]!;
+
+    if (
+      info.date_of_donation === null ||
+      info.gender === "" ||
+      info.district === ""
+    ) {
+      router.push("/profile");
+    }
+  }, [profileData]);
 
   async function onSubmit(data: z.infer<typeof formSchema>) {
     if (!date) {
@@ -138,7 +156,7 @@ function RequestDonor() {
 
   return (
     <main className="min-h-[85dvh]">
-      <div className="mx-auto max-w-7xl py-4">
+      <div className="mx-auto max-w-7xl py-8">
         <h2 className="py-8 text-center text-3xl font-bold">
           Request for Donation
         </h2>

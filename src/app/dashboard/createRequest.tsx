@@ -74,7 +74,7 @@ type Props = {
 
 export default function CreateRequest({ authData }: Props) {
   const [open, setOpen] = useState(false);
-  const [requestDate, setRequestDate] = useState<Date | undefined>(new Date());
+  const [requestDate, setRequestDate] = useState<Date | undefined>(undefined);
   const { toast } = useToast();
   const { mutate, isPending, isError, isSuccess } = useRequestDonorMutation();
 
@@ -332,26 +332,21 @@ export default function CreateRequest({ authData }: Props) {
               <Popover>
                 <PopoverTrigger asChild>
                   <Button
-                    variant={"outline"}
+                    variant="outline"
                     className={cn(
-                      "flex-1 justify-start text-left font-normal",
+                      "mt-1 w-full justify-start text-left font-normal",
                       !requestDate && "text-muted-foreground",
                     )}
                   >
                     <CalendarIcon className="mr-2 h-4 w-4" />
-                    {requestDate ? (
-                      format(requestDate, "PPP")
-                    ) : (
-                      <span>Pick a date</span>
-                    )}
+                    {requestDate ? format(requestDate, "PPP") : "Pick a date"}
                   </Button>
                 </PopoverTrigger>
-                <PopoverContent className="w-auto p-0">
+                <PopoverContent className="w-auto p-0" align="start">
                   <Calendar
                     mode="single"
                     selected={requestDate}
-                    onSelect={setRequestDate}
-                    initialFocus
+                    onSelect={(date) => setRequestDate(date)}
                   />
                 </PopoverContent>
               </Popover>

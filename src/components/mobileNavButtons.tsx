@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import Link from "next/link";
 import { Button } from "./ui/button";
@@ -18,6 +18,19 @@ export default function MobileNavButtons() {
 
   return userData ? (
     <>
+      <Link href={"/donate"} className="w-full transition-all hover:scale-105">
+        <Button variant={"ghost"} className="w-full">
+          Donate
+        </Button>
+      </Link>
+      <Link
+        href={"/request-donor"}
+        className="w-full transition-all hover:scale-105"
+      >
+        <Button variant={"ghost"} className="w-full">
+          Request
+        </Button>
+      </Link>
       <Link
         href={"/dashboard"}
         className="w-full transition-all hover:scale-105"
@@ -41,11 +54,18 @@ export default function MobileNavButtons() {
     </>
   ) : (
     <>
-      <Link href={"/register"} className="transition-all hover:scale-105">
-        <Button variant={"ghost"}>Register</Button>
+      <Link
+        href={"/register"}
+        className="w-full transition-all hover:scale-105"
+      >
+        <Button variant={"ghost"} className="w-full">
+          Register
+        </Button>
       </Link>
-      <Link href={"/login"} className="transition-all hover:scale-105">
-        <Button variant={"ghost"}>Log In</Button>
+      <Link href={"/login"} className="w-full transition-all hover:scale-105">
+        <Button variant={"ghost"} className="w-full">
+          Log In
+        </Button>
       </Link>
     </>
   );
