@@ -23,12 +23,6 @@ export default function NavBar() {
             <Link href={"/"} className="transition-all hover:scale-105">
               <Button variant={"ghost"}>Home</Button>
             </Link>
-            <Link href={"/about"} className="transition-all hover:scale-105">
-              <Button variant={"ghost"}>About</Button>
-            </Link>
-            <Link href={"/contact"} className="transition-all hover:scale-105">
-              <Button variant={"ghost"}>Contact</Button>
-            </Link>
             <Link
               href={"/search-donors"}
               className="transition-all hover:scale-105"
@@ -44,6 +38,13 @@ export default function NavBar() {
             >
               <Button variant={"ghost"}>Request</Button>
             </Link>
+            <Link href={"/about"} className="transition-all hover:scale-105">
+              <Button variant={"ghost"}>About</Button>
+            </Link>
+            <Link href={"/contact"} className="transition-all hover:scale-105">
+              <Button variant={"ghost"}>Contact</Button>
+            </Link>
+
             <Avatar />
           </div>
         </div>
