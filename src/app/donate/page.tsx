@@ -62,6 +62,10 @@ export default function Donate() {
           <Loader2 className="h-8 w-8 animate-spin text-primary" />
         </div>
       );
+    } else if (searchRequestArray !== null && searchRequestArray.length === 0) {
+      return (
+        <p className="text-center text-gray-500">No search results found.</p>
+      );
     } else if (searchRequestArray && searchRequestArray.length > 0) {
       return (
         <div className="grid h-full w-full grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
