@@ -23,7 +23,7 @@ export default function MobileNavButtons() {
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
-        <Button variant={"ghost"}>
+        <Button variant={"ghost"} className="px-1">
           <Menu size={30} />
         </Button>
       </SheetTrigger>

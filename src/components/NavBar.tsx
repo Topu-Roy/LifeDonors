@@ -13,8 +13,9 @@ export default function NavBar() {
           <Link href={"/"} className="flex-1 text-2xl font-black">
             LifeDonors
           </Link>
-          <div className="inline-flex items-center justify-between gap-4 lg:hidden">
+          <div className="inline-flex items-center justify-between gap-3 lg:hidden">
             <SearchDialog />
+            <Avatar />
             <MobileNavButtons />
           </div>
           <div className="hidden items-center justify-end gap-4 lg:flex">
