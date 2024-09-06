@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
 import { CircleCheck } from "lucide-react";
-import DonorDetailsPopup from "./donorDetails";
+import ReceiverDetailsPopUp from "./ReceiverDetails";
 
 type Props = {
   item: {
@@ -24,10 +24,7 @@ export default function DonationItem({ item }: Props) {
         <p className="w-full min-w-32 flex-1 text-center">{item.gender}</p>
         <p className="w-full min-w-32 flex-1 text-center">{item.district}</p>
         <div className="flex w-full min-w-32 flex-1 items-center justify-center">
-          <DonorDetailsPopup
-            status={item.blood_request_type}
-            donor_id={parseInt(item.approve_donor_id)}
-          />
+          <ReceiverDetailsPopUp donor_id={parseInt(item.approve_donor_id)} />
         </div>
         <div
           className={cn(
