@@ -22,6 +22,7 @@ const DonateSchema = z.object({
   blood_request_type: z.string(),
   gender: z.enum(["Male", "Female"]),
   details: z.string(),
+  approve_donor_id: z.string(),
 });
 
 const ApiResponseSchema = z.object({
