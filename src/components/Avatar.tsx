@@ -55,8 +55,10 @@ export default function Avatar() {
                 <div className="flex items-center justify-center gap-2 py-2 text-base font-medium text-gray-800">
                   <MapPin size={18} />
                   <p>
-                    {profileData.district.charAt(0).toUpperCase() +
-                      profileData.district.slice(1)}
+                    {profileData.district
+                      ? profileData.district.charAt(0).toUpperCase() +
+                        profileData.district.slice(1)
+                      : null}
                   </p>
                 </div>
               </div>
