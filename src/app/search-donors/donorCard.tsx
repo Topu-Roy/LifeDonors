@@ -8,14 +8,20 @@ import {
 
 type Props = {
   donor: {
-    user: string;
+    id: number;
+    user: {
+      username: string;
+      first_name: string;
+      last_name: string;
+      is_active: boolean;
+    };
     blood_group: string;
     district: string;
     date_of_donation: string | null;
     gender: string;
     is_available: boolean;
-    mobile_number: string | null;
-    email: string | null;
+    mobile_number: string;
+    email: string;
   };
 };
 
@@ -26,7 +32,7 @@ export default function DonorCard({ donor }: Props) {
         <UserRound size={40} className="text-destructive/80" />
       </div>
       <div className="w-full divide-y divide-black/10">
-        <InfoRow label="Name" value={donor.user} />
+        <InfoRow label="Name" value={donor.user.username} />
         <InfoRow label="Blood Group" value={donor.blood_group} />
         <InfoRow label="District" value={donor.district ?? "N/A"} />
         <InfoRow

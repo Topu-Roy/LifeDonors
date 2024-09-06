@@ -54,7 +54,7 @@ export default function RequestCard({ item }: Props) {
           {item.blood_request_type}
         </span>
       </div>
-      <p className="min-h-20 w-full flex-1 rounded-md bg-gray-200 p-2 text-gray-600">
+      <p className="min-h-20 w-full flex-1 rounded-md bg-gray-200/60 p-2 text-gray-600">
         {item.details.split(" ").slice(1).join(" ")}
       </p>
       <p className="text-gray-500">
