@@ -170,11 +170,11 @@ function ProfilePage() {
   return (
     <div className="min-h-[85dvh] overflow-x-hidden">
       <div className="mx-auto max-w-7xl px-2 xl:px-0">
-        <h2 className="mx-auto max-w-7xl py-10 text-4xl font-bold text-rose-500">
+        <h2 className="mx-auto max-w-7xl py-10 text-center text-4xl font-bold text-rose-500 lg:text-left">
           My Profile
         </h2>
-        <div className="grid grid-cols-1 flex-col items-center justify-center gap-8 md:grid-cols-2">
-          <Card className="flex h-full flex-col gap-4 p-4">
+        <div className="grid grid-cols-1 flex-col items-center justify-center gap-8 pb-8 md:grid-cols-2 md:pb-0">
+          <Card className="flex h-full flex-col gap-4 p-4 shadow-md">
             <div className="flex items-center justify-between gap-4">
               <Card className="flex w-full flex-col items-center justify-center py-4 text-center">
                 <p className="text-lg font-bold text-rose-800">
@@ -208,7 +208,7 @@ function ProfilePage() {
             ? data.map((profile, index) => (
                 <Card
                   key={index}
-                  className="w-full rounded-lg bg-white p-6 shadow-lg"
+                  className="w-full rounded-lg bg-white p-6 shadow-md"
                 >
                   <div className="flex w-full items-center justify-between pb-4">
                     <h3 className="pb-4 text-xl font-bold text-rose-500">

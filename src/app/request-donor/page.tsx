@@ -120,9 +120,12 @@ function RequestDonor() {
       });
     }
 
+    if (!profileData) return;
+    if (!profileData[0]) return;
     if (!userData) return;
 
     const formValues = {
+      donor: profileData[0].user,
       user_id: parseInt(userData.userId!),
       blood_group: data.blood_group,
       blood_request_type: data.blood_request_type,
@@ -163,7 +166,7 @@ function RequestDonor() {
   return (
     <main className="min-h-[85dvh]">
       <div className="mx-auto max-w-7xl px-2 py-8 xl:px-0">
-        <h2 className="py-8 text-center text-3xl font-bold text-rose-500">
+        <h2 className="pb-8 text-center text-3xl font-bold text-rose-500">
           Request for Donation
         </h2>
         <Card className="mx-auto max-w-md p-4">

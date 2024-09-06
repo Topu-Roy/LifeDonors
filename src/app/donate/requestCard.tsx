@@ -54,7 +54,7 @@ export default function RequestCard({ item }: Props) {
         <strong>District:</strong> {item.district}
       </p>
       <p className="text-gray-500">
-        <strong>Request by:</strong> {item.donor.split(" ")[0]}
+        <strong>Request by:</strong> {item.donor}
       </p>
       <p className="text-gray-500">
         <strong>Gender:</strong> {item.gender}

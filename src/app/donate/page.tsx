@@ -90,7 +90,7 @@ export default function Donate() {
   }
 
   return (
-    <main className="min-h-[85dvh] bg-white">
+    <main className="min-h-[85dvh] overflow-hidden bg-white">
       <div className="w-full bg-red-50 py-8">
         <div className="mx-auto max-w-7xl px-2 xl:px-0">
           <Search
@@ -100,7 +100,7 @@ export default function Donate() {
           />
         </div>
       </div>
-      <div className="mx-auto h-full w-full max-w-7xl space-y-4 px-2 pt-4 xl:px-0">
+      <div className="mx-auto h-full w-full max-w-7xl space-y-4 px-2 py-4 xl:px-0">
         <Button variant={"outline"} onClick={() => setSearchRequestArray(null)}>
           Reset
         </Button>
