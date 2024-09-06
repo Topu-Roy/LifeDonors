@@ -19,7 +19,7 @@ type Props = {
 
 export default function RequestCard({ item }: Props) {
   const { data: acceptedDonor } = useProfileDetailsQuery(
-    parseInt(item.accepted_donor_id),
+    parseInt(item.accepted_donor_id!),
   );
   const userData = useUserStore((state) => state.userData);
   const { mutate, isPending, isError, error } = useAcceptRequestMutation();
