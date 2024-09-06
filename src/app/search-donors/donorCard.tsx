@@ -5,6 +5,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { useToast } from "@/hooks/use-toast";
 
 type Props = {
   donor: {
@@ -26,6 +27,21 @@ type Props = {
 };
 
 export default function DonorCard({ donor }: Props) {
+  const { toast } = useToast();
+
+  function copyToClipboard(text: string, label: string) {
+    navigator.clipboard.writeText(text).then(
+      () => {
+        toast({
+          title: `${label} has been copied to the clipboard`,
+        });
+      },
+      (err) => {
+        console.error("Failed to copy text: ", err);
+      },
+    );
+  }
+
   return (
     <Card className="flex flex-col items-center space-y-4 rounded-lg border border-gray-200 bg-white p-6 shadow-md">
       <div className="flex size-16 items-center justify-center rounded-full bg-rose-100">
@@ -43,7 +59,12 @@ export default function DonorCard({ donor }: Props) {
 
         <Tooltip>
           <TooltipTrigger className="w-full">
-            <div className="flex items-start justify-between py-2">
+            <div
+              onClick={() =>
+                copyToClipboard(donor.email ?? "N/A", "Email address")
+              }
+              className="flex items-start justify-between py-2 hover:cursor-help"
+            >
               <p className="font-medium text-gray-700">Email</p>
               <div className="max-w-[60%] overflow-hidden">
                 <p className="truncate font-semibold text-gray-600">
@@ -57,7 +78,17 @@ export default function DonorCard({ donor }: Props) {
           </TooltipContent>
         </Tooltip>
 
-        <InfoRow label="Mobile" value={donor.mobile_number ?? "N/A"} />
+        <div
+          onClick={() =>
+            copyToClipboard(donor.mobile_number ?? "N/A", "Mobile number")
+          }
+          className="flex items-start justify-between py-2 hover:cursor-help"
+        >
+          <p className="font-medium text-gray-600">Mobile</p>
+          <p className="text-right font-semibold text-gray-600">
+            {donor.mobile_number ?? "N/A"}
+          </p>
+        </div>
       </div>
     </Card>
   );

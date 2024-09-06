@@ -16,11 +16,12 @@ type Props = {
 
 export default function ReceiverDetailsPopUp({ donor_id }: Props) {
   const { toast } = useToast();
-  function copyToClipboard(text: string) {
+
+  function copyToClipboard(text: string, label: string) {
     navigator.clipboard.writeText(text).then(
       () => {
         toast({
-          title: "Email has been copied to the clipboard",
+          title: `${label} has been copied to the clipboard`,
         });
       },
       (err) => {
@@ -71,7 +72,9 @@ export default function ReceiverDetailsPopUp({ donor_id }: Props) {
                 </p>
               </div>
               <div
-                onClick={() => copyToClipboard(data.email ?? "N/A")}
+                onClick={() =>
+                  copyToClipboard(data.email ?? "N/A", "Email address")
+                }
                 className="flex items-center justify-between gap-8 py-2 text-sm hover:cursor-help"
               >
                 <p className="font-semibold text-gray-700">Email</p>
@@ -79,7 +82,12 @@ export default function ReceiverDetailsPopUp({ donor_id }: Props) {
                   {data.email ?? "N/A"}
                 </p>
               </div>
-              <div className="flex items-center justify-between py-2 text-sm">
+              <div
+                onClick={() =>
+                  copyToClipboard(data.mobile_number ?? "N/A", "Mobile number")
+                }
+                className="flex items-center justify-between py-2 text-sm hover:cursor-help"
+              >
                 <p className="font-semibold text-gray-700">Mobile</p>
                 <p className="text-gray-800">{data.mobile_number ?? "N/A"}</p>
               </div>

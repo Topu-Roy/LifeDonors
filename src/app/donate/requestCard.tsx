@@ -2,6 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { useToast } from "@/hooks/use-toast";
 import useAcceptRequestMutation from "@/query/acceptRequest";
 import { type BloodRequestSchema } from "@/query/availableRequests";
 import { useProfileDetailsQuery } from "@/query/profile";
@@ -24,6 +25,20 @@ export default function RequestCard({ item }: Props) {
   const userData = useUserStore((state) => state.userData);
   const { mutate, isPending, isError, error } = useAcceptRequestMutation();
   const router = useRouter();
+  const { toast } = useToast();
+
+  function copyToClipboard(text: string, label: string) {
+    navigator.clipboard.writeText(text).then(
+      () => {
+        toast({
+          title: `${label} has been copied to the clipboard`,
+        });
+      },
+      (err) => {
+        console.error("Failed to copy text: ", err);
+      },
+    );
+  }
 
   function handleClick() {
     if (!userData) return router.push("/login");
@@ -66,11 +81,24 @@ export default function RequestCard({ item }: Props) {
       <p className="text-gray-500">
         <strong>Gender:</strong> {item.gender}
       </p>
-      <div className="flex w-full items-center justify-start gap-2">
+      <div
+        onClick={() =>
+          copyToClipboard(acceptedDonor?.email ?? "N/A", "Email address")
+        }
+        className="flex w-full items-center justify-start gap-2 hover:cursor-help"
+      >
         <p className="font-bold text-gray-500">Email:</p>
         <p className="flex-1 truncate text-gray-500">{acceptedDonor?.email}</p>
       </div>
-      <p className="text-gray-500">
+      <p
+        onClick={() =>
+          copyToClipboard(
+            acceptedDonor?.mobile_number ?? "N/A",
+            "Mobile number",
+          )
+        }
+        className="text-gray-500 hover:cursor-help"
+      >
         <strong>Phone:</strong> {acceptedDonor?.mobile_number}
       </p>
       <Button

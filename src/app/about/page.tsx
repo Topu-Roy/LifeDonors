@@ -6,12 +6,12 @@ import { Suspense } from "react";
 function AboutPage() {
   return (
     <main className="min-h-[85dvh] w-full bg-gray-100">
-      <div className="mx-auto w-full max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
-        <h1 className="text-4xl font-bold tracking-tight text-red-600 sm:text-5xl md:text-6xl">
-          LifeDonors
+      <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
+        <h1 className="py-14 text-center text-4xl font-bold tracking-tight text-red-600 sm:text-5xl md:text-left md:text-6xl">
+          About LifeDonors
         </h1>
 
-        <div className="mt-12 grid gap-8 lg:grid-cols-2">
+        <div className="grid gap-8 lg:grid-cols-2">
           <Card>
             <CardHeader>
               <CardTitle className="text-rose-500">Our Story</CardTitle>
