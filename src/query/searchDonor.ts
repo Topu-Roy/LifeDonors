@@ -19,8 +19,9 @@ const DonorSchema = z.object({
   mobile_number: z.string(),
   email: z.string(),
 });
+
 export type BloodDonor = z.infer<typeof DonorSchema>;
-const DonorsArraySchema = z.array(DonorSchema);
+export const DonorsArraySchema = z.array(DonorSchema);
 
 export function useSearchDonorQuery() {
   const query = useQuery({
