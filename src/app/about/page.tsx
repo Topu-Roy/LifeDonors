@@ -7,7 +7,7 @@ function AboutPage() {
   return (
     <main className="min-h-[85dvh] w-full bg-gray-100">
       <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
-        <h1 className="py-14 text-center text-4xl font-bold tracking-tight text-red-600 sm:text-5xl md:text-left md:text-6xl">
+        <h1 className="py-8 text-center text-4xl font-bold tracking-tight text-red-600 sm:text-5xl md:py-10 md:text-left md:text-6xl lg:py-12 xl:py-14">
           About LifeDonors
         </h1>
 
