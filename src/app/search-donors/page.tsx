@@ -45,8 +45,8 @@ function SearchDonorsPage() {
   const donorCount = displayedDonors.length;
 
   return (
-    <main className="min-h-[85dvh]">
-      <div className="w-full bg-rose-50">
+    <main className="min-h-[85dvh] bg-gray-100">
+      <div className="w-full bg-rose-100">
         <Search updateSearchDonors={updateSearchDonors} />
       </div>
 

@@ -5,12 +5,12 @@ import DonorDetailsPopup from "./donorDetails";
 type Props = {
   item: {
     blood_group: string;
-    blood_request_type: string;
-    date_of_donation: string;
-    details: string;
     district: string;
+    date_of_donation: string;
+    gender: string;
     donor: string;
-    gender: "Male" | "Female";
+    blood_request_type: string;
+    details: string;
     approve_donor_id: string;
   };
 };

@@ -3,11 +3,14 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import useAcceptRequestMutation from "@/query/acceptRequest";
-import { type RequestType } from "@/query/availableRequests";
+import { BloodRequestSchema } from "@/query/availableRequests";
 import { useUserStore } from "@/store/userData";
 import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
+import type { z } from "zod";
+
+type RequestType = z.infer<typeof BloodRequestSchema>;
 
 type Props = {
   item: RequestType;
@@ -54,7 +57,7 @@ export default function RequestCard({ item }: Props) {
         <strong>District:</strong> {item.district}
       </p>
       <p className="text-gray-500">
-        <strong>Request by:</strong> {item.donor}
+        <strong>Request by:</strong> {item.donor.user.username}
       </p>
       <p className="text-gray-500">
         <strong>Gender:</strong> {item.gender}

@@ -5,7 +5,7 @@ import { Suspense } from "react";
 
 function AboutPage() {
   return (
-    <main className="min-h-[85dvh] w-full bg-gradient-to-b from-gray-100 to-white">
+    <main className="min-h-[85dvh] w-full bg-gray-100">
       <div className="mx-auto w-full max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
         <h1 className="text-4xl font-bold tracking-tight text-red-600 sm:text-5xl md:text-6xl">
           LifeDonors
@@ -42,7 +42,7 @@ function AboutPage() {
         </div>
 
         <Tabs defaultValue="vision" className="mt-12">
-          <TabsList className="grid w-full grid-cols-3">
+          <TabsList className="grid w-full grid-cols-3 bg-gray-200">
             <TabsTrigger value="vision">Vision</TabsTrigger>
             <TabsTrigger value="mission">Mission</TabsTrigger>
             <TabsTrigger value="objectives">Objectives</TabsTrigger>

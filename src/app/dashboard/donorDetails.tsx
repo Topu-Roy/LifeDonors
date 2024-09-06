@@ -27,58 +27,51 @@ export default function DonorDetailsPopup({ donor_id, status }: Props) {
         </Button>
       </PopoverTrigger>
       <PopoverContent>
-        {data
-          ? data.map((item, index) => (
-              <div
-                key={`${item.user}-${index}`}
-                className="rounded-lg bg-white"
-              >
-                <div className="w-full border-b-0">
-                  <div className="mx-auto flex size-14 items-center justify-center rounded-full bg-rose-100 text-rose-500">
-                    <User size={28} />
-                  </div>
-                </div>
-                <div className="divide-y divide-black/10 pt-2">
-                  <div className="flex w-full items-center justify-between py-2 text-sm">
-                    <p className="font-semibold text-gray-700">Username</p>
-                    <p className="text-gray-800">{item.user}</p>
-                  </div>
-                  <div className="flex items-center justify-between py-2 text-sm">
-                    <p className="font-semibold text-gray-700">Blood Group</p>
-                    <p className="text-gray-800">{item.blood_group}</p>
-                  </div>
-                  <div className="flex items-center justify-between py-2 text-sm">
-                    <p className="font-semibold text-gray-700">District</p>
-                    <p className="text-gray-800">{item.district ?? "N/A"}</p>
-                  </div>
-                  <div className="flex items-center justify-between py-2 text-sm">
-                    <p className="font-semibold text-gray-700">Gender</p>
-                    <p className="text-gray-800">{item.gender ?? "N/A"}</p>
-                  </div>
-                  <div className="flex items-center justify-between py-2 text-sm">
-                    <p className="font-semibold text-gray-700">Available</p>
-                    <p
-                      className={`text-sm font-semibold ${
-                        item.is_available ? "text-green-600" : "text-red-600"
-                      }`}
-                    >
-                      {item.is_available ? "Yes" : "No"}
-                    </p>
-                  </div>
-                  <div className="flex items-center justify-between py-2 text-sm">
-                    <p className="font-semibold text-gray-700">Email</p>
-                    <p className="text-gray-800">{item.email ?? "N/A"}</p>
-                  </div>
-                  <div className="flex items-center justify-between py-2 text-sm">
-                    <p className="font-semibold text-gray-700">Mobile</p>
-                    <p className="text-gray-800">
-                      {item.mobile_number ?? "N/A"}
-                    </p>
-                  </div>
-                </div>
+        {data ? (
+          <div className="rounded-lg bg-white">
+            <div className="w-full border-b-0">
+              <div className="mx-auto flex size-14 items-center justify-center rounded-full bg-rose-100 text-rose-500">
+                <User size={28} />
               </div>
-            ))
-          : null}
+            </div>
+            <div className="divide-y divide-black/10 pt-2">
+              <div className="flex w-full items-center justify-between py-2 text-sm">
+                <p className="font-semibold text-gray-700">Username</p>
+                <p className="text-gray-800">{data.user.username}</p>
+              </div>
+              <div className="flex items-center justify-between py-2 text-sm">
+                <p className="font-semibold text-gray-700">Blood Group</p>
+                <p className="text-gray-800">{data.blood_group}</p>
+              </div>
+              <div className="flex items-center justify-between py-2 text-sm">
+                <p className="font-semibold text-gray-700">District</p>
+                <p className="text-gray-800">{data.district ?? "N/A"}</p>
+              </div>
+              <div className="flex items-center justify-between py-2 text-sm">
+                <p className="font-semibold text-gray-700">Gender</p>
+                <p className="text-gray-800">{data.gender ?? "N/A"}</p>
+              </div>
+              <div className="flex items-center justify-between py-2 text-sm">
+                <p className="font-semibold text-gray-700">Available</p>
+                <p
+                  className={`text-sm font-semibold ${
+                    data.is_available ? "text-green-600" : "text-red-600"
+                  }`}
+                >
+                  {data.is_available ? "Yes" : "No"}
+                </p>
+              </div>
+              <div className="flex items-center justify-between py-2 text-sm">
+                <p className="font-semibold text-gray-700">Email</p>
+                <p className="text-gray-800">{data.email ?? "N/A"}</p>
+              </div>
+              <div className="flex items-center justify-between py-2 text-sm">
+                <p className="font-semibold text-gray-700">Mobile</p>
+                <p className="text-gray-800">{data.mobile_number ?? "N/A"}</p>
+              </div>
+            </div>
+          </div>
+        ) : null}
 
         {isLoading ? <Loader2 className="animate-spin" /> : null}
         {isError ? (

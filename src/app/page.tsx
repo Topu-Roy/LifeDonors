@@ -118,9 +118,9 @@ function HomePage() {
 
       <Stats />
 
-      <CurveSVG className="bg-white" fillColor="#fecdd3" />
+      <CurveSVG className="bg-gray-100" fillColor="#fecdd3" />
 
-      <section className="flex min-h-[50dvh] w-full items-center justify-center bg-center py-16 md:py-24 lg:py-32">
+      <section className="flex min-h-[50dvh] w-full items-center justify-center bg-gray-100 bg-center py-16 md:py-24 lg:py-32">
         <div className="container mx-auto max-w-3xl px-4 text-center">
           <div className="space-y-6">
             <h2 className="text-3xl font-bold tracking-tight text-red-500 md:text-4xl lg:text-5xl">
