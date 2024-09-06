@@ -3,7 +3,8 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import useAcceptRequestMutation from "@/query/acceptRequest";
-import { BloodRequestSchema } from "@/query/availableRequests";
+import { type BloodRequestSchema } from "@/query/availableRequests";
+import { useProfileDetailsQuery } from "@/query/profile";
 import { useUserStore } from "@/store/userData";
 import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -17,6 +18,9 @@ type Props = {
 };
 
 export default function RequestCard({ item }: Props) {
+  const { data: acceptedDonor } = useProfileDetailsQuery(
+    parseInt(item.accepted_donor_id),
+  );
   const userData = useUserStore((state) => state.userData);
   const { mutate, isPending, isError, error } = useAcceptRequestMutation();
   const router = useRouter();
@@ -33,8 +37,8 @@ export default function RequestCard({ item }: Props) {
   }, [isError]);
 
   return (
-    <Card className="space-y-2 rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
-      <div className="flex items-center justify-between">
+    <Card className="flex flex-col items-start justify-between space-y-2 rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
+      <div className="flex w-full items-center justify-between">
         <h3 className="text-lg font-semibold text-gray-700">
           {item.blood_group}
         </h3>
@@ -50,7 +54,7 @@ export default function RequestCard({ item }: Props) {
           {item.blood_request_type}
         </span>
       </div>
-      <p className="text-gray-600">
+      <p className="min-h-20 w-full flex-1 rounded-md bg-gray-200 p-2 text-gray-600">
         {item.details.split(" ").slice(1).join(" ")}
       </p>
       <p className="text-gray-500">
@@ -61,6 +65,13 @@ export default function RequestCard({ item }: Props) {
       </p>
       <p className="text-gray-500">
         <strong>Gender:</strong> {item.gender}
+      </p>
+      <div className="flex w-full items-center justify-start gap-2">
+        <p className="font-bold text-gray-500">Email:</p>
+        <p className="flex-1 truncate text-gray-500">{acceptedDonor?.email}</p>
+      </div>
+      <p className="text-gray-500">
+        <strong>Phone:</strong> {acceptedDonor?.mobile_number}
       </p>
       <Button
         onClick={handleClick}
