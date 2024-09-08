@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
-import useAcceptRequestMutation from "@/query/acceptRequest";
+import { useAcceptRequestMutation } from "@/query/acceptRequest";
 import { type BloodRequestSchema } from "@/query/availableRequests";
 import { useProfileDetailsQuery } from "@/query/profile";
 import { useUserStore } from "@/store/userData";

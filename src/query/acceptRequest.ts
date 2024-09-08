@@ -5,7 +5,7 @@ type Props = {
   donorId: number;
 };
 
-export default function useAcceptRequestMutation() {
+export function useAcceptRequestMutation() {
   const queryClient = useQueryClient();
   const mutation = useMutation({
     mutationKey: ["accept-request"],
@@ -26,4 +26,24 @@ export default function useAcceptRequestMutation() {
   });
 
   return { ...mutation };
+}
+
+export function useCancelDonationMutation() {
+  const queryClient = useQueryClient();
+  useMutation({
+    mutationFn: async ({ donorId, requestId }: Props) => {
+      await fetch(
+        `https://life-donors.onrender.com/users/cancel/donate/${requestId}/?donor_id=${donorId}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        },
+      );
+    },
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ["available-requests"] });
+    },
+  });
 }
