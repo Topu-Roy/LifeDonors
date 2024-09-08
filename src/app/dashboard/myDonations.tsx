@@ -57,7 +57,7 @@ export default function MyDonations({ authData }: Props) {
             </div>
           </div>
         ) : (
-          <p>You haven&apos;t donated yet.</p>
+          <p className="italic text-gray-600">No donations are made yet.</p>
         )}
       </Card>
     </div>

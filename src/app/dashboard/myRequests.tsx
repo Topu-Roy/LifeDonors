@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils";
 import useApproveRequestMutation from "@/query/approveRequest";
 import { type myRequestSchema, useDashboardQuery } from "@/query/dashboard";
 import { type UserData } from "@/store/userData";
-import { CircleCheck, Loader2 } from "lucide-react";
+import { CircleCheck, Ellipsis, Loader2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import type { z } from "zod";
 import DonorDetailsPopup from "./donorDetails";
@@ -179,7 +179,9 @@ export default function MyRequests({ authData }: Props) {
                     <p className="w-full min-w-32 flex-1 text-center">
                       <Popover>
                         <PopoverTrigger asChild>
-                          <Button variant={"outline"}>More</Button>
+                          <Button variant={"outline"}>
+                            <Ellipsis />
+                          </Button>
                         </PopoverTrigger>
                         <PopoverContent>
                           <div className="w-full space-y-2">
@@ -245,7 +247,7 @@ export default function MyRequests({ authData }: Props) {
             </div>
           </div>
         ) : (
-          <p>No requests are made yet.</p>
+          <p className="italic text-gray-600">No requests are made yet.</p>
         )}
       </Card>
     </div>
