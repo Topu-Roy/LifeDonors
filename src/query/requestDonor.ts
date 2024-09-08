@@ -38,7 +38,7 @@ export function useRequestDonorMutation() {
   return { ...mutation };
 }
 
-type DeleteRequestProps = {
+type MutationProps = {
   reqId: number;
   donorId: number;
 };
@@ -46,7 +46,7 @@ type DeleteRequestProps = {
 export function useDeleteRequestMutation() {
   const queryClient = useQueryClient();
   const mutation = useMutation({
-    mutationFn: async ({ donorId, reqId }: DeleteRequestProps) => {
+    mutationFn: async ({ donorId, reqId }: MutationProps) => {
       await fetch(
         `https://life-donors.onrender.com/users/delete/request/${reqId}/?donor_id=${donorId}`,
         {
@@ -65,15 +65,10 @@ export function useDeleteRequestMutation() {
   return { ...mutation };
 }
 
-type CancelRequestProps = {
-  reqId: number;
-  donorId: number;
-};
-
 export function useCancelRequestMutation() {
   const queryClient = useQueryClient();
   const mutation = useMutation({
-    mutationFn: async ({ donorId, reqId }: CancelRequestProps) => {
+    mutationFn: async ({ donorId, reqId }: MutationProps) => {
       await fetch(
         `https://life-donors.onrender.com/users/cancel/request/${reqId}/?donor_id=${donorId}`,
         {

@@ -30,7 +30,7 @@ export function useAcceptRequestMutation() {
 
 export function useCancelDonationMutation() {
   const queryClient = useQueryClient();
-  useMutation({
+  const mutation = useMutation({
     mutationFn: async ({ donorId, requestId }: Props) => {
       await fetch(
         `https://life-donors.onrender.com/users/cancel/donate/${requestId}/?donor_id=${donorId}`,
@@ -46,4 +46,6 @@ export function useCancelDonationMutation() {
       await queryClient.invalidateQueries({ queryKey: ["available-requests"] });
     },
   });
+
+  return { ...mutation };
 }
