@@ -85,7 +85,7 @@ export default function RequestCard({ item }: Props) {
         onClick={() =>
           copyToClipboard(acceptedDonor?.email ?? "N/A", "Email address")
         }
-        className="flex w-full items-center justify-start gap-2 hover:cursor-help"
+        className="flex w-full items-center justify-start gap-2 hover:cursor-pointer"
       >
         <p className="font-bold text-gray-500">Email:</p>
         <p className="flex-1 truncate text-gray-500">{acceptedDonor?.email}</p>
@@ -97,7 +97,7 @@ export default function RequestCard({ item }: Props) {
             "Mobile number",
           )
         }
-        className="text-gray-500 hover:cursor-help"
+        className="text-gray-500 hover:cursor-pointer"
       >
         <strong>Phone:</strong> {acceptedDonor?.mobile_number}
       </p>

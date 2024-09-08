@@ -75,7 +75,7 @@ export default function ReceiverDetailsPopUp({ donor_id }: Props) {
                 onClick={() =>
                   copyToClipboard(data.email ?? "N/A", "Email address")
                 }
-                className="flex items-center justify-between gap-8 py-2 text-sm hover:cursor-help"
+                className="flex items-center justify-between gap-8 py-2 text-sm hover:cursor-pointer"
               >
                 <p className="font-semibold text-gray-700">Email</p>
                 <p className="flex-1 overflow-hidden truncate text-gray-800">
@@ -86,7 +86,7 @@ export default function ReceiverDetailsPopUp({ donor_id }: Props) {
                 onClick={() =>
                   copyToClipboard(data.mobile_number ?? "N/A", "Mobile number")
                 }
-                className="flex items-center justify-between py-2 text-sm hover:cursor-help"
+                className="flex items-center justify-between py-2 text-sm hover:cursor-pointer"
               >
                 <p className="font-semibold text-gray-700">Mobile</p>
                 <p className="text-gray-800">{data.mobile_number ?? "N/A"}</p>
