@@ -1,29 +1,86 @@
-# Create T3 App
+# LifeDonors Platform
 
-This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3-app`.
+[![LifeDonors Hero](https://github.com/Topu-Roy/LifeDonors-Convex/blob/main/public/og-image.png?raw=true)](https://lifedonors.vercel.app)
 
-## What's next? How do I make an app with this?
+**LifeDonors** is a modern, privacy-focused blood donation management platform designed to connect people in need with voluntary blood donors in their community. Built with speed, safety, and visual excellence in mind, the platform provides real-time tracking of blood requests and donor availability.
 
-We try to keep this project as simple as possible, so you can start with just the scaffolding we set up for you, and add additional things later when they become necessary.
+## 🩸 Core Mission
 
-If you are not familiar with the different technologies used in this project, please refer to the respective docs. If you still are in the wind, please join our [Discord](https://t3.gg/discord) and ask for help.
+Our goal is to bridges the gap between those who need blood and those who want to give it. By utilizing modern web technologies, we've created a platform that is not only functional but also intuitive and visually stunning—ensuring that help is just a few clicks away when every second counts.
 
-- [Next.js](https://nextjs.org)
-- [NextAuth.js](https://next-auth.js.org)
-- [Prisma](https://prisma.io)
-- [Drizzle](https://orm.drizzle.team)
-- [Tailwind CSS](https://tailwindcss.com)
-- [tRPC](https://trpc.io)
+## ✨ Key Features
 
-## Learn More
+- **Eligibility Checker**: An interactive tool that helps users determine their eligibility to donate based on vitals like age, BMI, and hemoglobin levels.
+- **Urgent Blood Requests**: A searchable, filterable explorer to find nearby blood needs by location, blood type, and urgency.
+- **Comprehensive Profiles**: Secure donor profiles that calculate donor metrics and track donation history.
+- **Donor Dashboard**: A centralized hub for donors and requesters to manage their commitments and active requests.
+- **Admin Controls**: A powerful interface for system administrators to monitor platform stats, manage seed data, and ensure platform health.
+- **Privacy-First Design**: Built with data security at the core, ensuring health information is only accessible to relevant parties.
 
-To learn more about the [T3 Stack](https://create.t3.gg/), take a look at the following resources:
+## 🛠️ Tech Stack
 
-- [Documentation](https://create.t3.gg/)
-- [Learn the T3 Stack](https://create.t3.gg/en/faq#what-learning-resources-are-currently-available) — Check out these awesome tutorials
+- **Framework**: [Next.js 16](https://nextjs.org/) (App Router)
+- **Database & Backend**: [Convex](https://www.convex.dev/) (Real-time backend)
+- **Authentication**: [Better Auth](https://www.better-auth.com/) with Convex integration
+- **Styling**: [Tailwind CSS 4](https://tailwindcss.com/)
+- **UI Components**: [Shadcn UI](https://ui.shadcn.com/) + [Lucide React](https://lucide.dev/)
+- **State Management**: [Jotai](https://jotai.org/)
+- **Runtime**: [Bun](https://bun.sh/)
 
-You can check out the [create-t3-app GitHub repository](https://github.com/t3-oss/create-t3-app) — your feedback and contributions are welcome!
+## 🚀 Getting Started
 
-## How do I deploy this?
+### Prerequisites
 
-Follow our deployment guides for [Vercel](https://create.t3.gg/en/deployment/vercel), [Netlify](https://create.t3.gg/en/deployment/netlify) and [Docker](https://create.t3.gg/en/deployment/docker) for more information.
+- [Bun](https://bun.sh/) installed on your machine.
+- A [Convex](https://www.convex.dev/) account and project.
+- Environment variables configured for Better Auth and Convex.
+
+### Installation
+
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/Topu-Roy/LifeDonors-Convex.git
+   cd LifeDonors-Convex
+   ```
+
+2. **Install dependencies:**
+   ```bash
+   bun install
+   ```
+
+3. **Initialize Convex:**
+   ```bash
+   bun x convex dev
+   ```
+
+4. **Environment Variables:**
+   Create a `.env.local` file and add the necessary credentials:
+   ```env
+   # Better Auth
+   BETTER_AUTH_SECRET=your_secret
+   BETTER_AUTH_URL=http://localhost:3000
+
+   # Convex
+   CONVEX_DEPLOYMENT=your_deployment_id
+   NEXT_PUBLIC_CONVEX_URL=your_convex_url
+   ```
+
+5. **Start the development server:**
+   ```bash
+   bun dev
+   ```
+
+## 🧪 Seeding Data
+
+For development and testing, you can use the built-in seeding scripts to populate your database with dummy requests and profiles:
+
+```bash
+# Generate and push seed data
+bun seed:generate
+```
+
+Alternatively, use the **Admin Dashboard** (`/admin`) to trigger seeding or clear the database directly from the UI.
+
+---
+
+Built with ❤️ for a better community.
