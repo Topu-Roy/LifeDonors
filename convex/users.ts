@@ -1,3 +1,4 @@
+import { type Doc } from "@/convex/_generated/dataModel";
 import { mutation, query } from "@/convex/_generated/server";
 import { authComponent, createAuth } from "@/convex/betterAuth/auth";
 import { v } from "convex/values";
@@ -70,8 +71,6 @@ export const getMyProfile = query({
     };
   },
 });
-
-import { type Doc } from "@/convex/_generated/dataModel";
 
 export function checkEligibilityLogic(userData: Doc<"profiles">) {
   const { age, bmi, hemoglobinLevel, lastDonationDate, diseases } = userData;

@@ -57,13 +57,11 @@ export function Volunteers({ volunteers, requestId, isOwner }: Props) {
   const rejectDonor = useMutation(api.donations.rejectDonor);
   const updateDonationStatus = useMutation(api.donations.updateDonationStatus);
   const offerDonation = useMutation(api.donations.offerDonation);
-
   const [isOffering, setIsOffering] = useState(false);
 
   const handleSelectDonor = async (donationId: Id<"donations">) => {
     try {
-      await selectDonor({ donationId });
-      toast.success("Donor selected!");
+      await selectDonor({ donationId }).then(() => toast.success("Donor selected!"));
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Failed to select donor");
     }
@@ -71,8 +69,7 @@ export function Volunteers({ volunteers, requestId, isOwner }: Props) {
 
   const handleRejectDonor = async (donationId: Id<"donations">) => {
     try {
-      await rejectDonor({ donationId, requestId });
-      toast.success("Donor rejected");
+      await rejectDonor({ donationId, requestId }).then(() => toast.success("Donor rejected"));
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Failed to reject donor");
     }
@@ -80,8 +77,7 @@ export function Volunteers({ volunteers, requestId, isOwner }: Props) {
 
   const handleUpdateStatus = async (donationId: Id<"donations">, status: "Donated" | "No Show") => {
     try {
-      await updateDonationStatus({ donationId, status });
-      toast.success(`Marked as ${status}`);
+      await updateDonationStatus({ donationId, status }).then(() => toast.success(`Marked as ${status}`));
     } catch {
       toast.error("Failed to update status");
     }
@@ -90,8 +86,9 @@ export function Volunteers({ volunteers, requestId, isOwner }: Props) {
   const handleOfferHelp = async () => {
     setIsOffering(true);
     try {
-      await offerDonation({ requestId });
-      toast.success("Thank you for volunteering! The requester will be notified.");
+      await offerDonation({ requestId }).then(() =>
+        toast.success("Thank you for volunteering! The requester will be notified.")
+      );
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Failed to offer help");
     } finally {
@@ -101,7 +98,7 @@ export function Volunteers({ volunteers, requestId, isOwner }: Props) {
 
   const myProfile = useQuery(api.users.getMyProfile);
   const serverHasVolunteered = useQuery(api.donations.hasVolunteered, { requestId });
-  
+
   // Use server check as primary source of truth, fall back to local filter if query is loading
   const hasVolunteered = serverHasVolunteered ?? volunteers.some(v => v.donorId === myProfile?._id);
   const myDonation = volunteers.find(v => v.donorId === myProfile?._id);

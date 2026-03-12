@@ -59,17 +59,10 @@ export const offerDonation = mutation({
       .first();
 
     if (existingDonation) {
-      if (existingDonation.status === "Rejected") {
-        throw new Error("Your past volunteer offer for this request was rejected.");
-      }
-      if (existingDonation.status !== "Withdrawn" && existingDonation.status !== "Cancelled") {
-        throw new Error("You have already volunteered for this request.");
-      }
-      // Re-activate
-      await ctx.db.patch("donations", existingDonation._id, {
-        status: "Offered",
-      });
-      return existingDonation._id;
+      return {
+        id: existingDonation._id,
+        status: existingDonation.status,
+      };
     }
 
     // Create donation record as "Offered"
@@ -79,7 +72,10 @@ export const offerDonation = mutation({
       status: "Offered",
     });
 
-    return donationId;
+    return {
+      id: donationId,
+      status: "Offered",
+    };
   },
 });
 
