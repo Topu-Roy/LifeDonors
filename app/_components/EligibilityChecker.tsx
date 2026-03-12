@@ -55,7 +55,7 @@ export function EligibilityChecker() {
 
     if (recentTattoo === "yes") {
       setStatus("not-eligible");
-      setMessage("There is a 4-month deferral period for new tattoos, piercings, or cosmetic injectables.");
+      setMessage("There is a 4-month deferral period for new tattoos, piercings, or cosmetic injectable.");
       return;
     }
 
@@ -81,7 +81,7 @@ export function EligibilityChecker() {
   };
 
   return (
-    <Card className="border-border group relative overflow-hidden shadow-lg transition-all duration-300">
+    <Card className="border-border group relative overflow-hidden py-6 shadow-lg transition-all duration-300 md:p-8">
       <div className="pointer-events-none absolute top-0 right-0 p-4 opacity-5 transition-opacity group-hover:opacity-10">
         <Sparkles className="text-primary h-24 w-24" />
       </div>
