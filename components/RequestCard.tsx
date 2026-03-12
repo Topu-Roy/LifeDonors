@@ -7,6 +7,7 @@ import { ChevronRight, Clock, Hospital, MapPin, TrendingUp, User } from "lucide-
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { extractConvexError } from "@/lib/helpers/convexErrorExtractor";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { Button, buttonVariants } from "@/components/ui/button";
@@ -44,7 +45,13 @@ function timeAgo(date: number) {
   return `${Math.floor(hours / 24)}d ago`;
 }
 
-function RequestHeader({ request, userVolunteered }: { request: RequestCardProps["request"]; userVolunteered?: boolean }) {
+function RequestHeader({
+  request,
+  userVolunteered,
+}: {
+  request: RequestCardProps["request"];
+  userVolunteered?: boolean;
+}) {
   return (
     <div className="flex items-start justify-between">
       <div className="flex items-center gap-4">
@@ -215,10 +222,13 @@ export function RequestCard({ request, isOwner: isOwnerProp }: RequestCardProps)
     }
 
     try {
-      await acceptRequest({ requestId: request._id });
-      toast.success("You have volunteered to help!");
+      await acceptRequest({ requestId: request._id }).then(() => toast.success("You have volunteered to help!"));
     } catch (err) {
-      toast.error(err instanceof Error ? err.message : "Failed to volunteer");
+      if (err instanceof Error) {
+        toast.error(extractConvexError(err));
+      } else {
+        toast.error("Failed to volunteer");
+      }
     }
   };
 

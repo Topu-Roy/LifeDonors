@@ -6,6 +6,7 @@ import { useMutation, useQuery } from "convex/react";
 import { ShieldAlert } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { extractConvexError } from "@/lib/helpers/convexErrorExtractor";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -31,8 +32,8 @@ export function DangerZone({ requestId }: { requestId: Id<"requests"> }) {
       await cancelRequest({ requestId: request._id });
       toast.success("Request cancelled");
       router.push("/requests");
-    } catch {
-      toast.error("Failed to cancel request");
+    } catch (error) {
+      toast.error(error instanceof Error ? extractConvexError(error) : "Failed to cancel request");
     }
   };
 

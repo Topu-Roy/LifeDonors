@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Droplet } from "lucide-react";
 import { toast } from "sonner";
 import { authClient } from "@/lib/auth-client";
+import { extractConvexError } from "@/lib/helpers/convexErrorExtractor";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Spinner } from "@/components/ui/spinner";
@@ -21,7 +22,7 @@ export default function SignInPage() {
       })
       .catch(err => {
         if (err instanceof Error) {
-          toast.error(err.message ?? "Error while signing in with Google!");
+          toast.error(extractConvexError(err));
         } else {
           toast.error("Error while signing in with Google!");
         }
@@ -40,7 +41,7 @@ export default function SignInPage() {
       })
       .catch(err => {
         if (err instanceof Error) {
-          toast.error(err.message ?? "Error while signing in with Github!");
+          toast.error(extractConvexError(err) ?? "Error while signing in with Github!");
         } else {
           toast.error("Error while signing in with Github!");
         }

@@ -6,6 +6,7 @@ import { useMutation, usePaginatedQuery } from "convex/react";
 import { Droplet } from "lucide-react";
 import Link from "next/link";
 import { toast } from "sonner";
+import { extractConvexError } from "@/lib/helpers/convexErrorExtractor";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { Button, buttonVariants } from "@/components/ui/button";
@@ -26,7 +27,7 @@ export function DonationTab() {
       await updateDonationStatus({ donationId, status });
       toast.success(`Donation marked as ${status}`);
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : "Failed to update");
+      toast.error(error instanceof Error ? extractConvexError(error) : "Failed to update");
     }
   };
 
@@ -37,7 +38,7 @@ export function DonationTab() {
         toast.success("Commitment withdrawn");
       }
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : "Failed to withdraw");
+      toast.error(error instanceof Error ? extractConvexError(error) : "Failed to withdraw");
     }
   };
 

@@ -7,6 +7,7 @@ import { useConvexAuth, useMutation, useQuery } from "convex/react";
 import { CheckCircle2, Heart, LogIn, MapPin, User, XCircle } from "lucide-react";
 import Link from "next/link";
 import { toast } from "sonner";
+import { extractConvexError } from "@/lib/helpers/convexErrorExtractor";
 import { cn } from "@/lib/utils";
 import {
   AlertDialog,
@@ -63,7 +64,7 @@ export function Volunteers({ volunteers, requestId, isOwner }: Props) {
     try {
       await selectDonor({ donationId }).then(() => toast.success("Donor selected!"));
     } catch (err) {
-      toast.error(err instanceof Error ? err.message : "Failed to select donor");
+      toast.error(err instanceof Error ? extractConvexError(err) : "Failed to select donor");
     }
   };
 
@@ -71,15 +72,15 @@ export function Volunteers({ volunteers, requestId, isOwner }: Props) {
     try {
       await rejectDonor({ donationId, requestId }).then(() => toast.success("Donor rejected"));
     } catch (err) {
-      toast.error(err instanceof Error ? err.message : "Failed to reject donor");
+      toast.error(err instanceof Error ? extractConvexError(err) : "Failed to reject donor");
     }
   };
 
   const handleUpdateStatus = async (donationId: Id<"donations">, status: "Donated" | "No Show") => {
     try {
       await updateDonationStatus({ donationId, status }).then(() => toast.success(`Marked as ${status}`));
-    } catch {
-      toast.error("Failed to update status");
+    } catch (err) {
+      toast.error(err instanceof Error ? extractConvexError(err) : "Failed to update status");
     }
   };
 
@@ -90,7 +91,7 @@ export function Volunteers({ volunteers, requestId, isOwner }: Props) {
         toast.success("Thank you for volunteering! The requester will be notified.")
       );
     } catch (err) {
-      toast.error(err instanceof Error ? err.message : "Failed to offer help");
+      toast.error(err instanceof Error ? extractConvexError(err) : "Failed to offer help");
     } finally {
       setIsOffering(false);
     }

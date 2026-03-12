@@ -10,6 +10,7 @@ import { ArrowLeft, Calendar as CalendarIcon, CheckCircle2, Heart, Loader2, Spar
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import * as z from "zod";
+import { extractConvexError } from "@/lib/helpers/convexErrorExtractor";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Field, FieldDescription, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field";
@@ -75,7 +76,7 @@ export function EligibilityStep() {
         toast.success("Profile setup complete!");
         router.push("/profile");
       } catch (error) {
-        toast.error(error instanceof Error ? error.message : "Failed to save profile");
+        toast.error(error instanceof Error ? extractConvexError(error) : "Failed to save profile");
       } finally {
         setIsSubmitting(false);
       }

@@ -5,6 +5,7 @@ import { api } from "@/convex/_generated/api";
 import { useMutation } from "convex/react";
 import { Database, Loader2 } from "lucide-react";
 import { toast } from "sonner";
+import { extractConvexError } from "@/lib/helpers/convexErrorExtractor";
 import { Button } from "@/components/ui/button";
 
 export function SeedDatabase() {
@@ -23,7 +24,7 @@ export function SeedDatabase() {
         toast.error(result.message);
       }
     } catch (err) {
-      toast.error(err instanceof Error ? err.message : "Failed to seed database");
+      toast.error(err instanceof Error ? extractConvexError(err) : "Failed to seed database");
     } finally {
       setIsSeeding(false);
     }

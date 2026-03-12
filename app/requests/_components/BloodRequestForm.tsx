@@ -17,6 +17,7 @@ import { Field, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { extractConvexError } from "@/lib/helpers/convexErrorExtractor";
 
 const bloodTypes = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"] as const;
 const urgencies = ["Low", "Medium", "High", "Critical"] as const;
@@ -84,7 +85,7 @@ export function BloodRequestForm({ onSuccess, className, initialData, requestId 
         onSuccess?.();
       } catch (error) {
         if (error instanceof Error) {
-          toast.error(error.message);
+          toast.error(extractConvexError(error));
         } else {
           toast.error("Failed to create request");
         }

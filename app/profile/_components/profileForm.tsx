@@ -12,6 +12,7 @@ import { useMutation } from "convex/react";
 import { ShieldCheck } from "lucide-react";
 import { toast } from "sonner";
 import * as z from "zod";
+import { extractConvexError } from "@/lib/helpers/convexErrorExtractor";
 import { Button } from "@/components/ui/button";
 import { Field, FieldDescription, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
@@ -69,7 +70,7 @@ export function ProfileForm({ profile, onSuccess }: { profile?: ProfileType; onS
         onSuccess();
       } catch (error) {
         if (error instanceof Error) {
-          toast.error(error.message);
+          toast.error(extractConvexError(error));
         } else {
           toast.error("Failed to update profile");
         }
