@@ -99,14 +99,12 @@ export function Volunteers({ volunteers, requestId, isOwner }: Props) {
     }
   };
 
-  // Check if current user has already volunteered
-  // Note: Since we can't easily get the userId from useConvexAuth directly in a clean way
-  // without another query, and we know `donorId` in donations is the Better Auth subject,
-  // we can use the same logic as elsewhere or just check if any donation belongs to the user
-  // if we had their ID. Let's use getMyProfile to be sure.
   const myProfile = useQuery(api.users.getMyProfile);
-  const hasVolunteered = volunteers.some(v => v.donorId === myProfile?.userId);
-  const myDonation = volunteers.find(v => v.donorId === myProfile?.userId);
+  const serverHasVolunteered = useQuery(api.donations.hasVolunteered, { requestId });
+  
+  // Use server check as primary source of truth, fall back to local filter if query is loading
+  const hasVolunteered = serverHasVolunteered ?? volunteers.some(v => v.donorId === myProfile?._id);
+  const myDonation = volunteers.find(v => v.donorId === myProfile?._id);
 
   return (
     <div className="space-y-10 lg:col-span-2">
