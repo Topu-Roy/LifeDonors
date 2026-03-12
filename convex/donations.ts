@@ -28,7 +28,7 @@ export const offerDonation = mutation({
     const existingDonation = await ctx.db
       .query("donations")
       .withIndex("by_requestId", q => q.eq("requestId", args.requestId))
-      .filter(q => q.eq(q.field("donorId"), identity.subject))
+      .filter(q => q.eq(q.field("donorId"), profile._id))
       .first();
 
     if (existingDonation && existingDonation.status !== "Withdrawn") {
@@ -36,13 +36,14 @@ export const offerDonation = mutation({
     }
 
     // Create donation record as "Offered"
-    await ctx.db.insert("donations", {
-      donorId: identity.subject,
+    const donationId = await ctx.db.insert("donations", {
+      donorId: profile._id,
       requestId: args.requestId,
       status: "Offered",
       acceptedAt: Date.now(),
     });
-    // Note: Request remains "Open" until enough donors are "Selected"
+
+    return donationId;
   },
 });
 
@@ -52,10 +53,17 @@ export const hasVolunteered = query({
     const identity = await ctx.auth.getUserIdentity();
     if (!identity) return false;
 
+    const profile = await ctx.db
+      .query("profiles")
+      .withIndex("by_userId", q => q.eq("userId", identity.subject))
+      .first();
+
+    if (!profile) return false;
+
     const donation = await ctx.db
       .query("donations")
       .withIndex("by_requestId", q => q.eq("requestId", args.requestId))
-      .filter(q => q.eq(q.field("donorId"), identity.subject))
+      .filter(q => q.eq(q.field("donorId"), profile._id))
       .first();
 
     return !!donation && donation.status !== "Withdrawn" && donation.status !== "Rejected";
@@ -68,9 +76,16 @@ export const getMyDonations = query({
     const identity = await ctx.auth.getUserIdentity();
     if (!identity) return [];
 
+    const profile = await ctx.db
+      .query("profiles")
+      .withIndex("by_userId", q => q.eq("userId", identity.subject))
+      .first();
+
+    if (!profile) return [];
+
     const donations = await ctx.db
       .query("donations")
-      .withIndex("by_donorId", q => q.eq("donorId", identity.subject))
+      .withIndex("by_donorId", q => q.eq("donorId", profile._id))
       .collect();
 
     const enrichedDonations = await Promise.all(
@@ -93,9 +108,16 @@ export const getPaginatedMyDonations = query({
     const identity = await ctx.auth.getUserIdentity();
     if (!identity) throw new Error("Unauthorized");
 
+    const profile = await ctx.db
+      .query("profiles")
+      .withIndex("by_userId", q => q.eq("userId", identity.subject))
+      .first();
+
+    if (!profile) throw new Error("Profile not found");
+
     const paginatedDonations = await ctx.db
       .query("donations")
-      .withIndex("by_donorId", q => q.eq("donorId", identity.subject))
+      .withIndex("by_donorId", q => q.eq("donorId", profile._id))
       .order("desc")
       .paginate(args.paginationOpts);
 
@@ -136,7 +158,7 @@ export const updateDonationStatus = mutation({
       .withIndex("by_userId", q => q.eq("userId", identity.subject))
       .first();
 
-    const isDonor = donation.donorId === identity.subject;
+    const isDonor = donation.donorId === profile?._id;
     const isRequester = request.requesterId === profile?._id;
 
     if (!isDonor && !isRequester) throw new Error("Forbidden");
@@ -254,8 +276,13 @@ export const withdrawDonation = mutation({
     const identity = await ctx.auth.getUserIdentity();
     if (!identity) throw new Error("Unauthorized");
 
+    const profile = await ctx.db
+      .query("profiles")
+      .withIndex("by_userId", q => q.eq("userId", identity.subject))
+      .first();
+
     const donation = await ctx.db.get("donations", args.donationId);
-    if (donation?.donorId !== identity.subject) {
+    if (!donation || donation.donorId !== profile?._id) {
       throw new Error("Forbidden");
     }
 

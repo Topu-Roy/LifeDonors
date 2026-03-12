@@ -234,10 +234,7 @@ export const getMyRequests = query({
 
         const volunteers = await Promise.all(
           donations.map(async donation => {
-            const donorProfile = await ctx.db
-              .query("profiles")
-              .withIndex("by_userId", q => q.eq("userId", donation.donorId))
-              .first();
+            const donorProfile = await ctx.db.get("profiles", donation.donorId);
             return {
               ...donation,
               donor: donorProfile,
@@ -282,10 +279,7 @@ export const getPaginatedMyRequests = query({
 
         const volunteers = await Promise.all(
           donations.map(async donation => {
-            const donorProfile = await ctx.db
-              .query("profiles")
-              .withIndex("by_userId", q => q.eq("userId", donation.donorId))
-              .first();
+            const donorProfile = await ctx.db.get("profiles", donation.donorId);
             return {
               ...donation,
               donor: donorProfile,
@@ -339,10 +333,8 @@ export const getRequestById = query({
           };
         }
 
-        const donorProfile = await ctx.db
-          .query("profiles")
-          .withIndex("by_userId", q => q.eq("userId", donation.donorId))
-          .first();
+        const donorProfile = await ctx.db.get("profiles", donation.donorId);
+
         return {
           ...donation,
           donor: donorProfile,

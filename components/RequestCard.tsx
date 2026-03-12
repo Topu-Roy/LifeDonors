@@ -5,6 +5,7 @@ import { type Doc } from "@/convex/_generated/dataModel";
 import { useMutation, useQuery } from "convex/react";
 import { ChevronRight, Clock, Hospital, MapPin, TrendingUp, User } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
@@ -33,6 +34,7 @@ export function RequestCard({ request, isOwner: isOwnerProp }: RequestCardProps)
   const user = useQuery(api.users.getMyProfile);
   const acceptRequest = useMutation(api.donations.offerDonation);
   const userVolunteered = useQuery(api.donations.hasVolunteered, { requestId: request._id });
+  const router = useRouter();
 
   const isOwner = isOwnerProp ?? user?._id === request.requesterId;
 
@@ -41,7 +43,7 @@ export function RequestCard({ request, isOwner: isOwnerProp }: RequestCardProps)
     e.stopPropagation();
 
     if (!user) {
-      toast.error("Please log in to volunteer.");
+      router.push("/sign-in");
       return;
     }
 
@@ -169,15 +171,15 @@ export function RequestCard({ request, isOwner: isOwnerProp }: RequestCardProps)
         {/* Card Action */}
         <div className="pt-2">
           {isOwner ? (
-            <Link
-              href={`/requests/${request._id}`}
-              className={cn(
-                buttonVariants({ variant: "default" }),
-                "shadow-primary/20 bg-primary group h-14 w-full gap-2 rounded-2xl text-base font-black shadow-lg transition-all hover:scale-[1.02] active:scale-95"
-              )}
-            >
-              Review Request
-              <ChevronRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
+            <Link href={`/requests/${request._id}`}>
+              <Button
+                className={
+                  "shadow-primary/20 group h-14 w-full gap-2 text-base font-black shadow-lg transition-all hover:scale-[1.02] active:scale-95"
+                }
+              >
+                Review Request
+                <ChevronRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
+              </Button>
             </Link>
           ) : (
             <div className="flex gap-2">
@@ -195,7 +197,7 @@ export function RequestCard({ request, isOwner: isOwnerProp }: RequestCardProps)
                 disabled={userVolunteered}
                 className={cn(
                   "shadow-primary/20 bg-primary h-14 flex-2 gap-2 rounded-2xl text-base font-black shadow-lg transition-all hover:scale-[1.02] active:scale-95",
-                  userVolunteered && "opacity-70 cursor-not-allowed shadow-none"
+                  userVolunteered && "cursor-not-allowed opacity-70 shadow-none"
                 )}
               >
                 {userVolunteered ? "Volunteered" : "Volunteer Now"}

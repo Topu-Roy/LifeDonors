@@ -68,7 +68,7 @@ export default defineSchema({
     }),
 
   donations: defineTable({
-    donorId: v.string(), // Better Auth userId
+    donorId: v.id("profiles"),
     requestId: v.id("requests"),
     status: v.union(
       v.literal("Offered"),
