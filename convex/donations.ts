@@ -10,9 +10,30 @@ export const offerDonation = mutation({
     const identity = await ctx.auth.getUserIdentity();
     if (!identity) throw new Error("Unauthorized");
 
+    // Check if user has a profile
+    const profile = await ctx.db
+      .query("profiles")
+      .withIndex("by_userId", q => q.eq("userId", identity.subject))
+      .first();
+
+    if (!profile) {
+      throw new Error("Please complete your donor profile before volunteering.");
+    }
+
     const request = await ctx.db.get("requests", args.requestId);
     if (!request) throw new Error("Request not found");
     if (request.status !== "Open") throw new Error("Request no longer open");
+
+    // Check if already volunteered
+    const existingDonation = await ctx.db
+      .query("donations")
+      .withIndex("by_requestId", q => q.eq("requestId", args.requestId))
+      .filter(q => q.eq(q.field("donorId"), identity.subject))
+      .first();
+
+    if (existingDonation && existingDonation.status !== "Withdrawn") {
+      throw new Error("You have already volunteered for this request.");
+    }
 
     // Create donation record as "Offered"
     await ctx.db.insert("donations", {
@@ -22,6 +43,22 @@ export const offerDonation = mutation({
       acceptedAt: Date.now(),
     });
     // Note: Request remains "Open" until enough donors are "Selected"
+  },
+});
+
+export const hasVolunteered = query({
+  args: { requestId: v.id("requests") },
+  handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) return false;
+
+    const donation = await ctx.db
+      .query("donations")
+      .withIndex("by_requestId", q => q.eq("requestId", args.requestId))
+      .filter(q => q.eq(q.field("donorId"), identity.subject))
+      .first();
+
+    return !!donation && donation.status !== "Withdrawn" && donation.status !== "Rejected";
   },
 });
 

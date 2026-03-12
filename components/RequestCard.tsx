@@ -32,12 +32,19 @@ function timeAgo(date: number) {
 export function RequestCard({ request, isOwner: isOwnerProp }: RequestCardProps) {
   const user = useQuery(api.users.getMyProfile);
   const acceptRequest = useMutation(api.donations.offerDonation);
+  const userVolunteered = useQuery(api.donations.hasVolunteered, { requestId: request._id });
 
   const isOwner = isOwnerProp ?? user?._id === request.requesterId;
 
   const handleAccept = async (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
+
+    if (!user) {
+      toast.error("Please log in to volunteer.");
+      return;
+    }
+
     try {
       await acceptRequest({ requestId: request._id });
       toast.success("You have volunteered to help!");
@@ -185,11 +192,13 @@ export function RequestCard({ request, isOwner: isOwnerProp }: RequestCardProps)
               </Link>
               <Button
                 onClick={handleAccept}
+                disabled={userVolunteered}
                 className={cn(
-                  "shadow-primary/20 bg-primary h-14 flex-2 gap-2 rounded-2xl text-base font-black shadow-lg transition-all hover:scale-[1.02] active:scale-95"
+                  "shadow-primary/20 bg-primary h-14 flex-2 gap-2 rounded-2xl text-base font-black shadow-lg transition-all hover:scale-[1.02] active:scale-95",
+                  userVolunteered && "opacity-70 cursor-not-allowed shadow-none"
                 )}
               >
-                Volunteer Now
+                {userVolunteered ? "Volunteered" : "Volunteer Now"}
               </Button>
             </div>
           )}

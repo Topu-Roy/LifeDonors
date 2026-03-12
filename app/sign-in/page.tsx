@@ -51,7 +51,7 @@ export default function SignInPage() {
   }
 
   return (
-    <div className="flex h-full flex-col items-center justify-center px-4 pt-20">
+    <div className="flex h-full flex-col items-center justify-center px-4 py-14">
       <div className="shadow-primary/5 w-full max-w-md space-y-4 rounded-3xl border bg-white px-6 py-12 text-center shadow-xl dark:bg-slate-900">
         <div className="mx-auto flex w-full items-center justify-center gap-3 pb-2">
           <div className="bg-primary shadow-primary/20 flex h-10 w-10 items-center justify-center rounded-xl shadow-lg">
