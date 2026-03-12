@@ -1,6 +1,18 @@
 import { mutation, query } from "@/convex/_generated/server";
 import { paginationOptsValidator } from "convex/server";
 import { v } from "convex/values";
+import { checkEligibilityLogic } from "./users";
+
+const COMPATIBILITY_MAP: Record<string, string[]> = {
+  "A+": ["A+", "AB+"],
+  "O+": ["O+", "A+", "B+", "AB+"],
+  "B+": ["B+", "AB+"],
+  "AB+": ["AB+"],
+  "A-": ["A+", "A-", "AB+", "AB-"],
+  "O-": ["A+", "O+", "B+", "AB+", "A-", "O-", "B-", "AB-"],
+  "B-": ["B+", "B-", "AB+", "AB-"],
+  "AB-": ["AB+", "AB-"],
+};
 
 export const offerDonation = mutation({
   args: {
@@ -24,6 +36,21 @@ export const offerDonation = mutation({
     if (!request) throw new Error("Request not found");
     if (request.status !== "Open") throw new Error("Request no longer open");
 
+    if (request.requesterId === profile._id) {
+      throw new Error("You cannot volunteer for your own request.");
+    }
+
+    const eligibility = checkEligibilityLogic(profile);
+    if (!eligibility.eligible) {
+      throw new Error(`Medical ineligibility: ${eligibility.reason}`);
+    }
+
+    if (profile.bloodType && !COMPATIBILITY_MAP[profile.bloodType]?.includes(request.bloodTypeNeeded)) {
+      throw new Error(
+        `Blood type incompatibility: Your blood type (${profile.bloodType}) is not compatible with ${request.bloodTypeNeeded}.`
+      );
+    }
+
     // Check if already volunteered
     const existingDonation = await ctx.db
       .query("donations")
@@ -31,8 +58,18 @@ export const offerDonation = mutation({
       .filter(q => q.eq(q.field("donorId"), profile._id))
       .first();
 
-    if (existingDonation && existingDonation.status !== "Withdrawn") {
-      throw new Error("You have already volunteered for this request.");
+    if (existingDonation) {
+      if (existingDonation.status === "Rejected") {
+        throw new Error("Your past volunteer offer for this request was rejected.");
+      }
+      if (existingDonation.status !== "Withdrawn" && existingDonation.status !== "Cancelled") {
+        throw new Error("You have already volunteered for this request.");
+      }
+      // Re-activate
+      await ctx.db.patch("donations", existingDonation._id, {
+        status: "Offered",
+      });
+      return existingDonation._id;
     }
 
     // Create donation record as "Offered"
@@ -40,7 +77,6 @@ export const offerDonation = mutation({
       donorId: profile._id,
       requestId: args.requestId,
       status: "Offered",
-      acceptedAt: Date.now(),
     });
 
     return donationId;
@@ -216,7 +252,7 @@ export const selectDonor = mutation({
       throw new Error("Can only select donors who have offered help");
     }
 
-    await ctx.db.patch("donations", args.donationId, { status: "Accepted" });
+    await ctx.db.patch("donations", args.donationId, { status: "Accepted", acceptedAt: Date.now() });
 
     // Check if we reached capacity
     const allAcceptedDonations = await ctx.db
