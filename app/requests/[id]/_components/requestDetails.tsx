@@ -38,6 +38,7 @@ import { Volunteers } from "./volunteers";
 export function RequestDetails({ requestId }: { requestId: Id<"requests"> }) {
   const [isEditOpen, setIsEditOpen] = useState(false);
   const request = useQuery(api.requests.getRequestById, { requestId });
+  const userVolunteered = useQuery(api.donations.hasVolunteered, { requestId });
 
   if (request === undefined) {
     return (
@@ -140,7 +141,12 @@ export function RequestDetails({ requestId }: { requestId: Id<"requests"> }) {
         </div>
 
         {/* Badges */}
-        <Badges isSeed={request.isSeed} status={request.status} urgency={request.urgency} />
+        <Badges
+          isSeed={request.isSeed}
+          status={request.status}
+          urgency={request.urgency}
+          userVolunteered={userVolunteered}
+        />
 
         {/* Seed Alert */}
         {request.isSeed ? (

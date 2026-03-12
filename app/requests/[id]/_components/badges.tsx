@@ -5,6 +5,7 @@ type Props = {
   urgency: "Low" | "Medium" | "High" | "Critical";
   isSeed: boolean | undefined;
   status: "Accepted" | "Completed" | "Cancelled" | "Open";
+  userVolunteered?: boolean;
 };
 
 const urgencyBadgeStyles = {
@@ -14,7 +15,7 @@ const urgencyBadgeStyles = {
   Critical: "bg-red-600 text-white animate-pulse",
 };
 
-export function Badges({ isSeed, status, urgency }: Props) {
+export function Badges({ isSeed, status, urgency, userVolunteered }: Props) {
   return (
     <div className="flex flex-wrap items-center gap-3">
       <Badge
@@ -29,7 +30,7 @@ export function Badges({ isSeed, status, urgency }: Props) {
       <Badge
         variant={status === "Completed" ? "default" : "outline"}
         className={cn(
-          "ppx-3 rounded-full py-4 text-xs font-black tracking-widest uppercase sm:px-4 sm:text-[10px]",
+          "rounded-full py-4 text-xs font-black tracking-widest uppercase px-3 sm:px-4 sm:text-[10px]",
           status === "Completed" && "border-none bg-green-500 text-white hover:bg-green-600",
           status === "Cancelled" && "border-none bg-slate-200 text-slate-500 dark:bg-slate-800",
           status === "Open" && "border-primary/20 text-primary"
@@ -40,6 +41,11 @@ export function Badges({ isSeed, status, urgency }: Props) {
       {isSeed && (
         <Badge className="rounded-full border-none bg-blue-100 px-3 py-4 text-xs font-black tracking-widest text-blue-600 uppercase sm:px-4 sm:text-[10px] dark:bg-blue-900/40 dark:text-blue-300">
           Demo Data
+        </Badge>
+      )}
+      {userVolunteered && (
+        <Badge className="bg-primary/20 text-primary border-primary/20 rounded-full border px-3 py-4 text-xs font-black tracking-widest uppercase sm:px-4 sm:text-[10px]">
+          Hero: You Volunteered
         </Badge>
       )}
     </div>

@@ -44,7 +44,7 @@ function timeAgo(date: number) {
   return `${Math.floor(hours / 24)}d ago`;
 }
 
-function RequestHeader({ request }: { request: RequestCardProps["request"] }) {
+function RequestHeader({ request, userVolunteered }: { request: RequestCardProps["request"]; userVolunteered?: boolean }) {
   return (
     <div className="flex items-start justify-between">
       <div className="flex items-center gap-4">
@@ -59,14 +59,21 @@ function RequestHeader({ request }: { request: RequestCardProps["request"] }) {
           {request.bloodTypeNeeded}
         </div>
         <div>
-          <Badge
-            className={cn(
-              "mb-1.5 rounded-full border-none px-3 py-1 text-[10px] font-black tracking-widest uppercase",
-              URGENCY_BADGE_STYLES[request.urgency]
+          <div className="flex flex-wrap gap-2">
+            <Badge
+              className={cn(
+                "mb-1.5 rounded-full border-none px-3 py-1 text-[10px] font-black tracking-widest uppercase",
+                URGENCY_BADGE_STYLES[request.urgency]
+              )}
+            >
+              {request.urgency}
+            </Badge>
+            {userVolunteered && (
+              <Badge className="bg-primary border-primary/20 mb-1.5 rounded-full border px-3 py-1 text-[10px] font-black tracking-widest text-slate-900 uppercase">
+                Volunteered
+              </Badge>
             )}
-          >
-            {request.urgency}
-          </Badge>
+          </div>
           <p className="flex items-center gap-1 text-sm font-bold text-slate-500 dark:text-slate-400">
             <TrendingUp className="text-primary h-3 w-3" />
             {request.numberOfBags} {request.numberOfBags > 1 ? "Bags" : "Bag"} Needed
@@ -223,7 +230,7 @@ export function RequestCard({ request, isOwner: isOwnerProp }: RequestCardProps)
       )}
     >
       <div className="flex h-full flex-col gap-6 p-6">
-        <RequestHeader request={request} />
+        <RequestHeader request={request} userVolunteered={userVolunteered} />
         <RequestBody request={request} />
         <div className="pt-2">
           <RequestActions
