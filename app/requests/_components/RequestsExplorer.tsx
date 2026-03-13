@@ -1,18 +1,12 @@
 "use client";
 
-import { useState } from "react";
 import { Filter } from "@/app/requests/_components/filters";
 import { api } from "@/convex/_generated/api";
-import {
-  filterBloodTypeAtom,
-  filterDistrictAtom,
-  filterDivisionAtom,
-  filterSubDistrictAtom,
-  filterUrgencyAtom,
-} from "@/state/requests/store";
-import { usePaginatedQuery } from "convex/react";
-import { useAtomValue } from "jotai";
+import { filterBloodTypeAtom, filterDistrictAtom, filterDivisionAtom, filterHasInitializedAtom, filterSubDistrictAtom, filterUrgencyAtom } from "@/state/requests/store";
+import { usePaginatedQuery, useQuery } from "convex/react";
+import { useAtom, useAtomValue } from "jotai";
 import { Filter as FilterIcon, Plus, Search } from "lucide-react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { RequestCard } from "@/components/RequestCard";
 import { Badge } from "@/components/ui/badge";
@@ -22,12 +16,24 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/co
 import { ActiveFilters, ClearFiltersButton } from "./activeFilters";
 
 export function RequestsExplorer() {
-  const filterBloodType = useAtomValue(filterBloodTypeAtom);
+  const [filterBloodType, setFilterBloodType] = useAtom(filterBloodTypeAtom);
+  const [hasInitialized, setHasInitialized] = useAtom(filterHasInitializedAtom);
+  const myProfile = useQuery(api.users.getMyProfile);
+
   const filterDivision = useAtomValue(filterDivisionAtom);
   const filterDistrict = useAtomValue(filterDistrictAtom);
   const filterSubDistrict = useAtomValue(filterSubDistrictAtom);
   const filterUrgency = useAtomValue(filterUrgencyAtom);
   const [searchQuery, setSearchQuery] = useState("");
+
+  useEffect(() => {
+    if (myProfile !== undefined && !hasInitialized) {
+      if (myProfile?.bloodType) {
+        setFilterBloodType(myProfile.bloodType);
+      }
+      setHasInitialized(true);
+    }
+  }, [myProfile, hasInitialized, setFilterBloodType, setHasInitialized]);
 
   const {
     results: requests,
@@ -63,7 +69,7 @@ export function RequestsExplorer() {
   return (
     <div className="flex flex-col gap-10 lg:flex-row">
       {/* Search and Mobile Filters Section */}
-      <div className="absolute top-[-90px] right-0 flex w-full flex-col items-stretch gap-4 sm:flex-row sm:items-center md:w-auto">
+      <div className="relative mb-6 flex w-full flex-col items-stretch gap-4 sm:flex-row sm:items-center md:w-auto lg:absolute lg:top-[-90px] lg:right-0 lg:mb-0">
         <div className="flex items-center gap-2">
           <div className="group relative flex-1 md:w-80">
             <Search className="group-focus-within:text-primary absolute top-1/2 left-4 h-4 w-4 -translate-y-1/2 text-slate-400 transition-colors" />
