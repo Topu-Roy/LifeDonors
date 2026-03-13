@@ -1,7 +1,7 @@
 import { EligibilityChecker } from "@/app/_components/EligibilityChecker";
 import { FeatureItem } from "@/app/_components/HomeFeatureItem";
 import { HomeRequests } from "@/app/_components/HomeRequests";
-import BloodDonationImage from "@/assets/images/blood-donation.jpg";
+import BloodDonationImage from "@/assets/images/blood-donation.webp";
 import { Activity, HandHeart, Search, ShieldCheck, Users } from "lucide-react";
 import type { Metadata } from "next";
 import Image from "next/image";
