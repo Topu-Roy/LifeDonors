@@ -20,54 +20,54 @@ export function ActiveFilters() {
   const [filterUrgency, setFilterUrgency] = useAtom(filterUrgencyAtom);
 
   const hasFilters =
-    (filterBloodType && filterBloodType !== "ALL") ||
-    (filterUrgency && filterUrgency !== "ALL") ||
+    (filterBloodType && filterBloodType !== "ALL") ??
+    (filterUrgency && filterUrgency !== "ALL") ??
     (filterDivision && filterDivision !== "ALL");
 
   if (!hasFilters) return null;
 
   return (
     <div className="flex flex-wrap gap-2">
-        {filterBloodType && filterBloodType !== "ALL" && (
-          <Badge
-            variant="secondary"
-            className="bg-primary/10 text-primary border-primary/20 gap-2 rounded-full px-3 py-3 text-xs font-bold"
+      {filterBloodType && filterBloodType !== "ALL" && (
+        <Badge
+          variant="secondary"
+          className="bg-primary/10 text-primary border-primary/20 gap-2 rounded-full px-3 py-3 text-xs font-bold"
+        >
+          {filterBloodType}
+          <button onClick={() => setFilterBloodType(undefined)}>
+            <X className="h-3 w-3 transition-colors hover:text-slate-900" />
+          </button>
+        </Badge>
+      )}
+      {filterUrgency && filterUrgency !== "ALL" && (
+        <Badge
+          variant="secondary"
+          className="bg-primary/10 text-primary border-primary/20 gap-2 rounded-full px-3 py-1.5 text-xs font-bold"
+        >
+          {filterUrgency}
+          <button onClick={() => setFilterUrgency(undefined)}>
+            <X className="h-3 w-3 transition-colors hover:text-slate-900" />
+          </button>
+        </Badge>
+      )}
+      {filterDivision && filterDivision !== "ALL" && (
+        <Badge
+          variant="secondary"
+          className="bg-primary/10 text-primary border-primary/20 gap-2 rounded-full px-3 py-1.5 text-xs font-bold"
+        >
+          {filterDivision}
+          <button
+            onClick={() => {
+              setFilterDivision(undefined);
+              setFilterDistrict(undefined);
+              setFilterSubDistrict(undefined);
+            }}
           >
-            {filterBloodType}
-            <button onClick={() => setFilterBloodType(undefined)}>
-              <X className="h-3 w-3 transition-colors hover:text-slate-900" />
-            </button>
-          </Badge>
-        )}
-        {filterUrgency && filterUrgency !== "ALL" && (
-          <Badge
-            variant="secondary"
-            className="bg-primary/10 text-primary border-primary/20 gap-2 rounded-full px-3 py-1.5 text-xs font-bold"
-          >
-            {filterUrgency}
-            <button onClick={() => setFilterUrgency(undefined)}>
-              <X className="h-3 w-3 transition-colors hover:text-slate-900" />
-            </button>
-          </Badge>
-        )}
-        {filterDivision && filterDivision !== "ALL" && (
-          <Badge
-            variant="secondary"
-            className="bg-primary/10 text-primary border-primary/20 gap-2 rounded-full px-3 py-1.5 text-xs font-bold"
-          >
-            {filterDivision}
-            <button
-              onClick={() => {
-                setFilterDivision(undefined);
-                setFilterDistrict(undefined);
-                setFilterSubDistrict(undefined);
-              }}
-            >
-              <X className="h-3 w-3 transition-colors hover:text-slate-900" />
-            </button>
-          </Badge>
-        )}
-      </div>
+            <X className="h-3 w-3 transition-colors hover:text-slate-900" />
+          </button>
+        </Badge>
+      )}
+    </div>
   );
 }
 

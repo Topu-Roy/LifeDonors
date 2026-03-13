@@ -29,6 +29,7 @@ export type ProfileType =
       subDistrict?: string | undefined;
       userId?: string | undefined;
       age?: number | undefined;
+      gender?: "Male" | "Female" | "Other" | undefined;
       bmi?: number | undefined;
       bloodType?: "A+" | "A-" | "B+" | "B-" | "AB+" | "AB-" | "O+" | "O-" | undefined;
       hemoglobinLevel?: number | undefined;

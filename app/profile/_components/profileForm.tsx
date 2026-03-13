@@ -19,9 +19,11 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 export const bloodTypes = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"] as const;
+export const genders = ["Male", "Female", "Other"] as const;
 
 const formSchema = z.object({
   age: z.number().min(18, "Must be at least 18").max(65, "Must be under 65"),
+  gender: z.enum(genders),
   bmi: z.number().min(18.5, "BMI too low").max(30, "BMI too high"),
   bloodType: z.enum(bloodTypes),
   hemoglobinLevel: z.number().min(12.5, "Hemoglobin too low").max(18, "Hemoglobin too high"),
@@ -39,6 +41,7 @@ export function ProfileForm({ profile, onSuccess }: { profile?: ProfileType; onS
   const form = useForm({
     defaultValues: {
       age: profile?.age ?? 0,
+      gender: profile?.gender ?? "Male",
       bmi: profile?.bmi ?? 0,
       bloodType: profile?.bloodType ?? "A+",
       hemoglobinLevel: profile?.hemoglobinLevel ?? 0,
@@ -104,6 +107,34 @@ export function ProfileForm({ profile, onSuccess }: { profile?: ProfileType; onS
                       field.handleChange(Number(e.target.value))
                     }
                   />
+                  {isInvalid && <FieldError errors={field.state.meta.errors} />}
+                </Field>
+              );
+            }}
+          </form.Field>
+          <form.Field name="gender">
+            {field => {
+              const isInvalid = field.state.meta.isTouched && !!field.state.meta.errors.length;
+              return (
+                <Field data-invalid={isInvalid}>
+                  <FieldLabel htmlFor={field.name}>Gender</FieldLabel>
+                  <Select
+                    onValueChange={val => {
+                      if (val) field.handleChange(val);
+                    }}
+                    value={field.state.value}
+                  >
+                    <SelectTrigger id={field.name}>
+                      <SelectValue placeholder="Select gender" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {genders.map(gender => (
+                        <SelectItem key={gender} value={gender}>
+                          {gender}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                   {isInvalid && <FieldError errors={field.state.meta.errors} />}
                 </Field>
               );
