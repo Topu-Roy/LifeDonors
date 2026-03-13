@@ -32,5 +32,4 @@ export const setupFormAtom = atom<Partial<SetupFormData>>({
   height: 0,
   hemoglobinLevel: 12.5,
   diseases: [],
-  lastDonationDate: 0,
 });

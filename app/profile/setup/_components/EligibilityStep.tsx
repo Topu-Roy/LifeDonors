@@ -65,11 +65,11 @@ export function EligibilityStep() {
         await updateProfile({
           age: finalData.age ?? 0,
           bmi: bmi,
-          bloodType: (finalData.bloodType as "A+" | "A-" | "B+" | "B-" | "AB+" | "AB-" | "O+" | "O-") || "A+",
+          bloodType: (finalData.bloodType as "A+") ?? "A+",
           hemoglobinLevel: finalData.hemoglobinLevel ?? 12.5,
           phoneNumber: finalData.phoneNumber ?? "",
           diseases: finalData.diseases ?? [],
-          lastDonationDate: finalData.lastDonationDate ?? 0,
+          lastDonationDate: date ? date.getTime() : 0,
           division: finalData.division ?? "",
           district: finalData.district ?? "",
           subDistrict: finalData.subDistrict ?? "",
