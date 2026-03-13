@@ -12,6 +12,7 @@ import {
   Droplets,
   Edit2,
   Hospital,
+  InfoIcon,
   MapPin,
   Phone,
   TrendingUp,
@@ -30,6 +31,8 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { Separator } from "@/components/ui/separator";
+import { Skeleton } from "@/components/ui/skeleton";
 import { Badges } from "./badges";
 import { DangerZone } from "./dangerZone";
 import { FulfillmentStatus } from "./fulfillmentStatus";
@@ -42,13 +45,13 @@ export function RequestDetails({ requestId }: { requestId: Id<"requests"> }) {
 
   if (request === undefined) {
     return (
-      <Container className="animate-pulse space-y-8 py-12">
-        <div className="bg-muted h-10 w-48 rounded-2xl" />
-        <div className="bg-muted h-64 w-full rounded-3xl" />
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
-          <div className="bg-muted h-96 rounded-3xl md:col-span-2" />
-          <div className="bg-muted h-96 rounded-3xl" />
-        </div>
+      <Container className="space-y-8 py-12">
+        <Skeleton className="h-10 w-48" />
+        <Skeleton className="h-64 w-full" />
+        <Skeleton className="grid grid-cols-1 gap-8 md:grid-cols-3">
+          <Skeleton className="h-96 md:col-span-2" />
+          <Skeleton className="h-96" />
+        </Skeleton>
       </Container>
     );
   }
@@ -61,7 +64,7 @@ export function RequestDetails({ requestId }: { requestId: Id<"requests"> }) {
         </div>
         <div className="space-y-2">
           <h1 className="text-3xl font-black tracking-tight">Request Not Found</h1>
-          <p className="leading-relaxed font-medium text-slate-500 dark:text-slate-400">
+          <p className="leading-relaxed font-medium">
             This request doesn&apos;t exist or you don&apos;t have permission to view it.
           </p>
         </div>
@@ -79,8 +82,8 @@ export function RequestDetails({ requestId }: { requestId: Id<"requests"> }) {
   }
 
   return (
-    <div className="min-h-screen bg-[#f6f8f6] dark:bg-[#102216]">
-      <Container className="space-y-10 pt-4 pb-10 md:pt-10">
+    <div className="min-h-screen">
+      <Container className="space-y-4 pt-4 pb-10 md:space-y-6 lg:space-y-8">
         {/* Top Navbar/Back & Edit */}
         <div className="flex items-center justify-between">
           <Link
@@ -88,8 +91,7 @@ export function RequestDetails({ requestId }: { requestId: Id<"requests"> }) {
             className="border-primary/10 hover:text-primary text-muted-foreground flex w-fit items-center gap-2 rounded-2xl border px-4 py-2 text-xs font-bold shadow-sm transition-all sm:text-sm"
           >
             <ArrowLeft className="h-4 w-4" />
-            <span className="xs:inline hidden">Back to Explorer</span>
-            <span className="xs:hidden">Back</span>
+            <span>Back to Explorer</span>
           </Link>
 
           {request.isOwner && (
@@ -150,9 +152,12 @@ export function RequestDetails({ requestId }: { requestId: Id<"requests"> }) {
 
         {/* Seed Alert */}
         {request.isSeed ? (
-          <Alert className="bg-accent space-y-2 px-4 py-4">
-            <AlertTitle className="">Note</AlertTitle>
-            <AlertDescription className="w-full italic">
+          <Alert className="bg-accent dark:bg-primary/20 space-y-2 px-4 py-4">
+            <AlertTitle className="flex items-center gap-2 text-2xl font-black">
+              <InfoIcon className="text-primary h-6 w-6" />
+              Note{" "}
+            </AlertTitle>
+            <AlertDescription className="w-full text-lg italic">
               This is not a real request. This is a demo request created to test the application.
             </AlertDescription>
           </Alert>
@@ -171,10 +176,10 @@ export function RequestDetails({ requestId }: { requestId: Id<"requests"> }) {
 
             <div className="flex-1 space-y-4">
               <div className="space-y-1">
-                <h1 className="text-3xl font-black tracking-tight text-slate-900 md:text-4xl lg:text-5xl dark:text-slate-100">
+                <h1 className="text-muted-foreground text-3xl font-black tracking-tight md:text-4xl lg:text-5xl">
                   {request.bloodTypeNeeded} Blood Required
                 </h1>
-                <p className="text-lg font-medium text-slate-500 md:text-xl dark:text-slate-400">
+                <p className="text-muted-foreground pt-2 text-lg font-medium md:text-xl">
                   Patient:{" "}
                   <span className="font-bold text-slate-900 dark:text-slate-100">{request.patientName}</span>
                   {(request.patientGender ?? request.patientAge) && (
@@ -189,7 +194,7 @@ export function RequestDetails({ requestId }: { requestId: Id<"requests"> }) {
               </div>
 
               <div className="flex flex-wrap gap-3 pt-2">
-                <div className="flex items-center gap-2 text-sm font-bold text-slate-500">
+                <div className="text-muted-foreground flex items-center gap-2 text-sm font-bold">
                   <Calendar className="text-primary h-5 w-5" />
                   Requested{" "}
                   {new Date(request.createdAt).toLocaleDateString([], {
@@ -198,7 +203,7 @@ export function RequestDetails({ requestId }: { requestId: Id<"requests"> }) {
                     year: "numeric",
                   })}
                 </div>
-                <div className="flex items-center gap-2 text-sm font-bold text-slate-500">
+                <div className="text-muted-foreground flex items-center gap-2 text-sm font-bold">
                   <TrendingUp className="text-primary h-5 w-5" />
                   {request.numberOfBags} {request.numberOfBags > 1 ? "Bags" : "Bag"} Needed
                 </div>
@@ -227,11 +232,13 @@ export function RequestDetails({ requestId }: { requestId: Id<"requests"> }) {
             <FulfillmentStatus requestId={requestId} />
 
             {/* Logistics Card */}
-            <Card className="rounded-3xl border border-slate-100 bg-white p-8 shadow-md dark:border-slate-800 dark:bg-slate-900">
+            <Card className="border-border bg-card rounded-3xl border p-8 shadow-md">
               <div className="space-y-8">
                 <h3 className="flex items-center gap-2 text-xl font-black tracking-tight italic">
                   Hospital Details
                 </h3>
+
+                <Separator />
 
                 <div className="space-y-6">
                   <div className="flex items-start gap-4">
@@ -239,10 +246,12 @@ export function RequestDetails({ requestId }: { requestId: Id<"requests"> }) {
                       <Hospital className="text-primary h-5 w-5" />
                     </div>
                     <div className="min-w-0 space-y-1">
-                      <p className="leading-none font-black tracking-tight wrap-break-word text-slate-900 dark:text-slate-100">
+                      <p className="text-card-foreground leading-none font-black tracking-tight wrap-break-word">
                         {request.hospitalName}
                       </p>
-                      <p className="text-xs font-bold tracking-tighter text-slate-400 uppercase">Hospital Name</p>
+                      <p className="text-muted-foreground text-xs font-bold tracking-tighter uppercase">
+                        Hospital Name
+                      </p>
                     </div>
                   </div>
 
@@ -251,24 +260,24 @@ export function RequestDetails({ requestId }: { requestId: Id<"requests"> }) {
                       <MapPin className="text-primary h-5 w-5" />
                     </div>
                     <div className="min-w-0 space-y-1">
-                      <p className="text-sm leading-tight font-bold text-slate-700 italic dark:text-slate-300">
+                      <p className="text-card-foreground text-sm leading-tight font-bold italic">
                         {request.hospitalLocation}
                       </p>
-                      <p className="text-[10px] font-black tracking-tighter text-slate-400 uppercase">
+                      <p className="text-muted-foreground text-[10px] font-black tracking-tighter uppercase">
                         {request.subDistrict}, {request.district}
                       </p>
                     </div>
                   </div>
 
-                  <div className="flex items-start gap-4 border-t border-slate-50 py-4 dark:border-slate-800">
+                  <div className="border-border flex items-start gap-4">
                     <div className="bg-primary/10 flex h-10 w-10 shrink-0 items-center justify-center rounded-xl">
                       <Phone className="text-primary h-5 w-5" />
                     </div>
                     <div className="space-y-1">
-                      <p className="text-2xl font-black tracking-tighter text-slate-900 dark:text-slate-100">
+                      <p className="text-card-foreground text-2xl font-black tracking-tighter">
                         {request.contactNumber}
                       </p>
-                      <p className="text-primary/80 text-xs font-black tracking-widest uppercase">
+                      <p className="text-muted-foreground text-xs font-black tracking-widest uppercase">
                         Primary Contact
                       </p>
                     </div>

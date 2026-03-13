@@ -16,7 +16,7 @@ export function FulfillmentStatus({ requestId }: { requestId: Id<"requests"> }) 
   const progressPercent = Math.min((securedBags / request.numberOfBags) * 100, 100);
 
   return (
-    <Card className="border-primary/10 shadow-primary/5 rounded-3xl border-2 bg-white p-8 shadow-xl dark:bg-slate-900">
+    <Card className="border-primary/10 shadow-primary/5 bg-card rounded-3xl border-2 p-8 shadow-xl">
       <div className="space-y-8">
         <div className="space-y-2">
           <h3 className="text-xl font-black tracking-tight">Fulfillment Status</h3>

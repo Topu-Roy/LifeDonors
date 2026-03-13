@@ -122,12 +122,12 @@ export function Volunteers({ volunteers, requestId, isOwner, bloodTypeNeeded }: 
           </div>
 
           {volunteers.length === 0 ? (
-            <div className="border-primary/10 rounded-3xl border-2 border-dashed bg-white py-20 text-center dark:bg-slate-900">
-              <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-3xl bg-slate-100 dark:bg-slate-800">
-                <User className="h-10 w-10 text-slate-400" />
+            <div className="bg-card rounded-3xl border-2 border-dashed py-20 text-center">
+              <div className="bg-card-foreground mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-3xl">
+                <User className="text-card-foreground h-10 w-10" />
               </div>
               <h3 className="mb-2 text-xl font-black">No volunteers yet</h3>
-              <p className="mx-auto max-w-xs font-medium text-slate-500 dark:text-slate-400">
+              <p className="text-card-foreground mx-auto max-w-xs font-medium">
                 As soon as donors respond to this request, they will appear here for your review.
               </p>
             </div>
@@ -140,13 +140,13 @@ export function Volunteers({ volunteers, requestId, isOwner, bloodTypeNeeded }: 
                     "group overflow-hidden rounded-3xl border-2 transition-all duration-300",
                     v.status === "Accepted" || v.status === "Donated"
                       ? "border-primary/40 shadow-primary/5 scale-100 shadow-lg"
-                      : "border-slate-100 bg-white dark:border-slate-800 dark:bg-slate-900"
+                      : "border-border bg-card"
                   )}
                 >
                   <CardContent className="p-6 md:p-8">
                     <div className="flex flex-col items-start justify-between gap-6 md:flex-row md:items-center">
                       <div className="flex items-center gap-6">
-                        <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-slate-100 text-slate-400 sm:h-16 sm:w-16 dark:bg-slate-800">
+                        <div className="bg-primary/10 text-primary flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl sm:h-16 sm:w-16">
                           <User className="h-6 w-6 sm:h-8 sm:w-8" />
                         </div>
                         <div className="space-y-1">
@@ -317,7 +317,7 @@ export function Volunteers({ volunteers, requestId, isOwner, bloodTypeNeeded }: 
           )}
         </section>
       ) : (
-        <Card className="border-primary/10 shadow-primary/5 relative min-h-[450px] overflow-hidden rounded-[3rem] border-2 bg-white p-8 shadow-2xl md:p-12 dark:bg-slate-900">
+        <Card className="border-primary/10 shadow-primary/5 bg-card relative min-h-[450px] overflow-hidden rounded-[3rem] border-2 p-8 shadow-2xl md:p-12">
           <div className="pointer-events-none absolute -top-24 -right-24 h-96 w-96 opacity-5 dark:opacity-10">
             <Heart className="text-primary h-full w-full fill-current" />
           </div>
