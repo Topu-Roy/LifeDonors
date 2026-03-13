@@ -24,6 +24,7 @@ export const updateProfile = mutation({
     division: v.optional(v.string()),
     district: v.optional(v.string()),
     subDistrict: v.optional(v.string()),
+    gender: v.union(v.literal("Male"), v.literal("Female"), v.literal("Other")),
   },
   handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity();

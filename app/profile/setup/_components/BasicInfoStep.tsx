@@ -12,9 +12,12 @@ import { Field, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
+const gender = ["Male", "Female", "Other"] as const;
+
 const step1Schema = z.object({
   age: z.number().min(18, "Must be at least 18").max(65, "Must be under 65"),
   phoneNumber: z.string().min(11, "Valid phone number required"),
+  gender: z.enum(gender),
   division: z.string().min(1, "Division is required"),
   district: z.string().min(1, "District is required"),
   subDistrict: z.string().min(1, "Sub-district is required"),
@@ -28,6 +31,7 @@ export function BasicInfoStep() {
     defaultValues: {
       age: formData.age ?? 0,
       phoneNumber: formData.phoneNumber ?? "",
+      gender: formData.gender ?? ("" as "Male"),
       division: formData.division ?? "",
       district: formData.district ?? "",
       subDistrict: formData.subDistrict ?? "",
@@ -99,6 +103,31 @@ export function BasicInfoStep() {
                     onChange={e => field.handleChange(e.target.value)}
                     className="border-primary/10 bg-background focus-visible:ring-primary/20 focus-visible:border-primary h-12 rounded-3xl text-base font-medium shadow-sm transition-all md:h-14 md:text-lg"
                   />
+                  {isInvalid && <FieldError errors={field.state.meta.errors} />}
+                </Field>
+              );
+            }}
+          </form.Field>
+
+          <form.Field name="gender">
+            {field => {
+              const isInvalid = field.state.meta.isTouched && !!field.state.meta.errors.length;
+              return (
+                <Field data-invalid={isInvalid}>
+                  <FieldLabel htmlFor={field.name} className="flex items-center gap-2">
+                    <User className="text-primary h-4 w-4" />
+                    Gender
+                  </FieldLabel>
+                  <Select value={field.state.value} onValueChange={v => field.handleChange(v as "Male")}>
+                    <SelectTrigger className="border-primary/10 bg-background focus:ring-primary/20 h-12 rounded-3xl text-base font-medium shadow-sm transition-all md:h-14 md:text-lg">
+                      <SelectValue placeholder="Select Gender" />
+                    </SelectTrigger>
+                    <SelectContent className="border-primary/10 rounded-2xl">
+                      <SelectItem value="Male">Male</SelectItem>
+                      <SelectItem value="Female">Female</SelectItem>
+                      <SelectItem value="Other">Other</SelectItem>
+                    </SelectContent>
+                  </Select>
                   {isInvalid && <FieldError errors={field.state.meta.errors} />}
                 </Field>
               );

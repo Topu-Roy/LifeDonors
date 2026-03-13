@@ -1,9 +1,20 @@
+"use client";
+
+import { api } from "@/convex/_generated/api";
+import { useQuery } from "convex/react";
 import { History, MessageSquare } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { checkProfileCompletion } from "@/lib/helpers/checkProfileCompletion";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { DonationTab } from "./donationTab";
 import { RequestTab } from "./requestTab";
 
 export function DashboardTabs() {
+  const profile = useQuery(api.users.getMyProfile);
+  const router = useRouter();
+
+  checkProfileCompletion(profile, router);
+
   return (
     <Tabs defaultValue={"requests"} className="w-full space-y-8">
       <TabsList className="bg-background h-12 w-full max-w-md rounded-full border p-1 shadow-sm md:h-14">

@@ -56,15 +56,14 @@ export function EligibilityStep() {
         };
 
         // BMI calculation: weight / (height/100)^2
-        const heightInMeters = (finalData.height ?? 0) / 100;
-        const bmi =
-          heightInMeters > 0
-            ? parseFloat(((finalData.weight ?? 0) / (heightInMeters * heightInMeters)).toFixed(1))
-            : 0;
+        const height = finalData.height ?? 0;
+        const weight = finalData.weight ?? 0;
+        const bmi = height > 0 ? Number((weight / Math.pow(height / 100, 2)).toFixed(1)) : 0;
 
         await updateProfile({
           age: finalData.age ?? 0,
           bmi: bmi,
+          gender: (finalData.gender as "Male") || "Male",
           bloodType: (finalData.bloodType as "A+") ?? "A+",
           hemoglobinLevel: finalData.hemoglobinLevel ?? 12.5,
           phoneNumber: finalData.phoneNumber ?? "",

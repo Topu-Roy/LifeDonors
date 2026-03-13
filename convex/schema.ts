@@ -23,6 +23,7 @@ export default defineSchema({
     division: v.optional(v.string()),
     district: v.optional(v.string()),
     subDistrict: v.optional(v.string()),
+    gender: v.union(v.literal("Male"), v.literal("Female"), v.literal("Other")),
   })
     .index("by_bloodType", ["bloodType"])
     .index("by_userId", ["userId"]),

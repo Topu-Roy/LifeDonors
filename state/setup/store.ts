@@ -17,6 +17,8 @@ export type SetupFormData = {
   // Step 3: Eligibility & Commitments
   diseases: string[];
   lastDonationDate: number;
+
+  gender: string;
 };
 
 export const currentStepAtom = atom(1);
@@ -32,4 +34,5 @@ export const setupFormAtom = atom<Partial<SetupFormData>>({
   height: 0,
   hemoglobinLevel: 12.5,
   diseases: [],
+  gender: "",
 });

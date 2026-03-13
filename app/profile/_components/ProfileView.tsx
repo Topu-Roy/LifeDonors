@@ -8,6 +8,7 @@ import { useQuery } from "convex/react";
 import { ArrowLeft, Loader2 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { checkProfileCompletion } from "@/lib/helpers/checkProfileCompletion";
 import { Container } from "@/components/Container";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { DetailedHealthInfo } from "./detailedHealthInfo";
@@ -51,10 +52,7 @@ export function ProfileView() {
     );
   }
 
-  if (!profile) {
-    router.push("/profile/setup");
-    return;
-  }
+  checkProfileCompletion(profile, router);
 
   function setIsDialogOpenState(state: boolean) {
     setIsDialogOpen(state);
