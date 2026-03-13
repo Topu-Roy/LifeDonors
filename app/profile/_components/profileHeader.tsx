@@ -54,6 +54,7 @@ export function ProfileHeader({ setIsDialogOpenState }: { setIsDialogOpenState: 
       </div>
 
       <Button
+        variant={"outline"}
         onClick={() => setIsDialogOpenState(true)}
         className="shadow-primary/20 relative z-10 h-12 w-full gap-2 rounded-2xl px-6 font-bold shadow-lg md:w-auto"
       >

@@ -88,7 +88,7 @@ export function RequestDetails({ requestId }: { requestId: Id<"requests"> }) {
         <div className="flex items-center justify-between">
           <Link
             href="/requests"
-            className="border-primary/10 hover:text-primary text-muted-foreground flex w-fit items-center gap-2 rounded-2xl border px-4 py-2 text-xs font-bold shadow-sm transition-all sm:text-sm"
+            className="text-muted-foreground flex w-fit items-center gap-2 px-4 py-2 text-xs font-bold sm:text-sm"
           >
             <ArrowLeft className="h-4 w-4" />
             <span>Back to Explorer</span>
@@ -152,7 +152,7 @@ export function RequestDetails({ requestId }: { requestId: Id<"requests"> }) {
 
         {/* Seed Alert */}
         {request.isSeed ? (
-          <Alert className="bg-accent dark:bg-primary/20 space-y-2 px-4 py-4">
+          <Alert className="bg-primary/10 space-y-2 px-4 py-4">
             <AlertTitle className="flex items-center gap-2 text-2xl font-black">
               <InfoIcon className="text-primary h-6 w-6" />
               Note{" "}

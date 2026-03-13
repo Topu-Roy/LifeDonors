@@ -140,7 +140,7 @@ export function RequestsExplorer() {
       </aside>
 
       {/* Main Content Area */}
-      <main className="flex-1 space-y-6">
+      <main className="w-full flex-1 space-y-6">
         {/* Active Filter Tags */}
         <ActiveFilters />
 
@@ -166,8 +166,8 @@ export function RequestsExplorer() {
                 ))}
             </>
           ) : (
-            <div className="border-primary/20 col-span-full rounded-[3rem] border-2 border-dashed bg-white py-24 text-center dark:bg-slate-900">
-              <div className="bg-primary/10 mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-3xl">
+            <div className="bg-primary/10 col-span-full w-full rounded-[3rem] border-2 border-dashed py-24 text-center">
+              <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-3xl">
                 <Search className="text-primary h-10 w-10" />
               </div>
               <h3 className="mb-2 text-2xl font-black tracking-tight">No Requests Found</h3>

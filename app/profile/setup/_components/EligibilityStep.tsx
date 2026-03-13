@@ -12,9 +12,9 @@ import { toast } from "sonner";
 import * as z from "zod";
 import { extractConvexError } from "@/lib/helpers/convexErrorExtractor";
 import { Button } from "@/components/ui/button";
+import { Calendar } from "@/components/ui/calendar";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Field, FieldDescription, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field";
-import { Input } from "@/components/ui/input";
 
 const healthConditions = [
   "Heart Disease or history of heart attack",
@@ -22,6 +22,7 @@ const healthConditions = [
   "Cancer (other than minor skin cancer)",
   "Hepatitis or Liver Disease",
   "HIV/AIDS",
+  "Other",
 ];
 
 const step3Schema = z.object({
@@ -30,6 +31,7 @@ const step3Schema = z.object({
 });
 
 export function EligibilityStep() {
+  const [date, setDate] = useState<Date | undefined>(new Date());
   const [formData] = useAtom(setupFormAtom);
   const [, setCurrentStep] = useAtom(currentStepAtom);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -71,10 +73,10 @@ export function EligibilityStep() {
           division: finalData.division ?? "",
           district: finalData.district ?? "",
           subDistrict: finalData.subDistrict ?? "",
+        }).then(() => {
+          toast.success("Profile setup complete!");
+          router.push("/profile");
         });
-
-        toast.success("Profile setup complete!");
-        router.push("/profile");
       } catch (error) {
         toast.error(error instanceof Error ? extractConvexError(error) : "Failed to save profile");
       } finally {
@@ -112,7 +114,7 @@ export function EligibilityStep() {
                   {healthConditions.map(condition => (
                     <label
                       key={condition}
-                      className="border-primary/5 hover:border-primary/20 hover:bg-primary/5 group flex cursor-pointer items-start gap-3 rounded-3xl border-2 p-4 transition-all md:p-5"
+                      className="border-border hover:border-primary/20 hover:bg-primary/5 group flex cursor-pointer items-start gap-3 rounded-3xl border-2 p-4 transition-all md:p-5"
                     >
                       <Checkbox
                         checked={field.state.value?.includes(condition)}
@@ -154,37 +156,35 @@ export function EligibilityStep() {
 
         {/* Last Donation Date */}
         <section className="space-y-6 pt-4">
-          <form.Field name="lastDonationDate">
-            {field => (
-              <Field>
-                <div>
-                  <FieldLabel className="flex items-center gap-2 text-xl font-black tracking-tight">
-                    <CalendarIcon className="text-primary h-5 w-5" />
-                    Donation History
-                  </FieldLabel>
-                  <FieldDescription className="text-muted-foreground mt-1 text-sm font-medium">
-                    When was your last blood donation? (Leave blank if never)
-                  </FieldDescription>
-                </div>
+          <Field>
+            <div>
+              <FieldLabel className="flex items-center gap-2 text-xl font-black tracking-tight">
+                <CalendarIcon className="text-primary h-5 w-5" />
+                Donation History
+              </FieldLabel>
+              <FieldDescription className="text-muted-foreground mt-1 text-sm font-medium">
+                When was your last blood donation? (Leave blank if never)
+              </FieldDescription>
+            </div>
 
-                <div className="mt-4 max-w-md">
-                  <Input
-                    type="date"
-                    value={field.state.value ? new Date(field.state.value).toISOString().split("T")[0] : ""}
-                    onChange={e => field.handleChange(e.target.value ? new Date(e.target.value).getTime() : 0)}
-                    className="border-primary/10 bg-background focus-visible:ring-primary/20 focus-visible:border-primary h-12 rounded-3xl text-base font-medium shadow-sm transition-all md:h-14 md:text-lg"
-                  />
-                </div>
-                {field.state.meta.isTouched && field.state.meta.errors.length > 0 && (
-                  <FieldError errors={field.state.meta.errors} />
-                )}
-              </Field>
-            )}
-          </form.Field>
+            <span className="text-foreground mt-2 block font-semibold">
+              Last Donated: {date?.getDate()}/{date?.getMonth()}/{date?.getFullYear()}
+            </span>
+
+            <div className="mt-4 max-w-md">
+              <Calendar
+                mode="single"
+                selected={date}
+                onSelect={setDate}
+                captionLayout="dropdown"
+                className="bg-primary/5 border-primary/50 rounded-lg border"
+              />
+            </div>
+          </Field>
         </section>
 
         {/* Initial Eligibility Status Preview */}
-        <div className="bg-primary/5 border-primary/20 mt-8 flex items-start gap-4 rounded-3xl border-2 p-6 shadow-sm md:gap-5 md:p-8">
+        <div className="bg-primary/5 border-primary/20 mt-8 flex flex-col items-start gap-4 rounded-3xl border-2 p-6 shadow-sm md:flex-row md:gap-5 md:p-8">
           <div className="bg-primary/20 text-primary shadow-primary/10 shrink-0 rounded-2xl p-2 shadow-lg md:p-3">
             <CheckCircle2 className="h-6 w-6 md:h-8 md:w-8" />
           </div>
@@ -206,7 +206,7 @@ export function EligibilityStep() {
           variant="outline"
           onClick={() => setCurrentStep(2)}
           disabled={isSubmitting}
-          className="border-primary/10 bg-background hover:bg-primary/5 h-12 w-full gap-2 rounded-3xl px-8 font-bold shadow-sm transition-all sm:w-auto md:h-14"
+          className={"flex h-12 w-full items-center justify-center gap-4 px-8 py-4 sm:w-auto md:h-14"}
         >
           <ArrowLeft className="h-5 w-5" />
           Back
@@ -216,7 +216,7 @@ export function EligibilityStep() {
             <Button
               type="submit"
               disabled={!canSubmit || isSubmitting}
-              className="shadow-primary/20 bg-primary h-12 w-full flex-1 gap-3 rounded-3xl px-10 font-black text-white shadow-xl transition-all hover:scale-[1.02] active:scale-95 sm:w-auto md:h-14"
+              className={"flex h-12 w-full items-center justify-center gap-4 px-8 py-4 sm:w-auto md:h-14"}
             >
               {isSubmitting ? (
                 <Loader2 className="h-6 w-6 animate-spin" />

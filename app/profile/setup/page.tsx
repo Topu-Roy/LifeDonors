@@ -1,8 +1,9 @@
 import { Suspense } from "react";
 import { SetupWizard } from "@/app/profile/setup/_components/SetupWizard";
 import { Droplet } from "lucide-react";
-import { Container } from "@/components/Container";
 import type { Metadata } from "next";
+import { Container } from "@/components/Container";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export const metadata: Metadata = {
   title: "Profile Setup | LifeDonors",
@@ -11,8 +12,8 @@ export const metadata: Metadata = {
 
 export default function ProfileSetupPage() {
   return (
-    <div className="bg-muted/30 flex min-h-screen flex-col">
-      <Container as="main" className="flex flex-1 flex-col gap-10 py-12">
+    <div className="bg-background flex min-h-screen flex-col">
+      <Container as="main" className="flex flex-1 flex-col gap-6 py-6 md:gap-8 md:py-8">
         {/* Header Section */}
         <header className="flex flex-col justify-between gap-6 md:flex-row md:items-end">
           <div className="space-y-2">
@@ -25,7 +26,15 @@ export default function ProfileSetupPage() {
           </div>
         </header>
 
-        <Suspense fallback={<div className="bg-muted/50 h-96 w-full animate-pulse rounded-3xl" />}>
+        <Suspense
+          fallback={
+            <div className="space-y-4">
+              <Skeleton className="h-20 w-full rounded-3xl" />
+              <Skeleton className="h-20 w-full rounded-3xl" />
+              <Skeleton className="h-20 w-full rounded-3xl" />
+            </div>
+          }
+        >
           <SetupWizard />
         </Suspense>
 

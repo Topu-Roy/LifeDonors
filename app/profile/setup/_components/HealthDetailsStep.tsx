@@ -39,6 +39,15 @@ export function HealthDetailsStep() {
     },
   });
 
+  const cmToFeetInches = (cm: number) => {
+    if (!cm || cm <= 0) return "";
+    const totalInches = cm / 2.54;
+    const feet = Math.floor(totalInches / 12);
+    const inches = Math.round(totalInches % 12);
+    if (inches === 12) return `${feet + 1}'0"`;
+    return `${feet}'${inches}"`;
+  };
+
   return (
     <form
       onSubmit={e => {
@@ -119,10 +128,15 @@ export function HealthDetailsStep() {
           <form.Field name="height">
             {field => (
               <Field>
-                <FieldLabel className="flex items-center gap-2">
-                  <Ruler className="text-primary h-4 w-4" />
-                  Height (cm)
-                </FieldLabel>
+                <div className="mb-0 flex items-center justify-between">
+                  <FieldLabel className="flex items-center gap-2">
+                    <Ruler className="text-primary h-4 w-4" />
+                    Height (cm)
+                  </FieldLabel>
+                  {field.state.value > 0 && (
+                    <span className="text-primary text-sm font-black italic">{cmToFeetInches(field.state.value)}</span>
+                  )}
+                </div>
                 <div className="relative">
                   <input
                     type="number"

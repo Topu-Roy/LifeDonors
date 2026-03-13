@@ -5,7 +5,8 @@ import { ProfileForm } from "@/app/profile/_components/profileForm";
 import { api } from "@/convex/_generated/api";
 import { type Id } from "@/convex/_generated/dataModel";
 import { useQuery } from "convex/react";
-import { Loader2 } from "lucide-react";
+import { ArrowLeft, Loader2 } from "lucide-react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Container } from "@/components/Container";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
@@ -61,8 +62,16 @@ export function ProfileView() {
 
   return (
     <Container as="main" className="flex flex-1 flex-col gap-8 py-12">
+      <Link
+        href="/requests"
+        className="text-muted-foreground flex w-fit items-center gap-2 px-4 py-2 text-xs font-bold sm:text-sm"
+      >
+        <ArrowLeft className="h-4 w-4" />
+        <span>Back to Explorer</span>
+      </Link>
+
       {/* Profile Header */}
-      <section className="bg-card border-primary/10 relative flex flex-col gap-6 overflow-hidden rounded-3xl border p-8 shadow-xl md:flex-row md:items-center md:justify-between">
+      <section className="bg-card/40 border-primary/10 relative flex flex-col gap-6 overflow-hidden rounded-3xl border p-8 shadow-xl md:flex-row md:items-center md:justify-between">
         <ProfileHeader setIsDialogOpenState={setIsDialogOpenState} />
       </section>
 

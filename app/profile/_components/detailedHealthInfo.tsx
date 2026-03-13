@@ -20,7 +20,7 @@ export function DetailedHealthInfo() {
           Health & Vital Details
         </h3>
 
-        <Card className="border-border overflow-hidden rounded-3xl shadow-sm">
+        <Card className="bg-card/40 border-border overflow-hidden rounded-3xl shadow-sm">
           <div className="grid grid-cols-1 divide-y border-b md:grid-cols-2 md:divide-x md:divide-y-0">
             <div className="p-6">
               <p className="text-muted-foreground mb-1 text-xs font-bold tracking-widest uppercase">
