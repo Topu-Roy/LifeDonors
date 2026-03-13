@@ -1,12 +1,19 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { Filter } from "@/app/requests/_components/filters";
 import { api } from "@/convex/_generated/api";
-import { filterBloodTypeAtom, filterDistrictAtom, filterDivisionAtom, filterHasInitializedAtom, filterSubDistrictAtom, filterUrgencyAtom } from "@/state/requests/store";
+import {
+  filterBloodTypeAtom,
+  filterDistrictAtom,
+  filterDivisionAtom,
+  filterHasInitializedAtom,
+  filterSubDistrictAtom,
+  filterUrgencyAtom,
+} from "@/state/requests/store";
 import { usePaginatedQuery, useQuery } from "convex/react";
 import { useAtom, useAtomValue } from "jotai";
 import { Filter as FilterIcon, Plus, Search } from "lucide-react";
-import { useEffect, useState } from "react";
 import Link from "next/link";
 import { RequestCard } from "@/components/RequestCard";
 import { Badge } from "@/components/ui/badge";
@@ -29,7 +36,7 @@ export function RequestsExplorer() {
   useEffect(() => {
     if (myProfile !== undefined && !hasInitialized) {
       if (myProfile?.bloodType) {
-        setFilterBloodType(myProfile.bloodType);
+        setFilterBloodType("Compatible");
       }
       setHasInitialized(true);
     }
@@ -67,7 +74,7 @@ export function RequestsExplorer() {
   }
 
   return (
-    <div className="flex flex-col gap-10 lg:flex-row">
+    <div className="flex flex-col items-start lg:flex-row lg:gap-6">
       {/* Search and Mobile Filters Section */}
       <div className="relative mb-6 flex w-full flex-col items-stretch gap-4 sm:flex-row sm:items-center md:w-auto lg:absolute lg:top-[-90px] lg:right-0 lg:mb-0">
         <div className="flex items-center gap-2">
@@ -167,7 +174,7 @@ export function RequestsExplorer() {
               <p className="mx-auto max-w-xs font-medium text-slate-500 dark:text-slate-400">
                 Try adjusting your filters or search query to find more results.
               </p>
-              <ClearFiltersButton setSearchQuery={setSearchQueryString} />
+              <ClearFiltersButton setSearchQueryAction={setSearchQueryString} />
             </div>
           )}
         </div>

@@ -214,7 +214,12 @@ export function RequestDetails({ requestId }: { requestId: Id<"requests"> }) {
 
         <div className="grid grid-cols-1 gap-10 lg:grid-cols-3">
           {/* Main Content: Volunteers */}
-          <Volunteers requestId={requestId} isOwner={request.isOwner} volunteers={request.volunteers} />
+          <Volunteers
+            requestId={requestId}
+            isOwner={request.isOwner}
+            volunteers={request.volunteers}
+            bloodTypeNeeded={request.bloodTypeNeeded}
+          />
 
           {/* Sidebar Area: Fulfillment & Logistics */}
           <aside className="space-y-8">

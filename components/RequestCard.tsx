@@ -8,6 +8,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { extractConvexError } from "@/lib/helpers/convexErrorExtractor";
+import { isCompatible } from "@/lib/blood-compatibility";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { Button, buttonVariants } from "@/components/ui/button";
@@ -158,11 +159,13 @@ function RequestActions({
   isOwner,
   userVolunteered,
   onAccept,
+  isDonorCompatible,
 }: {
   requestId: string;
   isOwner: boolean;
   userVolunteered?: boolean;
   onAccept: (e: React.MouseEvent) => void;
+  isDonorCompatible?: boolean;
 }) {
   if (isOwner) {
     return (
@@ -190,16 +193,18 @@ function RequestActions({
       >
         Details
       </Link>
-      <Button
-        onClick={onAccept}
-        disabled={userVolunteered}
-        className={cn(
-          "shadow-primary/20 bg-primary h-14 flex-2 gap-2 rounded-2xl text-base font-black shadow-lg transition-all hover:scale-[1.02] active:scale-95",
-          userVolunteered && "cursor-not-allowed opacity-70 shadow-none"
-        )}
-      >
-        {userVolunteered ? "Volunteered" : "Volunteer Now"}
-      </Button>
+      {isDonorCompatible && (
+        <Button
+          onClick={onAccept}
+          disabled={userVolunteered}
+          className={cn(
+            "shadow-primary/20 bg-primary h-14 flex-2 gap-2 rounded-2xl text-base font-black shadow-lg transition-all hover:scale-[1.02] active:scale-95",
+            userVolunteered && "cursor-not-allowed opacity-70 shadow-none"
+          )}
+        >
+          {userVolunteered ? "Volunteered" : "Volunteer Now"}
+        </Button>
+      )}
     </div>
   );
 }
@@ -248,6 +253,7 @@ export function RequestCard({ request, isOwner: isOwnerProp }: RequestCardProps)
             isOwner={isOwner}
             userVolunteered={userVolunteered}
             onAccept={handleAccept}
+            isDonorCompatible={isCompatible(user?.bloodType, request.bloodTypeNeeded)}
           />
         </div>
       </div>

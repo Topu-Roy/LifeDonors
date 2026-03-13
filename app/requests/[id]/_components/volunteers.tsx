@@ -7,6 +7,7 @@ import { useConvexAuth, useMutation, useQuery } from "convex/react";
 import { CheckCircle2, Heart, LogIn, MapPin, User, XCircle } from "lucide-react";
 import Link from "next/link";
 import { toast } from "sonner";
+import { isCompatible } from "@/lib/blood-compatibility";
 import { extractConvexError } from "@/lib/helpers/convexErrorExtractor";
 import { cn } from "@/lib/utils";
 import {
@@ -26,6 +27,7 @@ import { Card, CardContent } from "@/components/ui/card";
 
 type Props = {
   requestId: Id<"requests">;
+  bloodTypeNeeded: string;
   volunteers: {
     donor: {
       _id: Id<"profiles">;
@@ -52,7 +54,7 @@ type Props = {
   isOwner: boolean;
 };
 
-export function Volunteers({ volunteers, requestId, isOwner }: Props) {
+export function Volunteers({ volunteers, requestId, isOwner, bloodTypeNeeded }: Props) {
   const { isAuthenticated } = useConvexAuth();
   const selectDonor = useMutation(api.donations.selectDonor);
   const rejectDonor = useMutation(api.donations.rejectDonor);
@@ -103,6 +105,8 @@ export function Volunteers({ volunteers, requestId, isOwner }: Props) {
   // Use server check as primary source of truth, fall back to local filter if query is loading
   const hasVolunteered = serverHasVolunteered ?? volunteers.some(v => v.donorId === myProfile?._id);
   const myDonation = volunteers.find(v => v.donorId === myProfile?._id);
+
+  const isUserCompatible = isCompatible(myProfile?.bloodType, bloodTypeNeeded);
 
   return (
     <div className="space-y-10 lg:col-span-2">
@@ -359,6 +363,19 @@ export function Volunteers({ volunteers, requestId, isOwner }: Props) {
                   <p className="mt-4 text-xs font-bold tracking-tighter text-slate-400 uppercase">
                     The requester will contact you if they select your offer.
                   </p>
+                </div>
+              ) : !isUserCompatible ? (
+                <div className="border-primary/20 bg-primary/5 w-full max-w-md space-y-4 rounded-[2.5rem] border-2 border-dashed p-10 text-center">
+                  <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-red-500 shadow-lg shadow-red-500/20">
+                    <XCircle className="h-10 w-10 text-white" />
+                  </div>
+                  <div className="space-y-2">
+                    <h3 className="text-2xl font-black italic">Incompatible Blood Type</h3>
+                    <p className="font-medium text-slate-600 dark:text-slate-300">
+                      I&apos;m sorry, but your blood type ({myProfile?.bloodType}) is not compatible with{" "}
+                      {bloodTypeNeeded}.
+                    </p>
+                  </div>
                 </div>
               ) : (
                 <div className="flex w-full max-w-md flex-col items-center gap-6">

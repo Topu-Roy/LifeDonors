@@ -75,6 +75,7 @@ export function Filter() {
             </SelectTrigger>
             <SelectContent className="border-primary/10 p-2">
               <SelectItem value="ALL">All Blood Types</SelectItem>
+              {profile?.bloodType && <SelectItem value="Compatible">Compatible Types</SelectItem>}
               {bloodTypes.map(type => (
                 <SelectItem key={type} value={type}>
                   {type}

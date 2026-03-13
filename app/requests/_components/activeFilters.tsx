@@ -19,13 +19,19 @@ export function ActiveFilters() {
   const setFilterSubDistrict = useSetAtom(filterSubDistrictAtom);
   const [filterUrgency, setFilterUrgency] = useAtom(filterUrgencyAtom);
 
+  const hasFilters =
+    (filterBloodType && filterBloodType !== "ALL") ||
+    (filterUrgency && filterUrgency !== "ALL") ||
+    (filterDivision && filterDivision !== "ALL");
+
+  if (!hasFilters) return null;
+
   return (
-    <>
-      <div className="flex flex-wrap gap-2">
+    <div className="flex flex-wrap gap-2">
         {filterBloodType && filterBloodType !== "ALL" && (
           <Badge
             variant="secondary"
-            className="bg-primary/10 text-primary border-primary/20 gap-2 rounded-full px-3 py-1.5 text-xs font-bold"
+            className="bg-primary/10 text-primary border-primary/20 gap-2 rounded-full px-3 py-3 text-xs font-bold"
           >
             {filterBloodType}
             <button onClick={() => setFilterBloodType(undefined)}>
@@ -62,11 +68,10 @@ export function ActiveFilters() {
           </Badge>
         )}
       </div>
-    </>
   );
 }
 
-export function ClearFiltersButton({ setSearchQuery }: { setSearchQuery: (string: string) => void }) {
+export function ClearFiltersButton({ setSearchQueryAction }: { setSearchQueryAction: (string: string) => void }) {
   const setFilterBloodType = useSetAtom(filterBloodTypeAtom);
   const setFilterDivision = useSetAtom(filterDivisionAtom);
   const setFilterUrgency = useSetAtom(filterUrgencyAtom);
@@ -79,7 +84,7 @@ export function ClearFiltersButton({ setSearchQuery }: { setSearchQuery: (string
         setFilterBloodType(undefined);
         setFilterDivision(undefined);
         setFilterUrgency(undefined);
-        setSearchQuery("");
+        setSearchQueryAction("");
       }}
     >
       Clear All Filters

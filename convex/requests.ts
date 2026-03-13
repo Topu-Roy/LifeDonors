@@ -1,6 +1,7 @@
 import { internalMutation, mutation, query } from "@/convex/_generated/server";
 import { paginationOptsValidator } from "convex/server";
 import { v } from "convex/values";
+import { COMPATIBILITY_MAP } from "../assets/constants";
 
 export const createBloodRequest = mutation({
   args: {
@@ -156,11 +157,27 @@ export const getPaginatedRequests = query({
     const { bloodType, division, district, subDistrict, urgency, searchQuery } = args;
 
     if (searchQuery) {
-      return await ctx.db
+      let compatibleTypes: string[] | undefined;
+      if (bloodType === "Compatible") {
+        const identity = await ctx.auth.getUserIdentity();
+        if (identity) {
+          const profile = await ctx.db
+            .query("profiles")
+            .withIndex("by_userId", q => q.eq("userId", identity.subject))
+            .first();
+          if (profile?.bloodType) {
+            compatibleTypes = COMPATIBILITY_MAP[profile.bloodType];
+          }
+        }
+      }
+
+      const results = await ctx.db
         .query("requests")
         .withSearchIndex("search_text", q => {
           let search = q.search("searchableText", searchQuery);
-          if (bloodType) search = search.eq("bloodTypeNeeded", bloodType as "A+");
+          if (bloodType && bloodType !== "Compatible") {
+            search = search.eq("bloodTypeNeeded", bloodType as "A+");
+          }
           if (urgency) search = search.eq("urgency", urgency as "Low");
           if (division) search = search.eq("division", division);
           if (district) search = search.eq("district", district);
@@ -168,12 +185,34 @@ export const getPaginatedRequests = query({
           return search.eq("status", "Open");
         })
         .paginate(args.paginationOpts);
+
+      if (compatibleTypes) {
+        results.page = results.page.filter(r => compatibleTypes.includes(r.bloodTypeNeeded));
+      }
+
+      return results;
     }
 
     let requests = ctx.db.query("requests").withIndex("by_status", q => q.eq("status", "Open"));
 
     if (bloodType) {
-      requests = requests.filter(q => q.eq(q.field("bloodTypeNeeded"), bloodType));
+      if (bloodType === "Compatible") {
+        const identity = await ctx.auth.getUserIdentity();
+        if (identity) {
+          const profile = await ctx.db
+            .query("profiles")
+            .withIndex("by_userId", q => q.eq("userId", identity.subject))
+            .first();
+          if (profile?.bloodType) {
+            const compatibleTypes = COMPATIBILITY_MAP[profile.bloodType];
+            requests = requests.filter(q =>
+              q.or(...compatibleTypes.map(bt => q.eq(q.field("bloodTypeNeeded"), bt)))
+            );
+          }
+        }
+      } else {
+        requests = requests.filter(q => q.eq(q.field("bloodTypeNeeded"), bloodType));
+      }
     }
     if (urgency) {
       requests = requests.filter(q => q.eq(q.field("urgency"), urgency));
