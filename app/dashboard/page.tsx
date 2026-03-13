@@ -1,8 +1,8 @@
 import { Suspense } from "react";
 import { DashboardTabs } from "@/app/dashboard/_components/dashboardTabs";
 import { LayoutDashboard } from "lucide-react";
-import { Container } from "@/components/Container";
 import type { Metadata } from "next";
+import { Container } from "@/components/Container";
 
 export const metadata: Metadata = {
   title: "Dashboard | LifeDonors",
@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 
 export default function DashboardPage() {
   return (
-    <div className="bg-muted/30 flex min-h-screen flex-col">
+    <div className="bg-background flex min-h-screen flex-col">
       <Container className="space-y-8 py-12">
         {/* Header Section */}
         <div className="flex flex-col gap-2">

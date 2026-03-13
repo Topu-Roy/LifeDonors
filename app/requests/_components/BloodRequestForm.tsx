@@ -12,12 +12,12 @@ import { useMutation } from "convex/react";
 import { HelpCircle } from "lucide-react";
 import { toast } from "sonner";
 import z from "zod";
+import { extractConvexError } from "@/lib/helpers/convexErrorExtractor";
 import { Button } from "@/components/ui/button";
 import { Field, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { extractConvexError } from "@/lib/helpers/convexErrorExtractor";
 
 const bloodTypes = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"] as const;
 const urgencies = ["Low", "Medium", "High", "Critical"] as const;
@@ -134,7 +134,7 @@ export function BloodRequestForm({ onSuccess, className, initialData, requestId 
           </form.Field>
 
           {/* Patient info: Gender, Age, Cause */}
-          <div className="grid grid-cols-3 gap-4">
+          <div className="grid grid-cols-2 gap-4 md:grid-cols-3">
             <form.Field name="patientGender">
               {field => {
                 const isInvalid = field.state.meta.isTouched && !!field.state.meta.errors.length;
@@ -187,7 +187,7 @@ export function BloodRequestForm({ onSuccess, className, initialData, requestId 
               {field => {
                 const isInvalid = field.state.meta.isTouched && !!field.state.meta.errors.length;
                 return (
-                  <Field data-invalid={isInvalid}>
+                  <Field className="col-span-2 md:col-span-1" data-invalid={isInvalid}>
                     <FieldLabel htmlFor={field.name}>Cause</FieldLabel>
                     <Select onValueChange={val => field.handleChange(val!)} value={field.state.value ?? ""}>
                       <SelectTrigger id={field.name}>
@@ -536,15 +536,17 @@ export function BloodRequestForm({ onSuccess, className, initialData, requestId 
           {state => {
             const [canSubmit, isSubmitting] = state;
             return (
-              <Button type="submit" disabled={!canSubmit} className="w-full font-bold">
-                {isSubmitting
-                  ? requestId
-                    ? "Updating..."
-                    : "Posting..."
-                  : requestId
-                    ? "Update Request"
-                    : "Post Request"}
-              </Button>
+              <div className="flex w-full items-center justify-center">
+                <Button type="submit" disabled={!canSubmit} className="px-8 py-6 text-lg font-bold">
+                  {isSubmitting
+                    ? requestId
+                      ? "Updating..."
+                      : "Posting..."
+                    : requestId
+                      ? "Update Request"
+                      : "Post Request"}
+                </Button>
+              </div>
             );
           }}
         </form.Subscribe>

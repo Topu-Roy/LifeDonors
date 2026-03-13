@@ -10,7 +10,7 @@ export default function CreateRequestPage() {
   const router = useRouter();
 
   return (
-    <div className="min-h-screen bg-[#f6f8f6] py-12 dark:bg-[#102216]">
+    <div className="min-h-screen py-6 md:py-12">
       <Container maxWidth="2xl">
         <div className="mb-8">
           <Button
@@ -26,16 +26,14 @@ export default function CreateRequestPage() {
             <div className="bg-primary/10 flex h-12 w-12 items-center justify-center rounded-2xl">
               <Plus className="text-primary h-6 w-6" />
             </div>
-            <h1 className="text-3xl font-black tracking-tight text-slate-900 md:text-4xl dark:text-slate-100">
-              Post a Blood Request
-            </h1>
+            <h1 className="text-xl font-black tracking-tight md:text-2xl lg:text-3xl">Post a Blood Request</h1>
           </div>
-          <p className="text-lg leading-relaxed font-medium text-slate-500 dark:text-slate-400">
+          <p className="text-muted-foreground text-sm leading-relaxed md:text-lg md:font-medium">
             Fill out the details below to find donors in your area.
           </p>
         </div>
 
-        <div className="border-primary/10 rounded-[2.5rem] border bg-white p-8 shadow-sm md:p-10 dark:bg-slate-900">
+        <div className="border-primary/10 bg-card rounded-lg border p-4 shadow-sm md:p-10">
           <BloodRequestForm onSuccess={() => router.push("/requests")} className="space-y-8" />
         </div>
 
