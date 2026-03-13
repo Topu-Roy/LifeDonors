@@ -23,7 +23,6 @@ export function MetricGrid() {
           label="Blood Type"
           value={profile.bloodType ?? "--"}
           color="text-primary"
-          bgColor="bg-primary/5"
         />
         <MetricCard icon={<Calendar className="h-5 w-5" />} label="Age" value={`${profile.age} yrs`} />
         <MetricCard icon={<Scale className="h-5 w-5" />} label="BMI Index" value={String(profile.bmi)} />
@@ -44,17 +43,11 @@ type Props = {
   value: string;
   unit?: string;
   color?: string;
-  bgColor?: string;
 };
 
-function MetricCard({ icon, label, value, unit, color = "text-foreground", bgColor = "bg-background" }: Props) {
+function MetricCard({ icon, label, value, unit, color = "text-foreground" }: Props) {
   return (
-    <div
-      className={cn(
-        "border-primary/10 group relative flex flex-col gap-2 overflow-hidden rounded-3xl border p-6 shadow-sm transition-all hover:scale-[1.02] hover:shadow-md",
-        bgColor
-      )}
-    >
+    <div className="border-primary/10 group bg-primary/5 relative flex flex-col gap-2 overflow-hidden rounded-3xl border p-6 shadow-sm transition-all hover:scale-[1.02] hover:shadow-md">
       <div className="pointer-events-none absolute -right-4 -bottom-4 opacity-[0.03] transition-opacity group-hover:opacity-[0.08]">
         <div className="h-24 w-24">{icon}</div>
       </div>

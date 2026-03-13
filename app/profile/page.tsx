@@ -1,6 +1,7 @@
 import { Suspense } from "react";
 import { ProfileView } from "@/app/profile/_components/ProfileView";
 import type { Metadata } from "next";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export const metadata: Metadata = {
   title: "Profile | LifeDonors",
@@ -9,10 +10,8 @@ export const metadata: Metadata = {
 
 export default function ProfilePage() {
   return (
-    <div className="bg-muted/30 flex min-h-screen flex-col">
-      <Suspense
-        fallback={<div className="bg-muted/50 flex h-screen w-full animate-pulse items-center justify-center" />}
-      >
+    <div className="bg-background flex min-h-screen flex-col">
+      <Suspense fallback={<Skeleton className="flex h-screen w-full items-center justify-center" />}>
         <ProfileView />
       </Suspense>
     </div>

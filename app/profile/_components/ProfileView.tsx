@@ -62,7 +62,7 @@ export function ProfileView() {
   return (
     <Container as="main" className="flex flex-1 flex-col gap-8 py-12">
       {/* Profile Header */}
-      <section className="bg-background border-primary/10 relative flex flex-col gap-6 overflow-hidden rounded-3xl border p-8 shadow-xl md:flex-row md:items-center md:justify-between">
+      <section className="bg-card border-primary/10 relative flex flex-col gap-6 overflow-hidden rounded-3xl border p-8 shadow-xl md:flex-row md:items-center md:justify-between">
         <ProfileHeader setIsDialogOpenState={setIsDialogOpenState} />
       </section>
 

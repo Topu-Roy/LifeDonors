@@ -15,7 +15,7 @@ export const metadata: Metadata = {
 export default function AdminPage() {
   return (
     <AdminGuard>
-      <Container as="main" className="flex flex-1 flex-col gap-8 py-12">
+      <Container as="main" className="flex flex-1 flex-col gap-8 py-4 md:py-8">
         {/* Header */}
         <div className="flex flex-col gap-2">
           <div className="flex items-center gap-3">
