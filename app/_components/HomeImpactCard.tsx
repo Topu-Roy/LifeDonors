@@ -7,19 +7,11 @@ type Props = {
   label: string;
   value: string;
   color: string;
-  bgColor: string;
-  borderColor: string;
 };
 
-export function ImpactCard({ icon, label, value, color, bgColor, borderColor }: Props) {
+export function ImpactCard({ icon, label, value, color }: Props) {
   return (
-    <div
-      className={cn(
-        "flex flex-col gap-2 rounded-2xl border p-6 transition-all hover:shadow-md",
-        bgColor,
-        borderColor
-      )}
-    >
+    <div className={cn("bg-accent/50 flex flex-col gap-2 rounded-2xl border p-6 transition-all hover:shadow-md")}>
       <div className={cn("flex items-center gap-2", color)}>
         {icon}
         <p className="text-xs font-bold tracking-widest uppercase opacity-80">{label}</p>

@@ -17,11 +17,11 @@ export const metadata: Metadata = {
 
 export default function Home() {
   return (
-    <div className="flex min-h-screen flex-col">
+    <div className="bg-background flex min-h-screen flex-col">
       <main className="flex w-full flex-1 flex-col items-center">
         {/* Hero Section */}
         <Container as="section" className="relative overflow-hidden py-8">
-          <div className="relative z-10 flex min-h-[500px] flex-col items-center justify-center gap-8 overflow-hidden rounded-4xl border border-white/10 p-8 shadow-2xl">
+          <div className="border-border relative z-10 flex min-h-[500px] flex-col items-center justify-center gap-8 overflow-hidden rounded-4xl border p-8 shadow-2xl">
             <Image
               src={BloodDonationImage}
               alt="Blood Donation"

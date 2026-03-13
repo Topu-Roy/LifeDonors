@@ -41,12 +41,10 @@ export default function RootLayout({
       <body className={`${fontSans.variable} ${fontSerif.variable} ${fontMono.variable} antialiased`}>
         <ConvexClientProvider>
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
-            <div className="relative flex min-h-screen flex-col">
-              <Navbar />
-              {children}
-              <Toaster />
-              <Footer />
-            </div>
+            <Navbar />
+            {children}
+            <Toaster />
+            <Footer />
           </ThemeProvider>
         </ConvexClientProvider>
       </body>

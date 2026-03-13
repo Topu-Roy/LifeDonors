@@ -20,24 +20,18 @@ export function HomeRequests() {
           label="Lives Saved"
           value="12,450+"
           color="text-primary"
-          bgColor="bg-primary/5"
-          borderColor="border-primary/10"
         />
         <ImpactCard
           icon={<Users className="h-6 w-6" />}
           label="Active Donors"
           value="8,200+"
           color="text-blue-500"
-          bgColor="bg-blue-500/5"
-          borderColor="border-blue-100"
         />
         <ImpactCard
           icon={<Activity className="h-6 w-6" />}
           label="Urgent Requests"
-          value={requests?.length.toString() ?? "34"}
+          value={"704"}
           color="text-orange-500"
-          bgColor="bg-orange-500/5"
-          borderColor="border-orange-100"
         />
       </div>
 
