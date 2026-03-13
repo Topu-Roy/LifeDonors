@@ -119,7 +119,7 @@ export function BasicInfoStep() {
                     Gender
                   </FieldLabel>
                   <Select value={field.state.value} onValueChange={v => field.handleChange(v as "Male")}>
-                    <SelectTrigger className="border-primary/10 bg-background focus:ring-primary/20 h-12 rounded-3xl text-base font-medium shadow-sm transition-all md:h-14 md:text-lg">
+                    <SelectTrigger className="border-primary/10 bg-background focus:ring-primary/20 h-12! rounded-3xl text-base font-medium shadow-sm transition-all md:h-14! md:text-lg">
                       <SelectValue placeholder="Select Gender" />
                     </SelectTrigger>
                     <SelectContent className="border-primary/10 rounded-2xl">
@@ -157,7 +157,7 @@ export function BasicInfoStep() {
                       form.setFieldValue("subDistrict", "");
                     }}
                   >
-                    <SelectTrigger className="border-primary/10 bg-background focus:ring-primary/20 h-11 rounded-2xl text-sm shadow-sm md:h-12 md:text-base">
+                    <SelectTrigger className="border-primary/10 bg-background focus:ring-primary/20 h-12! rounded-2xl text-sm shadow-sm md:h-14! md:text-base">
                       <SelectValue placeholder="Select Division" />
                     </SelectTrigger>
                     <SelectContent className="border-primary/10 rounded-2xl">
@@ -197,7 +197,7 @@ export function BasicInfoStep() {
                           }}
                           disabled={!division}
                         >
-                          <SelectTrigger className="border-primary/10 bg-background focus:ring-primary/20 h-11 rounded-2xl text-sm shadow-sm md:h-12 md:text-base">
+                          <SelectTrigger className="border-primary/10 bg-background focus:ring-primary/20 h-12! rounded-2xl text-sm shadow-sm md:h-14! md:text-base">
                             <SelectValue placeholder="Select District" />
                           </SelectTrigger>
                           <SelectContent className="border-primary/10 rounded-2xl">
@@ -238,7 +238,7 @@ export function BasicInfoStep() {
                           onValueChange={v => field.handleChange(v!)}
                           disabled={!district}
                         >
-                          <SelectTrigger className="border-primary/10 bg-background focus:ring-primary/20 h-11 rounded-2xl text-sm shadow-sm md:h-12 md:text-base">
+                          <SelectTrigger className="border-primary/10 bg-background focus:ring-primary/20 h-12! rounded-2xl text-sm shadow-sm md:h-14! md:text-base">
                             <SelectValue placeholder="Select Sub District" />
                           </SelectTrigger>
                           <SelectContent className="border-primary/10 rounded-2xl">
