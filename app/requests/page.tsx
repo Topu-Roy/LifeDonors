@@ -1,7 +1,8 @@
 import { Suspense } from "react";
 import { RequestsExplorer } from "@/app/requests/_components/RequestsExplorer";
-import { Container } from "@/components/Container";
 import type { Metadata } from "next";
+import { Container } from "@/components/Container";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export const metadata: Metadata = {
   title: "Blood Requests Explorer",
@@ -10,7 +11,7 @@ export const metadata: Metadata = {
 
 export default function RequestsPage() {
   return (
-    <div className="min-h-screen bg-[#f6f8f6] dark:bg-[#102216]">
+    <div className="bg-background min-h-screen">
       <Container className="py-8">
         {/* Header Section */}
         <div className="relative mb-10 flex flex-col justify-between gap-6 md:flex-row md:items-center">
@@ -24,7 +25,7 @@ export default function RequestsPage() {
           </div>
         </div>
 
-        <Suspense fallback={<div className="bg-muted/50 h-screen w-full animate-pulse rounded-[3rem]" />}>
+        <Suspense fallback={<Skeleton className="h-screen w-full" />}>
           <RequestsExplorer />
         </Suspense>
       </Container>

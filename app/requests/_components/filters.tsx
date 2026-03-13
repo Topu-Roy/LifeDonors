@@ -192,7 +192,7 @@ export function Filter() {
 
       <Button
         variant="outline"
-        className="border-primary/20 text-primary hover:bg-primary/5 h-11 w-full gap-2 rounded-2xl text-sm font-bold transition-all md:h-12"
+        className="text-primary border-border dark:text-primary h-11 w-full gap-2 rounded-2xl border-2 text-sm font-bold transition-all md:h-12"
         onClick={resetFilters}
         disabled={!hasActiveFilters}
       >

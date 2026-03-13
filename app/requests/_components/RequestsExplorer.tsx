@@ -130,7 +130,7 @@ export function RequestsExplorer() {
 
       {/* Sidebar Filters */}
       <aside className="hidden w-52 shrink-0 space-y-8 lg:block">
-        <div className="border-primary/10 sticky top-24 rounded-4xl border bg-white p-6 shadow-sm dark:bg-slate-900">
+        <div className="border-primary/10 bg-card sticky top-24 rounded-4xl border p-6 shadow-sm">
           <div className="mb-6 flex items-center gap-2">
             <FilterIcon className="text-primary h-5 w-5" />
             <h2 className="text-xl font-black tracking-tight">Filters</h2>
