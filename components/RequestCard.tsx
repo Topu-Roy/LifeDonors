@@ -7,8 +7,8 @@ import { ChevronRight, Clock, Hospital, MapPin, TrendingUp, User } from "lucide-
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { extractConvexError } from "@/lib/helpers/convexErrorExtractor";
 import { isCompatible } from "@/lib/blood-compatibility";
+import { extractConvexError } from "@/lib/helpers/convexErrorExtractor";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { Button, buttonVariants } from "@/components/ui/button";
@@ -23,10 +23,10 @@ type RequestCardProps = {
 };
 
 const URGENCY_STYLES = {
-  Low: "border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900",
-  Medium: "border-orange-200 dark:border-orange-900/50 bg-white dark:bg-slate-900",
-  High: "border-red-200 dark:border-red-900/50 bg-white dark:bg-slate-900",
-  Critical: "border-red-400 dark:border-red-800 bg-red-50/30 dark:bg-red-950/20",
+  Low: "border-slate-200 dark:border-slate-800",
+  Medium: "border-orange-200 dark:border-orange-900/50",
+  High: "border-red-200 dark:border-red-900/50",
+  Critical: "border-red-400 dark:border-red-800 bg-accent dark:bg-primary/10",
 } as const;
 
 const URGENCY_BADGE_STYLES = {
@@ -56,14 +56,7 @@ function RequestHeader({
   return (
     <div className="flex items-start justify-between">
       <div className="flex items-center gap-4">
-        <div
-          className={cn(
-            "flex h-16 w-16 items-center justify-center rounded-3xl text-2xl font-black shadow-inner",
-            request.urgency === "Critical" || request.urgency === "High"
-              ? "bg-red-600 text-white shadow-red-900/20"
-              : "bg-primary shadow-primary-900/10 text-white"
-          )}
-        >
+        <div className="bg-primary flex size-16 items-center justify-center rounded-3xl text-2xl font-black text-white shadow-inner">
           {request.bloodTypeNeeded}
         </div>
         <div>
@@ -106,13 +99,11 @@ function RequestBody({ request }: { request: RequestCardProps["request"] }) {
   return (
     <div className="flex-1 space-y-4">
       <div className="flex items-start gap-3">
-        <div className="shrink-0 rounded-xl bg-slate-100 p-2 text-slate-400 dark:bg-slate-800">
+        <div className="bg-foreground/10 text-foreground/40 shrink-0 rounded-xl p-2">
           <Hospital className="h-5 w-5" />
         </div>
         <div className="min-w-0">
-          <p className="truncate text-lg font-black tracking-tight text-slate-900 dark:text-slate-100">
-            {request.hospitalName}
-          </p>
+          <p className="text-foreground/70 truncate text-lg font-black tracking-tight">{request.hospitalName}</p>
           <p className="text-muted-foreground flex items-center gap-1 text-xs font-medium">
             <MapPin className="h-3 w-3 shrink-0" />
             <span className="truncate">
@@ -240,7 +231,7 @@ export function RequestCard({ request, isOwner: isOwnerProp }: RequestCardProps)
   return (
     <div
       className={cn(
-        "group flex flex-col overflow-hidden rounded-3xl border-2 p-1 shadow-sm hover:shadow-xl",
+        "group bg-card flex flex-col overflow-hidden rounded-3xl border-2 p-1 shadow-sm hover:shadow-xl",
         URGENCY_STYLES[request.urgency]
       )}
     >
