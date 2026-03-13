@@ -4,6 +4,7 @@ import "./globals.css";
 import { ConvexClientProvider } from "@/components/ConvexClientProvider";
 import { Footer } from "@/components/footer";
 import { Navbar } from "@/components/Navbar";
+import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
 
 const fontSans = Montserrat({
@@ -39,12 +40,14 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={`${fontSans.variable} ${fontSerif.variable} ${fontMono.variable} antialiased`}>
         <ConvexClientProvider>
-          <div className="relative flex min-h-screen flex-col">
-            <Navbar />
-            {children}
-            <Toaster />
-            <Footer />
-          </div>
+          <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+            <div className="relative flex min-h-screen flex-col">
+              <Navbar />
+              {children}
+              <Toaster />
+              <Footer />
+            </div>
+          </ThemeProvider>
         </ConvexClientProvider>
       </body>
     </html>

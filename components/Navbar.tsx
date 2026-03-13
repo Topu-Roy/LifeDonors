@@ -9,37 +9,38 @@ import { cn } from "@/lib/utils";
 import { Container } from "@/components/Container";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
+import { ModeToggle } from "./themeToggle";
 import { UserMenu } from "./userMenu";
+
+const routes: {
+  href: UrlObject | __next_route_internal_types__.RouteImpl<"/">;
+  label: string;
+  icon: ForwardRefExoticComponent<Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>>;
+}[] = [
+  {
+    href: "/",
+    label: "Home",
+    icon: Droplet,
+  },
+  {
+    href: "/requests",
+    label: "Requests",
+    icon: MessageSquarePlus,
+  },
+  {
+    href: "/dashboard",
+    label: "Dashboard",
+    icon: LayoutDashboard,
+  },
+  {
+    href: "/profile",
+    label: "Profile",
+    icon: User,
+  },
+];
 
 export function Navbar() {
   const pathname = usePathname();
-
-  const routes: {
-    href: UrlObject | __next_route_internal_types__.RouteImpl<"/">;
-    label: string;
-    icon: ForwardRefExoticComponent<Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>>;
-  }[] = [
-    {
-      href: "/",
-      label: "Home",
-      icon: Droplet,
-    },
-    {
-      href: "/requests",
-      label: "Requests",
-      icon: MessageSquarePlus,
-    },
-    {
-      href: "/dashboard",
-      label: "Dashboard",
-      icon: LayoutDashboard,
-    },
-    {
-      href: "/profile",
-      label: "Profile",
-      icon: User,
-    },
-  ];
 
   return (
     <header className="bg-background/95 supports-backdrop-filter:bg-background/60 sticky top-0 z-50 w-full border-b backdrop-blur">
@@ -70,6 +71,7 @@ export function Navbar() {
         </nav>
 
         <div className="flex items-center gap-4">
+          <ModeToggle />
           <UserMenu />
 
           {/* Mobile Navigation */}
